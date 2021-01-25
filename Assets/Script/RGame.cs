@@ -29,8 +29,6 @@ public class RGame : MonoBehaviour
                 gameInstanceObj = new GameObject("GameInstance");
 
             gameInstanceObj.AddComponent<RGame>();
-
-            new RGame().InitManager();
         }
 
         if (_Mangers.ContainsKey(typeof(T)))
@@ -60,6 +58,7 @@ public class RGame : MonoBehaviour
             foreach (RManager manager in managerList)
             {
                 manager.Init();
+                manager.transform.parent = parentObj.transform;
                 _Mangers.Add(manager.GetType(), manager);
             }
 

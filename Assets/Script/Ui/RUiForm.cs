@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RUiForm : RUiObject
+public struct UiFormParam
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+}
+
+
+public abstract class RUiForm : RUiObject
+{
+    public virtual void Init(UiFormParam param) { }
+    public virtual void BindEvent() { }
+    public void Open()
     {
-        
+
+    }
+    public void Close()
+    {
+
     }
 }

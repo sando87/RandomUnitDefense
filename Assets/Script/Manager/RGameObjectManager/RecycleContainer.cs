@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RUIManager : RManager
+public class RecycleContainer : MonoBehaviour
 {
 
 }

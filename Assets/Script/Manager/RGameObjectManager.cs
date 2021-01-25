@@ -25,22 +25,21 @@ public class RGameObjectManager : RManager
         
     }
     // 생성된 오브젝트는 캐싱하고있지 말것
-    public int AcquireRGameObject(string name, RGameObject rGameObject)
+    public int AcquireRGameObject(string id, out RGameObject rGameObject)
     {
         rGameObject = null;
         // 오브젝트 풀 기능이 들어와야 함.
         // 일단은 그냥 클론해서 넘겨준다.
-        var prefab = _PrefabHolder.Get(name);
+        var prefab = _PrefabHolder.Get(id);
         if(prefab)
         {
             var go = GameObject.Instantiate(prefab.gameObject);
 
             var rObj = go.GetComponent<RGameObject>();
-            int id = rObj.GetInstanceID();
-            _ActiveGameObjects.Add(id, rObj);
-            return id;
+            rObj.Init();
+            _ActiveGameObjects.Add(rObj.GetInstanceID(), rObj);
+            return rObj.GetInstanceID();
         }
-
 
         return -1;
     }

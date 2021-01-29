@@ -7,11 +7,6 @@ public class Ui_RoundMain : RUiForm
 {
     [SerializeField] private Button Button_CreateObjTemp = null;
 
-    private void Awake()
-    {
-        BindEvent();
-        Init(default);
-    }
     public override void BindEvent()
     {
         base.BindEvent();

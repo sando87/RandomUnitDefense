@@ -46,6 +46,7 @@ public class RUIFormLobby : RUiForm
     }
     private void OnGameStart()
     {
+        RGame.Get<RGameOperator>().StartGame();
         RGame.Get<RUIManager>().SwitchToForm<Ui_RoundMain>(default);
     }
     private void OnClickGoldUp()

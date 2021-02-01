@@ -15,6 +15,10 @@ public class Ui_RoundMain : RUiForm
 
     private void OnClick_CreateObj()
     {
-        RGame.Get<RGameObjectManager>().AcquireRGameObject(Recycler.RecycleId.SampleSquare, out RGameObject obj);
+        //RGame.Get<RGameObjectManager>().AcquireRGameObject(Recycler.RecycleId.SampleSquare, out RGameObject obj);
+        if(UnityEngine.Random.Range(0, 2) == 0)
+            RGame.Get<RGameObjectManager>().AcquireRGameObject(Recycler.RecycleId.fenrir, out RGameObject obj);
+        else
+            RGame.Get<RGameObjectManager>().AcquireRGameObject(Recycler.RecycleId.marine, out RGameObject obj);
     }
 }

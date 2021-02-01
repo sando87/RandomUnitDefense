@@ -41,6 +41,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2013551389
+    locked: 0
+  - name: Decal
+    uniqueID: 7747587
+    locked: 0
+  - name: Standing
+    uniqueID: 2268535413
+    locked: 0
+  - name: Floating
+    uniqueID: 2048205689
+    locked: 0
+  - name: Particles
+    uniqueID: 3491330539
+    locked: 0
+  - name: WorldUI
+    uniqueID: 233360639
+    locked: 0
   - name: UI
     uniqueID: 2119701265
     locked: 0

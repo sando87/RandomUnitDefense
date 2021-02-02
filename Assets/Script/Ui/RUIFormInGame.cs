@@ -31,12 +31,20 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Button UpgradeWeaponD = null;
     [SerializeField] private Button UpgradeWeaponE = null;
 
-    private RGameSystemManager GameMgr = null;
+    private RGameSystemManager mGameMgr = null;
+    private RGameSystemManager GameMgr
+    {
+        get
+        {
+            if(mGameMgr == null)
+                mGameMgr = RGame.Get<RGameSystemManager>();
+            return mGameMgr;
+        }
+    }
 
     public override void Init()
     {
         base.Init();
-        GameMgr = RGame.Get<RGameSystemManager>();
     }
 
     public override void BindEvent()
@@ -66,7 +74,7 @@ public class RUIFormInGame : RUiForm
 
         KillPoint.text = GameMgr.KillPoint.ToString();
         Mineral.text = GameMgr.Mineral.ToString();
-        WaveNumber.text = GameMgr.WaveNumber.ToString();
+        WaveNumber.text = "Wave " + GameMgr.WaveNumber.ToString();
         RemainTimer.text = TimeSpan.FromSeconds(GameMgr.RemainSecond).ToString(@"mm\:ss");
         LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + RGameSystemManager.LineMobLimit;
         RemainGauge.fillAmount = (float)GameMgr.LineMobCount / RGameSystemManager.LineMobLimit;

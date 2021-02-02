@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum UpgradeType
 {
@@ -16,8 +17,9 @@ public class RGameSystemManager : RManager
     public const float LineMobBurstIntervalSec = 1.5f;
     public const int KillPointCost = 5;
     public const int LineMobLimit = 80;
+    public const int StartKillPoint = 20;
 
-    [SerializeField] private GameObject StagePrefab;
+    [SerializeField] private GameObject StagePrefab = null;
 
     public int WaveNumber { get; private set; }
     public int Mineral { get; private set; }
@@ -27,9 +29,9 @@ public class RGameSystemManager : RManager
     public float RemainSecond { get; private set; }
     public bool UserInputLocked { get; set; }
 
-    private LineMob[] LineMobs = null;
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
+    private List<string> LineMobs = new List<string>();
     private List<string> StartingMembers = new List<string>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
 
@@ -47,13 +49,14 @@ public class RGameSystemManager : RManager
         StartCoroutine(LineMobGenerator());
         StartCoroutine(MineralMining());
 
+        KillPoint = StartKillPoint;
         StageRoot = GameObject.Instantiate(StagePrefab);
         WayPoints[0] = StageRoot.transform.Find("WayPoint_LB").position;
         WayPoints[1] = StageRoot.transform.Find("WayPoint_RB").position;
         WayPoints[2] = StageRoot.transform.Find("WayPoint_RT").position;
         WayPoints[3] = StageRoot.transform.Find("WayPoint_LT").position;
         StartingMembers.AddRange(startingMembers);
-        LineMobs = RGame.Get<RUnitTable>().GetTotalMobList();
+        LineMobs.Add("fenrir");
     }
     public void CleanUpGame()
     {
@@ -78,7 +81,7 @@ public class RGameSystemManager : RManager
         }
 
         StartingMembers.Clear();
-        LineMobs = null;
+        LineMobs.Clear();
         for (int i = 0; i < WayPoints.Length; ++i)
             WayPoints[i] = Vector3.zero;
     }
@@ -125,14 +128,14 @@ public class RGameSystemManager : RManager
         {
             RUiMessageBox.PopUp("Success!!", (isOK) => {
                 CleanUpGame();
-                RGame.Get<RUIManager>().SwitchToForm<RUiForm>(default);
+                RGame.Get<RUIManager>().SwitchToForm<RUIFormLobby>(default);
             });
         }
         else
         {
             RUiMessageBox.PopUp("Game Over..", (isOK) => {
                 CleanUpGame();
-                RGame.Get<RUIManager>().SwitchToForm<RUiForm>(default);
+                RGame.Get<RUIManager>().SwitchToForm<RUIFormLobby>(default);
             });
         }
     }
@@ -166,6 +169,13 @@ public class RGameSystemManager : RManager
                 DownReciever = null;
                 DownPosition = Vector3.zero;
                 IsDragged = false;
+                yield return null;
+                continue;
+            }
+
+            if (EventSystem.current.IsPointerOverGameObject(-1))
+            {
+                yield return null;
                 continue;
             }
 
@@ -248,7 +258,7 @@ public class RGameSystemManager : RManager
             yield return Yielders.GetWaitForSeconds(WaveIntervalSec);
             WaveNumber++;
 
-            if (WaveNumber > LineMobs.Length)
+            if (WaveNumber > LineMobs.Count)
             {
                 FinishGame(true);
                 break;
@@ -268,7 +278,7 @@ public class RGameSystemManager : RManager
     private bool CreateLineMob()
     {
         LineMobCount++;
-        string name = LineMobs[WaveNumber - 1].Name;
+        string name = LineMobs[WaveNumber - 1];
         RGame.Get<RGameObjectManager>().AcquireRGameObject(name, out RGameObject obj);
         obj.transform.SetParent(StageRoot.transform);
         obj.transform.position = WayPoints[3];

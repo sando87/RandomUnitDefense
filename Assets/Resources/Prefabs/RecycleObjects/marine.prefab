@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3928256067794196425}
   - component: {fileID: 3928256067794196424}
   - component: {fileID: 3928256067794195511}
+  - component: {fileID: 3627322216758116843}
   m_Layer: 0
   m_Name: marine
   m_TagString: Untagged
@@ -142,3 +143,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Anim: {fileID: 3928256067794196425}
+  Spec: {fileID: 3627322216758116843}
+--- !u!114 &3627322216758116843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928256067794195509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackDamage: 40
+  AttackSpeed: 1
+  MoveSpeed: 2
+  AttackRange: 1
+  CharacterHeight: 0.5
+  Photo: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}

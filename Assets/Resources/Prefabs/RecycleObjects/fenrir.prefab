@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 8662065792608412219}
   - component: {fileID: 8662065792608412218}
   - component: {fileID: 8662065792608412217}
+  - component: {fileID: 2774635147093843710}
   m_Layer: 0
   m_Name: fenrir
   m_TagString: Untagged
@@ -286,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8662065792608412215}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.65, y: 2.33, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7279856194008893323}
@@ -402,3 +403,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Anim: {fileID: 8662065792608412219}
   HPBar: {fileID: 3682248478448214925}
+  Spec: {fileID: 2774635147093843710}
+--- !u!114 &2774635147093843710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662065792608412215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90b3b3326cf24246a0d8a38c8290486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalHP: 100
+  Armor: 1
+  MoveSpeed: 1
+  CharacterHeight: 0.5
+  Photo: {fileID: 21300000, guid: b78443b9d17d29142ad8d0365ef9bd6a, type: 3}

@@ -38,6 +38,7 @@ public class RGameObjectManager : RManager
             var rObj = go.GetComponent<RGameObject>();
             rObj.Init();
             _ActiveGameObjects.Add(rObj.GetInstanceID(), rObj);
+            rGameObject = rObj;
             return rObj.GetInstanceID();
         }
 

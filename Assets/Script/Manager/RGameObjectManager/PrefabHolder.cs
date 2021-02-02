@@ -20,6 +20,18 @@ namespace Recycler
             });
             return find;
         }
+
+        public T[] GetList<T>()
+        {
+            List<T> rets = new List<T>();
+            foreach(RGameObject prefab in _prefabs)
+            {
+                T comp = prefab.GetComponent<T>();
+                if (comp != null)
+                    rets.Add(comp);
+            }
+            return rets.ToArray();
+        }
     }
 
 

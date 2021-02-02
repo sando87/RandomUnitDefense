@@ -6,25 +6,16 @@ public class MobUnit : RGameObject, IUserInputReciever
 {
     [SerializeField] private Animator Anim = null;
     [SerializeField] private HealthBar HPBar = null;
+    [SerializeField] private MobSpec Spec = null;
 
-    public GameStats Stats = new GameStats();
     public UnitState CurrentState { get; private set; }
     private float CurrentHP = 0;
 
     public override void Init()
     {
-        CurrentHP = Stats.TotalHP;
+        CurrentHP = Spec.TotalHP;
         CurrentState = UnitState.Idle;
-        HPBar.Init(Stats.CharacterHeight, HealthBarSize.Medium);
-
-        Vector3[] waypoints = new Vector3[] {
-            new Vector3(-5.5f, -2.5f, 0),
-            new Vector3(5.5f, -2.5f, 0),
-            new Vector3(5.5f, 2.5f, 0),
-            new Vector3(-5.5f, 2.5f, 0)
-        };
-        StartCoroutine(MoveAround(waypoints));
-
+        HPBar.Init(Spec.CharacterHeight, HealthBarSize.Medium);
     }
 
     public override void Release()
@@ -43,12 +34,16 @@ public class MobUnit : RGameObject, IUserInputReciever
     {
     }
 
+    public void StartToMove(Vector3[] waypoints)
+    {
+        CurrentState = UnitState.Move;
+        StartCoroutine(MoveAround(waypoints));
+    }
 
-
-    public void GetDamaged(GameStats attacker)
+    public void GetDamaged(UserUnitSpec attacker)
     {
         CurrentHP -= attacker.AttackDamage;
-        HPBar.UpdateHealthBar(CurrentHP / Stats.TotalHP);
+        HPBar.UpdateHealthBar(CurrentHP / Spec.TotalHP);
         if(CurrentHP <= 0)
         {
             CurrentHP = 0;
@@ -68,7 +63,7 @@ public class MobUnit : RGameObject, IUserInputReciever
             //dest지점으로 유닛 Smoothly 이동
             Vector3 dest = waypoints[idx];
             LookAt(dest);
-            float moveSpeed = Stats.MoveSpeed;
+            float moveSpeed = Spec.MoveSpeed;
             Vector3 dir = dest - transform.position;
             dir.z = 0;
             float distance = dir.magnitude;

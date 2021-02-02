@@ -65,4 +65,9 @@ public class RGameObjectManager : RManager
             }
         }
     }
+
+    public T[] GetUnitStaticInfo<T>()
+    {
+        return _PrefabHolder.GetList<T>();
+    }
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class GameStats
+public class UserUnitSpec : MonoBehaviour
 {
-    public float TotalHP = 100;
     public float AttackDamage = 5;
     public float AttackSpeed = 1;
     public float MoveSpeed = 2;
-    public float Defense = 1;
     public float AttackRange = 1f;
     public float CharacterHeight = 0.5f;
-    public bool IsUserUnit = true;
+    public Sprite Photo = null;
 }

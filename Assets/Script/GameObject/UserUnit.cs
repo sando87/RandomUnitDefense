@@ -7,8 +7,8 @@ public enum UnitState { None, Create, Idle, Move, Attack, Stun, Death, Disappear
 public class UserUnit : RGameObject, IUserInputReciever
 {
     [SerializeField] private Animator Anim = null;
+    [SerializeField] private UserUnitSpec Spec = null;
 
-    public GameStats Stats = new GameStats();
     public UnitState CurrentState { get; private set; }
 
     public override void Init()
@@ -52,7 +52,7 @@ public class UserUnit : RGameObject, IUserInputReciever
     protected virtual void UpdateAttack() { }
     protected virtual void UpdateIdle()
     {
-        MobUnit[] mobs = DetectAroundMob(Stats.AttackRange);
+        MobUnit[] mobs = DetectAroundMob(Spec.AttackRange);
         if(mobs != null)
             ChangeToAttack(mobs[0]);
     }
@@ -107,7 +107,7 @@ public class UserUnit : RGameObject, IUserInputReciever
     private IEnumerator MoveTo(Vector3 dest)
     {
         //dest지점으로 유닛 Smoothly 이동
-        float moveSpeed = Stats.MoveSpeed;
+        float moveSpeed = Spec.MoveSpeed;
         Vector3 dir = dest - transform.position;
         dir.z = 0;
         float distance = dir.magnitude;
@@ -129,7 +129,7 @@ public class UserUnit : RGameObject, IUserInputReciever
     private IEnumerator Attack(MobUnit enemy)
     {
         //공격 속도에 따라 반복적으로 공격을 수행하는 동작
-        float waitSecForNextAttack = 1 / Stats.AttackSpeed;
+        float waitSecForNextAttack = 1 / Spec.AttackSpeed;
 
         while (true)
         {
@@ -137,15 +137,15 @@ public class UserUnit : RGameObject, IUserInputReciever
                 break;
 
             Vector2 dist = enemy.transform.position - transform.position;
-            if (dist.magnitude > Stats.AttackRange)
+            if (dist.magnitude > Spec.AttackRange)
             {
-                MobUnit[] enemies = DetectAroundMob(Stats.AttackRange);
+                MobUnit[] enemies = DetectAroundMob(Spec.AttackRange);
                 if (enemies == null)
                     break;
 
                 enemy = enemies[0];
             }
-            enemy.GetDamaged(Stats);
+            enemy.GetDamaged(Spec);
             LookAt(enemy.transform.position);
             PlayAttackAnimAimmingTarget(enemy.transform.position);
             yield return Yielders.GetWaitForSeconds(waitSecForNextAttack);

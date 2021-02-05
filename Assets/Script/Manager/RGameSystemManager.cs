@@ -287,8 +287,9 @@ public class RGameSystemManager : RManager
         RGame.Get<RGameObjectManager>().AcquireRGameObject(name, out RGameObject obj);
         obj.transform.SetParent(StageRoot.transform);
         obj.transform.position = WayPoints[3];
-        obj.GetComponent<MobUnit>().StartToMove(WayPoints);
         return true;
     }
+
+    public Vector3[] GetWayPoints() { return WayPoints; }
 
 }

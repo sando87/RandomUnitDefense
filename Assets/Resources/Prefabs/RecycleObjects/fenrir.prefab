@@ -270,8 +270,10 @@ GameObject:
   - component: {fileID: 8662065792608412220}
   - component: {fileID: 8662065792608412219}
   - component: {fileID: 8662065792608412218}
-  - component: {fileID: 8662065792608412217}
-  - component: {fileID: 2774635147093843710}
+  - component: {fileID: 5577615096889158547}
+  - component: {fileID: 2541083019499695153}
+  - component: {fileID: 8233411014692437466}
+  - component: {fileID: 4221763069367823267}
   m_Layer: 0
   m_Name: fenrir
   m_TagString: Untagged
@@ -376,7 +378,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.050000012, y: 0.12900001}
+  m_Offset: {x: 0.03, y: 0.17}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.45, y: 0.35}
@@ -387,9 +389,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.86}
+  m_Size: {x: 0.52, y: 0.41}
   m_EdgeRadius: 0
---- !u!114 &8662065792608412217
+--- !u!114 &5577615096889158547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,26 +400,51 @@ MonoBehaviour:
   m_GameObject: {fileID: 8662065792608412215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb51c9c30fa37c48a9e34d517042ec2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Anim: {fileID: 8662065792608412219}
-  HPBar: {fileID: 3682248478448214925}
-  Spec: {fileID: 2774635147093843710}
---- !u!114 &2774635147093843710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8662065792608412215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b90b3b3326cf24246a0d8a38c8290486, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TotalHP: 100
   Armor: 1
-  MoveSpeed: 1
-  CharacterHeight: 0.5
-  Photo: {fileID: 21300000, guid: b78443b9d17d29142ad8d0365ef9bd6a, type: 3}
+  AttackDamage: 5
+  AttackSpeed: 1
+  MoveSpeed: 2
+  AttackRange: 1
+  CharacterHeight: 0.4
+  Photo: {fileID: 0}
+--- !u!114 &2541083019499695153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662065792608412215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbaae0d927e4925489303ee5ebf99e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPBar: {fileID: 3682248478448214925}
+--- !u!114 &8233411014692437466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662065792608412215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d6fd8492128f7e4da1ce4392d9e03e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4221763069367823267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662065792608412215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7562c6a6ce62be47b515a6cc5ab11d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

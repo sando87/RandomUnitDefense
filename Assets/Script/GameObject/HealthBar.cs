@@ -42,7 +42,7 @@ public class HealthBar : MonoBehaviour
         Invoke("HideBar", RSystemConfig.HealthBarDisplaySec);
     }
 
-    void HideBar()
+    public void HideBar()
     {
         gameObject.SetActive(false);
     }

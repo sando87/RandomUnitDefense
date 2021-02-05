@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserUnitSpec : MonoBehaviour
+public class UnitSpec : MonoBehaviour
 {
+    public float TotalHP = 100;
+    public float Armor = 1;
     public float AttackDamage = 5;
     public float AttackSpeed = 1;
     public float MoveSpeed = 2;

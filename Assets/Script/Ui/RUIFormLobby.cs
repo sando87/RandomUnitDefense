@@ -46,7 +46,7 @@ public class RUIFormLobby : RUiForm
     }
     private void OnGameStart()
     {
-        RGame.Get<RGameSystemManager>().StartGame(new string[1] { "marine" });
+        RGame.Get<RGameSystemManager>().StartGame(new string[1] { "MarineHero" });
         RGame.Get<RUIManager>().SwitchToForm<RUIFormInGame>(default);
     }
     private void OnClickGoldUp()

@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class UnitUserBase : RGameObject
 {
-    [SerializeField] public Animator Anim = null;
-    [SerializeField] public SpriteRenderer SR = null;
-    [SerializeField] public UserUnitSpec Spec = null;
+    public Animator Anim { get; set; }
+    public SpriteRenderer SR { get; set; }
+    public UnitSpec Spec { get; set; }
 
     public FiniteStateMachine FSM = new FiniteStateMachine();
     public UnitState CurrentState { get { return FSM.CurrentState; } }
 
     public override void Init()
     {
+        Anim = GetComponent<Animator>();
+        SR = GetComponent<SpriteRenderer>();
+        Spec = GetComponent<UnitSpec>();
         FSM.InitMotions(this);
     }
     public override void Release() { }

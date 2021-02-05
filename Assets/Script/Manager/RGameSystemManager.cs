@@ -145,7 +145,7 @@ public class RGameSystemManager : RManager
     // Collider 컴포넌트가 게임오브젝트에 활성화되어 있어야 함
     private IEnumerator UserInputInterpreter()
     {
-        IUserInputReciever DownReciever = null;
+        List<IUserInputReciever> DownRecievers = new List<IUserInputReciever>();
         Vector3 DownPosition = Vector3.zero;
         bool IsDragged = false;
 
@@ -153,20 +153,22 @@ public class RGameSystemManager : RManager
         {
             if (UserInputLocked)
             {
-                if(DownReciever != null)
+                if(DownRecievers.Count > 0)
                 {
                     if (IsDragged)
                     {
                         Vector3 worldPt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        DownReciever?.OnDragAndDrop(worldPt);
+                        foreach(var recv in DownRecievers)
+                            recv?.OnDragAndDrop(worldPt);
                     }
                     else
                     {
-                        DownReciever?.OnClick();
+                        foreach (var recv in DownRecievers)
+                            recv?.OnClick();
                     }
                 }
-                
-                DownReciever = null;
+
+                DownRecievers.Clear();
                 DownPosition = Vector3.zero;
                 IsDragged = false;
                 yield return null;
@@ -185,10 +187,10 @@ public class RGameSystemManager : RManager
                 Collider2D hit = Physics2D.OverlapPoint(worldPt);
                 if (hit != null && hit.gameObject.activeSelf)
                 {
-                    IUserInputReciever reciever = hit.gameObject.GetComponent<IUserInputReciever>();
-                    if(reciever != null)
+                    IUserInputReciever[] recievers = hit.gameObject.GetComponents<IUserInputReciever>();
+                    if(recievers != null)
                     {
-                        DownReciever = reciever;
+                        DownRecievers.AddRange(recievers);
                         DownPosition = worldPt;
                         IsDragged = false;
                     }
@@ -199,25 +201,28 @@ public class RGameSystemManager : RManager
                 Vector3 worldPt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 if (IsDragged)  // Drag & Drop Event 발생
                 {
-                    DownReciever?.OnDragAndDrop(worldPt);
+                    foreach (var recv in DownRecievers)
+                        recv?.OnDragAndDrop(worldPt);
                 }
                 else  // Click Event 발생
                 {
-                    DownReciever?.OnClick();
+                    foreach (var recv in DownRecievers)
+                        recv?.OnClick();
                 }
 
-                DownReciever = null;
+                DownRecievers.Clear();
                 DownPosition = Vector3.zero;
                 IsDragged = false;
             }
             else if (Input.GetMouseButton(0))
             {
-                if (DownReciever != null) //현재 Down이 된 상태일때만 진입
+                if (DownRecievers.Count > 0) //현재 Down이 된 상태일때만 진입
                 {
                     if (IsDragged) //사용자가 Dragging하는 매프래임마다 진입
                     {
                         Vector3 curWorldPt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        DownReciever.OnDragging(curWorldPt);
+                        foreach (var recv in DownRecievers)
+                            recv?.OnDragging(curWorldPt);
                     }
                     else //사용자가 처음 Drag하는 순간에만 진입
                     {

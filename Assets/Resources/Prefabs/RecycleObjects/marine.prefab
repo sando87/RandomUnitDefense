@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 3928256067794196424}
   - component: {fileID: 3928256067794195511}
   - component: {fileID: 3627322216758116843}
+  - component: {fileID: 627965411127559896}
+  - component: {fileID: 8375739341152717832}
+  - component: {fileID: 2008712716840751924}
   m_Layer: 0
   m_Name: marine
   m_TagString: Untagged
@@ -143,6 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Anim: {fileID: 3928256067794196425}
+  SR: {fileID: 3928256067794196426}
   Spec: {fileID: 3627322216758116843}
 --- !u!114 &3627322216758116843
 MonoBehaviour:
@@ -162,3 +166,40 @@ MonoBehaviour:
   AttackRange: 1
   CharacterHeight: 0.5
   Photo: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}
+--- !u!114 &627965411127559896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928256067794195509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35709f2abfe525a44ab516e70888c85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8375739341152717832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928256067794195509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2008712716840751924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928256067794195509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec65d2400ff1f6949b63d709c889f2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReferenceAnim: {fileID: 7400000, guid: 8955ac367a7ad2246b06f0816862b6c6, type: 2}

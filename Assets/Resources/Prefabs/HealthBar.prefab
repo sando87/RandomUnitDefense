@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5451020669460568587}
   - component: {fileID: 2735943686262711887}
-  - component: {fileID: 2142356294666911245}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -70,8 +69,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 233360639
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d5f0dad2aba9639458b6458e379c341b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -84,18 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2142356294666911245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114234973489686864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e60067335f5874bbc18c4c9a3624c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6411333472486698026
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,8 +150,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 233360639
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e0bf89d3ea0292542b476cae14b44fcb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -244,8 +231,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 233360639
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9f39f5e4b67ab8841a787464f9672c5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

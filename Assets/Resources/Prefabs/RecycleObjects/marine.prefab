@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 3928256067794196426}
   - component: {fileID: 3928256067794196425}
   - component: {fileID: 3928256067794196424}
-  - component: {fileID: 3928256067794195511}
   - component: {fileID: 3627322216758116843}
-  - component: {fileID: 627965411127559896}
-  - component: {fileID: 8375739341152717832}
-  - component: {fileID: 2008712716840751924}
+  - component: {fileID: 7410744739925110554}
+  - component: {fileID: 5942753335694462876}
+  - component: {fileID: 8969789937134791322}
+  - component: {fileID: 122097924780060823}
   m_Layer: 0
   m_Name: marine
   m_TagString: Untagged
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.028000027, y: 0.20519999}
+  m_Offset: {x: -0.0047519207, y: 0.22075716}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.45, y: 0.14}
@@ -131,23 +131,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.56, y: 0.57}
+  m_Size: {x: 0.35366285, y: 0.4668314}
   m_EdgeRadius: 0
---- !u!114 &3928256067794195511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3928256067794195509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b656ef4733b8ab4aa56ddd3215ca8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Anim: {fileID: 3928256067794196425}
-  SR: {fileID: 3928256067794196426}
-  Spec: {fileID: 3627322216758116843}
 --- !u!114 &3627322216758116843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,13 +145,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TotalHP: 100
+  Armor: 1
   AttackDamage: 40
   AttackSpeed: 0.25
-  MoveSpeed: 2
+  MoveSpeed: 1.5
   AttackRange: 1
-  CharacterHeight: 0.5
+  CharacterHeight: 0.45
   Photo: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}
---- !u!114 &627965411127559896
+--- !u!114 &7410744739925110554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,10 +162,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3928256067794195509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35709f2abfe525a44ab516e70888c85f, type: 3}
+  m_Script: {fileID: 11500000, guid: 38e60067335f5874bbc18c4c9a3624c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8375739341152717832
+--- !u!114 &5942753335694462876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,10 +174,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3928256067794195509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
+  m_Script: {fileID: 11500000, guid: dbaae0d927e4925489303ee5ebf99e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2008712716840751924
+--- !u!114 &8969789937134791322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,10 +186,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3928256067794195509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec65d2400ff1f6949b63d709c889f2fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d6fd8492128f7e4da1ce4392d9e03e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReferenceAnim: {fileID: 7400000, guid: 8955ac367a7ad2246b06f0816862b6c6, type: 2}
-  FiredParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
-    type: 3}
-  AnimCount: 3
+--- !u!114 &122097924780060823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928256067794195509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7562c6a6ce62be47b515a6cc5ab11d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

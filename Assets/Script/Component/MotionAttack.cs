@@ -61,7 +61,7 @@ public class MotionAttack : MotionBase
 
         nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.AttackSpeed);
         Target.GetDamaged(Unit.Spec);
-        Vector3 pos = Target.transform.position;
+        Vector3 pos = Target.Center;
         pos.x += Random.Range(-0.1f, 0.1f);
         pos.y += Random.Range(-0.1f, 0.1f);
         GameObject obj = Instantiate(FiredParticle, pos, Quaternion.identity);

@@ -56,6 +56,8 @@ public class RGameSystemManager : RManager
         WayPoints[2] = StageRoot.transform.Find("WayPoint_RT").position;
         WayPoints[3] = StageRoot.transform.Find("WayPoint_LT").position;
         StartingMembers.AddRange(startingMembers);
+        LineMobs.Add("marine");
+        LineMobs.Add("Vilerunner");
         LineMobs.Add("fenrir");
     }
     public void CleanUpGame()

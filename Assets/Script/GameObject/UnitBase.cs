@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitUserBase : RGameObject
+public class UnitBase : RGameObject
 {
     public Animator Anim { get; set; }
     public SpriteRenderer SR { get; set; }
     public UnitSpec Spec { get; set; }
+    public Vector3 Center { get { return transform.position + new Vector3(0, Spec.CharacterHeight * 0.5f, 0); } }
 
     public FiniteStateMachine FSM = new FiniteStateMachine();
     public UnitState CurrentState { get { return FSM.CurrentState; } }
@@ -34,7 +35,7 @@ public class UnitUserBase : RGameObject
         pos.z = pos.y * 0.1f;
         transform.position = pos;
     }
-    public T[] DetectAround<T>(float range)
+    public T[] DetectAround<T>(float range) where T : UnitBase
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
         if (hitColliders.Length > 1)
@@ -50,7 +51,7 @@ public class UnitUserBase : RGameObject
                     continue;
 
                 T mob = hitCollider.GetComponent<T>();
-                if (mob != null)
+                if (mob != null && mob.CurrentState != UnitState.Death)
                     list.Add(mob);
             }
 

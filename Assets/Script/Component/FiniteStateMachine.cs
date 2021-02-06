@@ -6,7 +6,7 @@ public enum UnitState { None, Create, Idle, Move, Attack, Stun, Death, Disappear
 
 public abstract class MotionBase : MonoBehaviour
 {
-    public UnitUserBase Unit { get; set; }
+    public UnitBase Unit { get; set; }
     public abstract UnitState State { get; }
     public abstract bool IsReady();
 
@@ -21,7 +21,7 @@ public class FiniteStateMachine
     public UnitState CurrentState { get { return CurrentMotion ? CurrentMotion.State : UnitState.None; } }
     private MotionBase CurrentMotion = null;
     private Dictionary<UnitState, MotionBase> Motions = new Dictionary<UnitState, MotionBase>();
-    public void InitMotions(UnitUserBase owner)
+    public void InitMotions(UnitBase owner)
     {
         Motions.Clear();
         MotionBase[] motions = owner.GetComponents<MotionBase>();

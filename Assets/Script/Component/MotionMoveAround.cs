@@ -6,6 +6,7 @@ using UnityEngine;
 public class MotionMoveAround : MotionBase
 {
     private Vector3[] WayPoints = null;
+    private int WayPointIndex = 0;
 
     public override UnitState State { get { return UnitState.Move; } }
     public override bool IsReady() { return false; }
@@ -14,6 +15,7 @@ public class MotionMoveAround : MotionBase
     {
         base.OnInit();
         WayPoints = RGame.Get<RGameSystemManager>().GetWayPoints();
+        WayPointIndex = 0;
     }
 
     public override void OnEnter()
@@ -28,27 +30,34 @@ public class MotionMoveAround : MotionBase
 
     private IEnumerator MoveAround()
     {
-        int idx = 0;
+        yield return null;
+
         while (true)
         {
-            //dest지점으로 유닛 Smoothly 이동
-            Vector3 dest = WayPoints[idx];
+            Vector3 dest = WayPoints[WayPointIndex];
             Unit.TurnHead(dest);
-            float moveSpeed = Unit.Spec.MoveSpeed;
+
             Vector3 dir = dest - transform.position;
             dir.z = 0;
-            float distance = dir.magnitude;
             dir.Normalize();
-            float duration = distance / moveSpeed;
-            float time = 0;
-            while (time < duration)
+            while (true)
             {
-                transform.position += (dir * moveSpeed * Time.deltaTime);
-                time += Time.deltaTime;
+                Vector3 nextPos = transform.position + (dir * Unit.Spec.MoveSpeed * Time.deltaTime);
+                Vector3 nextDir = dest - nextPos;
+                nextDir.z = 0;
+                if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우
+                {
+                    transform.position = dest;
+                    break;
+                }
+                else
+                {
+                    transform.position = nextPos;
+                }
                 yield return null;
             }
-            transform.position = dest;
-            idx = (idx + 1) % WayPoints.Length;
+
+            WayPointIndex = (WayPointIndex + 1) % WayPoints.Length;
             yield return null;
         }
     }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMob : UnitUserBase
+public class UnitMob : UnitBase
 {
-    public HealthBar HPBar = null;
+    public HealthBar HPBar { get; set; }
     private float CurrentHP = 0;
 
     public override void Init()
@@ -12,6 +12,7 @@ public class UnitMob : UnitUserBase
         base.Init();
 
         CurrentHP = Spec.TotalHP;
+        HPBar = GetComponent<HealthBar>();
         HPBar.Init(Spec.CharacterHeight, HealthBarSize.Medium);
         FSM.ChangeState(UnitState.Move);
     }
@@ -22,6 +23,9 @@ public class UnitMob : UnitUserBase
 
     public void GetDamaged(UnitSpec attacker)
     {
+        if (CurrentState == UnitState.Death)
+            return;
+
         CurrentHP -= attacker.AttackDamage;
         HPBar.UpdateHealthBar(CurrentHP / Spec.TotalHP);
         if (CurrentHP <= 0)

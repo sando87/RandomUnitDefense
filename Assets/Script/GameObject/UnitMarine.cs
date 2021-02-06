@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMarine : UnitUserBase
+public class UnitMarine : UnitBase
 {
     public override void Init()
     {

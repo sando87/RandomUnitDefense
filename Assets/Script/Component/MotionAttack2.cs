@@ -44,9 +44,16 @@ public class MotionAttack2 : MotionBase
         int animIndex = (int)deg / stepDegree;
         Unit.Anim.SetTrigger("attack" + (animIndex + 1));
 
-        float animPlayTime = ReferenceAnim.length;
-        Invoke("OnFiredFirst", animPlayTime * 0.2f);
-        Invoke("OnFiredSecond", animPlayTime * 0.4f);
+        //float timePerAttack = 1 / Unit.Spec.AttackSpeed;
+        //if (timePerAttack < ReferenceAnim.length)
+        //    Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
+        //else
+        //    Unit.Anim.SetFloat("attackSpeed", 1);
+
+        float animSpeed = Unit.Anim.GetFloat("attackSpeed");
+        float animPlayTime = ReferenceAnim.length / animSpeed;
+        Invoke("OnFiredFirst", animPlayTime * 0.1f);
+        Invoke("OnFiredSecond", animPlayTime * 0.6f);
         Invoke("OnAnimationEnd", animPlayTime);
     }
     public override void OnLeave()
@@ -64,7 +71,7 @@ public class MotionAttack2 : MotionBase
         nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.AttackSpeed);
         Target.GetDamaged(Unit.Spec);
 
-        Vector3 pos = Target.transform.position;
+        Vector3 pos = Target.Center;
         pos.x += Random.Range(-0.1f, 0.1f);
         pos.y += Random.Range(-0.1f, 0.1f);
         GameObject obj = Instantiate(FiredParticle, pos, Quaternion.identity);
@@ -75,7 +82,7 @@ public class MotionAttack2 : MotionBase
         if (Target == null)
             return;
 
-        Vector3 pos = Target.transform.position;
+        Vector3 pos = Target.Center;
         pos.x += Random.Range(-0.1f, 0.1f);
         pos.y += Random.Range(-0.1f, 0.1f);
         GameObject obj = Instantiate(FiredParticle, pos, Quaternion.identity);

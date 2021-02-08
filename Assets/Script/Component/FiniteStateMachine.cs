@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitState { None, Create, Idle, Move, Attack, Stun, Death, Disappear }
+public enum UnitState { None, Appear, Idle, Move, Attack, Stun, Death, Disappear }
 
 public abstract class MotionBase : MonoBehaviour
 {

@@ -5,7 +5,7 @@
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_SelfIllum("Self Illumination",Range(0.0,1.0)) = 1.0
 		_FlashAmount("Flash Amount",Range(0.0,1.0)) = 0.0
-		_LightAmount("Flash Amount",Range(0.0,1.0)) = 1.0
+		_LightAmount("Light Amount",Range(0.0,1.0)) = 1.0
 		_Color("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap("Pixel snap", Float) = 0
 	}

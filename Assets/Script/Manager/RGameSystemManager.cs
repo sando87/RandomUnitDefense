@@ -94,10 +94,14 @@ public class RGameSystemManager : RManager
             return false;
 
         KillPoint -= KillPointCost;
+        Vector3 pos = transform.position;
+        pos.x += UnityEngine.Random.Range(-1.0f, 1.0f);
+        pos.y += UnityEngine.Random.Range(-1.0f, 1.0f);
         int randomIndex = UnityEngine.Random.Range(0, StartingMembers.Count);
         string unitName = StartingMembers[randomIndex];
         RGame.Get<RGameObjectManager>().AcquireRGameObject(unitName, out RGameObject obj);
         obj.transform.SetParent(StageRoot.transform);
+        obj.transform.position = pos;
         return true;
     }
     public bool RaiseMineralStep()

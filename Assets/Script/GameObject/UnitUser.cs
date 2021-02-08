@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMarine : UnitBase
+public class UnitUser : UnitBase
 {
     public override void Init()
     {
         base.Init();
+        FSM.ChangeState(UnitState.Appear);
     }
     public override void Release()
     {

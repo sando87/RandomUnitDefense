@@ -13,10 +13,12 @@ GameObject:
   - component: {fileID: 5649028196868471744}
   - component: {fileID: 1568189748543344842}
   - component: {fileID: 6562073861646211009}
-  - component: {fileID: 7395578920727806022}
+  - component: {fileID: 3309956464232420042}
+  - component: {fileID: 1064833574115720390}
   - component: {fileID: 2035953099435706008}
   - component: {fileID: 7138301309119963180}
   - component: {fileID: -67738095678639816}
+  - component: {fileID: 5611055773415757959}
   m_Layer: 0
   m_Name: MarineHero
   m_TagString: Untagged
@@ -145,13 +147,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TotalHP: 100
+  Armor: 1
   AttackDamage: 20
   AttackSpeed: 1
   MoveSpeed: 1.5
   AttackRange: 3
   CharacterHeight: 0.7
   Photo: {fileID: 0}
---- !u!114 &7395578920727806022
+--- !u!114 &3309956464232420042
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,9 +164,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 3854764581410292545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b49505af51424374fa609a5bd4c4b215, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b656ef4733b8ab4aa56ddd3215ca8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1064833574115720390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854764581410292545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157c3d919bdf0324d88ee777358d0fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AppearMaterial: {fileID: 2100000, guid: 84636f56f510dfd4c9993497f8bacc73, type: 2}
+  AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
+    type: 3}
 --- !u!114 &2035953099435706008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,3 +222,18 @@ MonoBehaviour:
   FiredParticle: {fileID: 4149092143720216171, guid: a7d9726725258ad44b4ff2a26b280d4a,
     type: 3}
   AnimCount: 5
+--- !u!114 &5611055773415757959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854764581410292545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0a346b27faac14cb5c74411c87131f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AppearMaterial: {fileID: 2100000, guid: 84636f56f510dfd4c9993497f8bacc73, type: 2}
+  AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
+    type: 3}

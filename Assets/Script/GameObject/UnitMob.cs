@@ -11,7 +11,7 @@ public class UnitMob : UnitBase
     {
         base.Init();
 
-        CurrentHP = Spec.Current.TotalHP;
+        CurrentHP = Spec.TotalHP;
         HPBar = GetComponent<HealthBar>();
         HPBar.Init(Height, HealthBarSize.Medium);
         FSM.ChangeState(UnitState.Move);
@@ -26,8 +26,9 @@ public class UnitMob : UnitBase
         if (CurrentState == UnitState.Death)
             return;
 
-        CurrentHP -= attacker.Current.AttackDamageBasic;
-        HPBar.UpdateHealthBar(CurrentHP / Spec.Current.TotalHP);
+        float hitDamage = attacker.AttackDamage - Spec.Armor;
+        CurrentHP -= Mathf.Max(hitDamage, 0);
+        HPBar.UpdateHealthBar(CurrentHP / Spec.TotalHP);
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;

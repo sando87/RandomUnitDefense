@@ -20,13 +20,13 @@ public class MotionAttack2 : MotionBase
 
         if(Target != null && Target.CurrentState != UnitState.Death)
         {
-            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.Current.AttackRange)
+            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.AttackRange)
                 return true;
             else
                 Target = null;
         }
 
-        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.Current.AttackRange);
+        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.AttackRange);
         if (mobs == null)
             return false;
 
@@ -63,7 +63,7 @@ public class MotionAttack2 : MotionBase
             return;
 
         SetAnimSpeed();
-        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.Current.AttackSpeed);
+        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.AttackSpeed);
         Target.GetDamaged(Unit.Spec);
 
         Vector3 pos = Target.Center;
@@ -89,7 +89,7 @@ public class MotionAttack2 : MotionBase
     }
     private void SetAnimSpeed()
     {
-        float timePerAttack = 1 / Unit.Spec.Current.AttackSpeed;
+        float timePerAttack = 1 / Unit.Spec.AttackSpeed;
         if (timePerAttack < ReferenceAnim.length)
             Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
         else

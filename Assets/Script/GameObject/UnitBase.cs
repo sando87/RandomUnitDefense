@@ -14,6 +14,8 @@ public class UnitBase : RGameObject
     public float Height { get { return RectCollider.size.y; } }
 
     public FiniteStateMachine FSM = new FiniteStateMachine();
+    public BuffController BuffCtrl = new BuffController();
+    public BuffProperty BuffValues = new BuffProperty();
     public UnitState CurrentState { get { return FSM.CurrentState; } }
 
     public override void Init()
@@ -22,14 +24,16 @@ public class UnitBase : RGameObject
         SR = GetComponent<SpriteRenderer>();
         Spec = GetComponent<UnitSpec>();
         RectCollider = GetComponent<BoxCollider2D>();
-        
+
+        BuffCtrl.Init(this);
+        Spec.Init(this);
         FSM.InitMotions(this);
     }
     public override void Release() { }
 
     protected virtual void Update()
     {
-        Spec.UpdateCurrent();
+        BuffCtrl.UpdateBuffObjects();
         FSM.UpdateMotions();
         UpdateWorldPosZ();
     }

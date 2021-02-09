@@ -11,4 +11,5 @@ public static class Utils
         ret.y += UnityEngine.Random.Range(-range, range);
         return ret;
     }
+}
 

@@ -96,7 +96,7 @@ public class BuffBase
     }
     public void RenewBuff()
     {
-        PlayTime = 0;
+        PlayTime = 0.0001f;
     }
 
     public virtual void StartBuff(UnitBase target) { }

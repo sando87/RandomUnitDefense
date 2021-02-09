@@ -145,14 +145,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TotalHP: 80
-  Armor: 0
-  AttackDamage: 2
-  AttackSpeed: 1
-  MoveSpeed: 1
-  AttackRange: 1
-  CharacterHeight: 0.45
-  Photo: {fileID: 0}
+  Spec:
+    unitPhoto: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
+    totalHP: 120
+    armor: 1
+    moveSpeed: 1
+    attackType: 0
+    attackDamageBasic: 0
+    damagePerUpgrade: 0
+    attackSpeed: 0
+    attackRange: 0
+    cooltime: 0
+    skillRange: 0
+    skillDuration: 0
 --- !u!114 &9149058261331233287
 MonoBehaviour:
   m_ObjectHideFlags: 0

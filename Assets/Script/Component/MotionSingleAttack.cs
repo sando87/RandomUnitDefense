@@ -8,7 +8,7 @@ public class MotionSingleAttack : MotionBase
 {
     [SerializeField] private AnimationClip ReferenceAnim = null;
     [SerializeField] private int AnimCount = 1;
-    [SerializeField] private float FirePosition = 0.3f; //0 ~ 1
+    [Range(0, 1)][SerializeField] private float FirePosition = 0.3f; //0 ~ 1
 
     public Action<UnitBase> EventFired { get; set; }
     private UnitMob Target = null;

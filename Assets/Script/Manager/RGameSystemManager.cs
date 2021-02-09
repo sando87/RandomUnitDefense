@@ -145,6 +145,26 @@ public class RGameSystemManager : RManager
             });
         }
     }
+    public T[] DetectAroundUnit<T>(Vector3 pos, float range) where T : UnitBase
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
+        if (hitColliders == null || hitColliders.Length <= 0)
+            return null;
+
+        List<T> list = new List<T>();
+        foreach (var hitCollider in hitColliders)
+        {
+            Vector2 dir = hitCollider.transform.position - pos;
+            if (dir.magnitude >= range)
+                continue;
+
+            T mob = hitCollider.GetComponent<T>();
+            if (mob != null && mob.CurrentState != UnitState.Death)
+                list.Add(mob);
+        }
+
+        return list.Count > 0 ? list.ToArray() : null;
+    }
     public int GetPower(UpgradeType type) { return UpgradePower[type]; }
 
     // Unity System Input을 최초로 받아 게임에서 사용하기 쉬운형태로 변환 후 호출해줌

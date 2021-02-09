@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 4520171670724060371}
   - component: {fileID: 5649028196868471744}
   - component: {fileID: 1568189748543344842}
+  - component: {fileID: 7811123264913697842}
   - component: {fileID: 6562073861646211009}
-  - component: {fileID: 3309956464232420042}
   - component: {fileID: 1064833574115720390}
   - component: {fileID: 2035953099435706008}
   - component: {fileID: 7138301309119963180}
-  - component: {fileID: -67738095678639816}
+  - component: {fileID: 2608754909594980643}
   - component: {fileID: 5611055773415757959}
   m_Layer: 0
   m_Name: MarineHero
@@ -135,6 +135,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 0.73}
   m_EdgeRadius: 0
+--- !u!114 &7811123264913697842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854764581410292545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
+    type: 3}
+  MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,
+    type: 3}
 --- !u!114 &6562073861646211009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,26 +163,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TotalHP: 100
-  Armor: 1
-  AttackDamage: 20
-  AttackSpeed: 1
-  MoveSpeed: 1.5
-  AttackRange: 3
-  CharacterHeight: 0.7
-  Photo: {fileID: 0}
---- !u!114 &3309956464232420042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3854764581410292545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b656ef4733b8ab4aa56ddd3215ca8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Spec:
+    unitPhoto: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}
+    totalHP: 100
+    armor: 0
+    moveSpeed: 1.5
+    attackType: 1
+    attackDamageBasic: 20
+    damagePerUpgrade: 1
+    attackSpeed: 1
+    attackRange: 3
+    cooltime: 10
+    skillRange: 2
+    skillDuration: 3
 --- !u!114 &1064833574115720390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-67738095678639816
+--- !u!114 &2608754909594980643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,13 +224,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3854764581410292545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32e42ff7f2f3a3a479abd12ee60f6992, type: 3}
+  m_Script: {fileID: 11500000, guid: ec65d2400ff1f6949b63d709c889f2fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ReferenceAnim: {fileID: 7400000, guid: 6331278dd925fdd45b0972da8ee9ef85, type: 2}
-  FiredParticle: {fileID: 4149092143720216171, guid: a7d9726725258ad44b4ff2a26b280d4a,
-    type: 3}
   AnimCount: 5
+  FirePosition: 0.3
 --- !u!114 &5611055773415757959
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,8 +7,11 @@ public class UnitBase : RGameObject
 {
     public Animator Anim { get; set; }
     public SpriteRenderer SR { get; set; }
+    public BoxCollider2D RectCollider { get; set; }
     public UnitSpec Spec { get; set; }
-    public Vector3 Center { get { return transform.position + new Vector3(0, Spec.CharacterHeight * 0.5f, 0); } }
+
+    public Vector3 Center { get { return transform.position + new Vector3(0, Height * 0.5f, 0); } }
+    public float Height { get { return RectCollider.size.y; } }
 
     public FiniteStateMachine FSM = new FiniteStateMachine();
     public UnitState CurrentState { get { return FSM.CurrentState; } }
@@ -18,12 +21,15 @@ public class UnitBase : RGameObject
         Anim = GetComponent<Animator>();
         SR = GetComponent<SpriteRenderer>();
         Spec = GetComponent<UnitSpec>();
+        RectCollider = GetComponent<BoxCollider2D>();
+        
         FSM.InitMotions(this);
     }
     public override void Release() { }
 
     protected virtual void Update()
     {
+        Spec.UpdateCurrent();
         FSM.UpdateMotions();
         UpdateWorldPosZ();
     }

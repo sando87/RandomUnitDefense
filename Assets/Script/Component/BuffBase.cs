@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BuffState
+{
+    None, Keep, End
+}
+
 public abstract class BuffBase
 {
-    public abstract string BuffID { get; }
-    public abstract bool IsOver();
-
-    public virtual void OnStartEffect(RGameObject target) { }
-    public virtual void OnUpdateEffect(RGameObject target) { }
-    public virtual void OnEndEffect(RGameObject target) { }
+    public abstract BuffState UpdateTargetSpec(in SpecProperty targetBasicSpec, out SpecProperty targetbuffedSpec);
 }

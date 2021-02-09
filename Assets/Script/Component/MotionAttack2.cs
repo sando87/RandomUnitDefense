@@ -20,13 +20,13 @@ public class MotionAttack2 : MotionBase
 
         if(Target != null && Target.CurrentState != UnitState.Death)
         {
-            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.AttackRange)
+            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.Current.AttackRange)
                 return true;
             else
                 Target = null;
         }
 
-        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.AttackRange);
+        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.Current.AttackRange);
         if (mobs == null)
             return false;
 
@@ -43,12 +43,6 @@ public class MotionAttack2 : MotionBase
         int stepDegree = 180 / AnimCount;
         int animIndex = (int)deg / stepDegree;
         Unit.Anim.SetTrigger("attack" + (animIndex + 1));
-
-        //float timePerAttack = 1 / Unit.Spec.AttackSpeed;
-        //if (timePerAttack < ReferenceAnim.length)
-        //    Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
-        //else
-        //    Unit.Anim.SetFloat("attackSpeed", 1);
 
         float animSpeed = Unit.Anim.GetFloat("attackSpeed");
         float animPlayTime = ReferenceAnim.length / animSpeed;
@@ -68,7 +62,8 @@ public class MotionAttack2 : MotionBase
         if (Target == null)
             return;
 
-        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.AttackSpeed);
+        SetAnimSpeed();
+        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.Current.AttackSpeed);
         Target.GetDamaged(Unit.Spec);
 
         Vector3 pos = Target.Center;
@@ -91,6 +86,14 @@ public class MotionAttack2 : MotionBase
     private void OnAnimationEnd()
     {
         Unit.FSM.ChangeState(UnitState.Idle);
+    }
+    private void SetAnimSpeed()
+    {
+        float timePerAttack = 1 / Unit.Spec.Current.AttackSpeed;
+        if (timePerAttack < ReferenceAnim.length)
+            Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
+        else
+            Unit.Anim.SetFloat("attackSpeed", 1);
     }
 }
 

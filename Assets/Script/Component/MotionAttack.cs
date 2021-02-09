@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,9 @@ public class MotionAttack : MotionBase
     [SerializeField] private AnimationClip ReferenceAnim = null;
     [SerializeField] private GameObject FiredParticle = null;
     [SerializeField] private int AnimCount = 1;
+    [SerializeField] private float FirePosition = 0.3f; //0 ~ 1
 
+    public Action<UnitBase> EventFired { get; set; }
     private UnitMob Target = null;
     private float nextAttackTime = 0;
 
@@ -20,13 +23,13 @@ public class MotionAttack : MotionBase
 
         if(Target != null && Target.CurrentState != UnitState.Death)
         {
-            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.AttackRange)
+            if ((Target.transform.position - transform.position).magnitude < Unit.Spec.Current.AttackRange)
                 return true;
             else
                 Target = null;
         }
 
-        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.AttackRange);
+        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Spec.Current.AttackRange);
         if (mobs == null)
             return false;
 
@@ -44,8 +47,10 @@ public class MotionAttack : MotionBase
         int animIndex = (int)deg / stepDegree;
         Unit.Anim.SetTrigger("attack" + (animIndex + 1));
 
-        float animPlayTime = ReferenceAnim.length;
-        Invoke("OnFired", animPlayTime * 0.3f);
+        SetAnimSpeed();
+        float animSpeed = Unit.Anim.GetFloat("attackSpeed");
+        float animPlayTime = ReferenceAnim.length / animSpeed;
+        Invoke("OnFired", animPlayTime * FirePosition);
         Invoke("OnAnimationEnd", animPlayTime);
     }
     public override void OnLeave()
@@ -59,17 +64,25 @@ public class MotionAttack : MotionBase
         if (Target == null)
             return;
 
-        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.AttackSpeed);
+        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Spec.Current.AttackSpeed);
+        EventFired?.Invoke(Target);
+
         Target.GetDamaged(Unit.Spec);
-        Vector3 pos = Target.Center;
-        pos.x += Random.Range(-0.1f, 0.1f);
-        pos.y += Random.Range(-0.1f, 0.1f);
+        Vector3 pos = Utils.Random(Target.Center, 0.1f);
         GameObject obj = Instantiate(FiredParticle, pos, Quaternion.identity);
         Destroy(obj, 1.0f);
     }
     private void OnAnimationEnd()
     {
         Unit.FSM.ChangeState(UnitState.Idle);
+    }
+    private void SetAnimSpeed()
+    {
+        float timePerAttack = 1 / Unit.Spec.Current.AttackSpeed;
+        if (timePerAttack < ReferenceAnim.length)
+            Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
+        else
+            Unit.Anim.SetFloat("attackSpeed", 1);
     }
 }
 

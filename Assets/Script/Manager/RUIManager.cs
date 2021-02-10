@@ -33,11 +33,23 @@ public class RUIManager : RManager
             form.Value.Hide();
     }
 
+    public T GetForm<T>() where T : RUiForm
+    {
+        if (!Forms.ContainsKey(typeof(T)))
+        {
+            Debug.Log("GetForm : No Form Type : " + typeof(T).Name);
+            return null;
+        }
+
+        RUiForm form = Forms[typeof(T)];
+        return form as T;
+    }
+
     public void SwitchToForm<T>(UiFormParam param)
     {
         if (!Forms.ContainsKey(typeof(T)))
         {
-            Debug.Log("No Form Type : " + typeof(T).Name);
+            Debug.Log("SwitchToForm : No Form Type : " + typeof(T).Name);
             return;
         }
 

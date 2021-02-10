@@ -31,6 +31,11 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Button UpgradeWeaponD = null;
     [SerializeField] private Button UpgradeWeaponE = null;
 
+    [SerializeField] private Image UnitDetailPanel = null;
+    [SerializeField] private Image UnitPhoto = null;
+    [SerializeField] private Text DamageText = null;
+    [SerializeField] private Text DescriptionText = null;
+
     private RGameSystemManager mGameMgr = null;
     private RGameSystemManager GameMgr
     {
@@ -84,6 +89,24 @@ public class RUIFormInGame : RUiForm
         WeaponC.text = GameMgr.GetPower(UpgradeType.TypeC).ToString();
         WeaponD.text = GameMgr.GetPower(UpgradeType.TypeD).ToString();
         WeaponE.text = GameMgr.GetPower(UpgradeType.TypeE).ToString();
+
+        UpdateUnitDetail();
+    }
+
+    private void UpdateUnitDetail()
+    {
+        UnitUser selectedUnit = GameMgr.HUDObject.TargetUnit;
+        if (selectedUnit == null || UpgradePanel.gameObject.activeSelf)
+        {
+            UnitDetailPanel.gameObject.SetActive(false);
+            return;
+        }
+
+        UnitDetailPanel.gameObject.SetActive(true);
+        string damage = selectedUnit.Property.BasicSpec.attackDamageBasic + " + " + (selectedUnit.Property.BasicSpec.damagePerUpgrade * selectedUnit.Property.Level);
+        DamageText.text = damage;
+        DescriptionText.text = selectedUnit.SkillDescription;
+        UnitPhoto.sprite = selectedUnit.Property.BasicSpec.unitPhoto;
     }
 
 

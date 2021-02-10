@@ -16,8 +16,9 @@ public class HUDFunctions : MonoBehaviour
     [SerializeField] private GameObject Refund_OFF = null;
 
     RGameSystemManager GameMgr = null;
-    UnitUser TargetUnit = null;
+    public UnitUser TargetUnit { get; private set; } = null;
     List<UnitUser> DetectedUnits = new List<UnitUser>();
+
 
     private void Start()
     {
@@ -48,8 +49,8 @@ public class HUDFunctions : MonoBehaviour
         pos.z = -1;
         transform.position = pos;
         transform.SetParent(TargetUnit.transform);
-        GetComponent<Animator>().Play("HUDShow", -1, 0);
         gameObject.SetActive(true);
+        GetComponent<Animator>().Play("HUDShow", -1, 0);
     }
     public void Hide()
     {

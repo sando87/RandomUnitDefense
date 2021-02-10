@@ -22,7 +22,7 @@ public class UnitMarine : UnitUser, IUserInputReciever
     {
         get
         {
-            return "기본 공격시 20%확률로 미사일 발사(피격된 유닛 20% 이속감소)";
+            return "기본 공격시 20%확률로 미사일 발사\n(피격된 유닛 20% 이속감소)";
         }
     }
 
@@ -65,13 +65,14 @@ public class UnitMarine : UnitUser, IUserInputReciever
     {
         DeBuffSlow buff = target.BuffCtrl.FindBuff<DeBuffSlow>();
         if (buff != null)
-            buff.RenewBuff(); //동일한 버프있을 경우 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
+            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
             target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
     }
 
     public void OnClick()
     {
+        //유닛 클릭시 Merge 선택창 UI 띄우기
         RGame.Get<RGameSystemManager>().HUDObject.Show(this);
     }
 

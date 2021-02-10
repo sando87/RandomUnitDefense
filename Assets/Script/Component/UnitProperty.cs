@@ -28,6 +28,7 @@ public class UnitProperty : MonoBehaviour
 {
     [SerializeField] private SpecProperty Spec = new SpecProperty();
 
+    private int level = 1;
     private BuffProperty Buff = null;
     private RGameSystemManager GameMgr = null;
     public UnitBase Owner { get; set; }
@@ -35,13 +36,18 @@ public class UnitProperty : MonoBehaviour
 
     public void Init(UnitBase owner)
     {
-        Level = 1;
         Owner = owner;
         Buff = Owner.BuffValues;
         GameMgr = RGame.Get<RGameSystemManager>();
     }
 
-    public int Level { get; set; }
+    private void UpdateLevelImage()
+    {
+        LevelDisplay dis = GetComponentInChildren<LevelDisplay>();
+        if (dis != null)
+            dis.SetLevel(Level);
+    }
+
     public float AttackDamage
     {
         get
@@ -50,6 +56,7 @@ public class UnitProperty : MonoBehaviour
             return attack * (1 + Buff.AttackDamage.Rate);
         }
     }
+    public int Level { get { return level; } set { level = value; UpdateLevelImage(); } }
     public float TotalHP { get { return Spec.totalHP * (1 + Buff.TotalHP.Rate); } }
     public float Armor { get { return Spec.armor * (1 + Buff.Armor.Rate); } }
     public float MoveSpeed { get { return Spec.moveSpeed * (1 + Buff.MoveSpeed.Rate); } }

@@ -158,6 +158,7 @@ MonoBehaviour:
     cooltime: 0
     skillRange: 0
     skillDuration: 0
+    level: 1
 --- !u!114 &3687632569013021492
 MonoBehaviour:
   m_ObjectHideFlags: 0

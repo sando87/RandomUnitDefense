@@ -17,6 +17,7 @@ public abstract class RGameObject : MonoBehaviour
             return (T)Convert.ChangeType(_components[typeof(T)], typeof(T));
         return default;
     }
+    public string PrefabID { get; set; }
     public abstract void Init();
     public abstract void Release();
 }

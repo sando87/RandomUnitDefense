@@ -35,14 +35,12 @@ public class UnitProperty : MonoBehaviour
 
     public void Init(UnitBase owner)
     {
-        Name = gameObject.name;
         Level = 1;
         Owner = owner;
         Buff = Owner.BuffValues;
         GameMgr = RGame.Get<RGameSystemManager>();
     }
 
-    public string Name { get; set; }
     public int Level { get; set; }
     public float AttackDamage
     {

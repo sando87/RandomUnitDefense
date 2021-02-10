@@ -20,6 +20,7 @@ public class RGameSystemManager : RManager
     public const int StartKillPoint = 20;
 
     [SerializeField] private GameObject StagePrefab = null;
+    [SerializeField] private HUDFunctions HUDPrefab = null;
 
     public int WaveNumber { get; private set; }
     public int Mineral { get; private set; }
@@ -28,6 +29,7 @@ public class RGameSystemManager : RManager
     public int LineMobCount { get; private set; }
     public float RemainSecond { get; private set; }
     public bool UserInputLocked { get; set; }
+    public HUDFunctions HUDObject { get; set; }
 
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
@@ -51,6 +53,7 @@ public class RGameSystemManager : RManager
 
         KillPoint = StartKillPoint;
         StageRoot = GameObject.Instantiate(StagePrefab);
+        HUDObject = Instantiate(HUDPrefab, transform);
         WayPoints[0] = StageRoot.transform.Find("WayPoint_LB").position;
         WayPoints[1] = StageRoot.transform.Find("WayPoint_RB").position;
         WayPoints[2] = StageRoot.transform.Find("WayPoint_RT").position;
@@ -80,6 +83,12 @@ public class RGameSystemManager : RManager
         {
             Destroy(StageRoot);
             StageRoot = null;
+        }
+
+        if (HUDObject != null)
+        {
+            Destroy(HUDObject);
+            HUDObject = null;
         }
 
         StartingMembers.Clear();
@@ -243,10 +252,14 @@ public class RGameSystemManager : RManager
                     foreach (var recv in DownRecievers)
                         recv?.OnDragAndDrop(worldPt);
                 }
-                else  // Click Event 발생
+                else if(DownRecievers.Count > 0)    // Click Event 발생
                 {
                     foreach (var recv in DownRecievers)
                         recv?.OnClick();
+                }
+                else  //빈곳 클릭시 
+                {
+                    HUDObject.Hide();
                 }
 
                 DownRecievers.Clear();

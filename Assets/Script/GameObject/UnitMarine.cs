@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMarine : UnitUser
+public class UnitMarine : UnitUser, IUserInputReciever
 {
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
@@ -68,6 +68,19 @@ public class UnitMarine : UnitUser
             buff.RenewBuff(); //동일한 버프있을 경우 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
             target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
+    }
+
+    public void OnClick()
+    {
+        RGame.Get<RGameSystemManager>().HUDObject.Show(this);
+    }
+
+    public void OnDragAndDrop(Vector3 dropWorldPos)
+    {
+    }
+
+    public void OnDragging(Vector3 draggingWorldPos)
+    {
     }
 
     class DeBuffSlow : BuffBase

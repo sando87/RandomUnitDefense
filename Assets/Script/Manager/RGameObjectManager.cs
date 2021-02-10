@@ -36,6 +36,7 @@ public class RGameObjectManager : RManager
             var go = GameObject.Instantiate(prefab.gameObject);
 
             var rObj = go.GetComponent<RGameObject>();
+            rObj.PrefabID = id;
             rObj.Init();
             _ActiveGameObjects.Add(rObj.GetInstanceID(), rObj);
             rGameObject = rObj;

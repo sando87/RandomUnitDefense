@@ -27,9 +27,11 @@ public class HUDFunctions : MonoBehaviour
         Refund_ON.GetComponent<HUDFunction>().EventClick = OnClickRefund;
         Refund_ON.SetActive(true);
         Refund_OFF.SetActive(false);
+
+        Hide();
     }
 
-    public void Update()
+    private void Update()
     {
         DetectSameUnit();
 
@@ -42,7 +44,11 @@ public class HUDFunctions : MonoBehaviour
     public void Show(UnitUser unit)
     {
         TargetUnit = unit;
+        Vector3 pos = TargetUnit.Center;
+        pos.z = -1;
+        transform.position = pos;
         transform.SetParent(TargetUnit.transform);
+        GetComponent<Animator>().Play("HUDShow", -1, 0);
         gameObject.SetActive(true);
     }
     public void Hide()
@@ -59,7 +65,7 @@ public class HUDFunctions : MonoBehaviour
         UnitUser[] units = GameMgr.DetectAroundUnit<UnitUser>(TargetUnit.transform.position, DetectRange);
         foreach(UnitUser unit in units)
         {
-            if (unit.Property.Name == TargetUnit.Property.name && unit.Property.Level == TargetUnit.Property.Level)
+            if (unit.PrefabID == TargetUnit.PrefabID && unit.Property.Level == TargetUnit.Property.Level)
                 DetectedUnits.Add(unit);
         }
     }
@@ -79,7 +85,7 @@ public class HUDFunctions : MonoBehaviour
         DetectedUnits[0].FSM.ChangeState(UnitState.Disappear);
         DetectedUnits[1].FSM.ChangeState(UnitState.Disappear);
         DetectedUnits[2].FSM.ChangeState(UnitState.Disappear);
-        UnitBase unit = GameMgr.CreateUnit(TargetUnit.Property.Name);
+        UnitBase unit = GameMgr.CreateUnit(TargetUnit.PrefabID);
         unit.Property.Level = TargetUnit.Property.Level + 1;
         Hide();
     }

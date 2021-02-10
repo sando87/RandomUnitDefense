@@ -88,21 +88,30 @@ public class RGameSystemManager : RManager
             WayPoints[i] = Vector3.zero;
     }
 
-    public bool CreateRandomUnit()
+    public bool TryCreateRandomUnit()
     {
         if (KillPoint < KillPointCost)
             return false;
 
         KillPoint -= KillPointCost;
+        CreateRandomUnit();
+        return true;
+    }
+    public UnitBase CreateRandomUnit()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, StartingMembers.Count);
+        string unitName = StartingMembers[randomIndex];
+        return CreateUnit(unitName);
+    }
+    public UnitBase CreateUnit(string unitName)
+    {
         Vector3 pos = transform.position;
         pos.x += UnityEngine.Random.Range(-1.0f, 1.0f);
         pos.y += UnityEngine.Random.Range(-1.0f, 1.0f);
-        int randomIndex = UnityEngine.Random.Range(0, StartingMembers.Count);
-        string unitName = StartingMembers[randomIndex];
         RGame.Get<RGameObjectManager>().AcquireRGameObject(unitName, out RGameObject obj);
         obj.transform.SetParent(StageRoot.transform);
         obj.transform.position = pos;
-        return true;
+        return obj.GetComponent<UnitBase>();
     }
     public bool RaiseMineralStep()
     {
@@ -127,6 +136,10 @@ public class RGameSystemManager : RManager
     {
         KillPoint++;
         LineMobCount--;
+    }
+    public void AddMinerals(int mineral)
+    {
+        Mineral += mineral;
     }
     public void FinishGame(bool success)
     {

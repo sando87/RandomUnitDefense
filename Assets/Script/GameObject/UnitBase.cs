@@ -8,7 +8,7 @@ public class UnitBase : RGameObject
     public Animator Anim { get; set; }
     public SpriteRenderer SR { get; set; }
     public BoxCollider2D RectCollider { get; set; }
-    public UnitSpec Spec { get; set; }
+    public UnitProperty Property { get; set; }
 
     public Vector3 Center { get { return transform.position + new Vector3(0, Height * 0.5f, 0); } }
     public float Height { get { return RectCollider.size.y; } }
@@ -22,11 +22,11 @@ public class UnitBase : RGameObject
     {
         Anim = GetComponent<Animator>();
         SR = GetComponent<SpriteRenderer>();
-        Spec = GetComponent<UnitSpec>();
+        Property = GetComponent<UnitProperty>();
         RectCollider = GetComponent<BoxCollider2D>();
 
         BuffCtrl.Init(this);
-        Spec.Init(this);
+        Property.Init(this);
         FSM.InitMotions(this);
     }
     public override void Release() { }

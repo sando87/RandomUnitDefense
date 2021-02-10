@@ -22,7 +22,7 @@ public class UnitMarine : UnitUser
     {
         get
         {
-            return "기본 공격시 20%확률로 미사일 발사(피격된 유닛을 느리게 한다)";
+            return "기본 공격시 20%확률로 미사일 발사(피격된 유닛 20% 이속감소)";
         }
     }
 
@@ -39,7 +39,7 @@ public class UnitMarine : UnitUser
     private void ShootSimpleGun(UnitBase target)
     {
         UnitMob enemy = target as UnitMob;
-        enemy.GetDamaged(Spec);
+        enemy.GetDamaged(Property);
         Vector3 pos = Utils.Random(enemy.Center, 0.1f);
         GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
         Destroy(obj, 1.0f);
@@ -57,7 +57,7 @@ public class UnitMarine : UnitUser
         foreach(UnitBase target in targets)
         {
             UnitMob mob = target as UnitMob;
-            mob.GetDamaged(Spec);
+            mob.GetDamaged(Property);
             ApplySlowDeBuff(mob);
         }
     }
@@ -67,7 +67,7 @@ public class UnitMarine : UnitUser
         if (buff != null)
             buff.RenewBuff(); //동일한 버프있을 경우 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(Spec.SkillDuration));
+            target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
     }
 
     class DeBuffSlow : BuffBase
@@ -85,4 +85,5 @@ public class UnitMarine : UnitUser
             target.BuffValues.MoveSpeed += 20;
         }
     }
+
 }

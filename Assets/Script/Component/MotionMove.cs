@@ -37,7 +37,7 @@ public class MotionMove : MotionBase, IUserInputReciever
         dir.Normalize();
         while (true)
         {
-            Vector3 nextPos = transform.position + (dir * Unit.Spec.MoveSpeed * Time.deltaTime);
+            Vector3 nextPos = transform.position + (dir * Unit.Property.MoveSpeed * Time.deltaTime);
             Vector3 nextDir = DestWorldPos - nextPos;
             nextDir.z = 0;
             if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우

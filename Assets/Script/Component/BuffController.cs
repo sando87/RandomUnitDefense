@@ -68,6 +68,7 @@ public struct Percent //단위 [%]
     private Percent(float val) { value = val; }
     public float Value { get => value; } // return 0 ~ 100%
     public float Rate { get => value * 0.01f; }  // return 0 ~ 1.0
+    public void SetZero() { value = 0; }
     public static Percent operator +(Percent a, float b) { return new Percent(a.value + b); }
     public static Percent operator -(Percent a, float b) { return new Percent(a.value - b); }
 }

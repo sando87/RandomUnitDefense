@@ -89,7 +89,7 @@ public class RUIFormInGame : RUiForm
 
     private void OnClickCreateUnit()
     {
-        if (!GameMgr.CreateRandomUnit())
+        if (!GameMgr.TryCreateRandomUnit())
             RUiMessageBox.PopUp("Need 5 kill point.", null);
     }
     private void OnClickRaiseMineral()

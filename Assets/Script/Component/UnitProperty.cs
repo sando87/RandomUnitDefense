@@ -24,26 +24,31 @@ public struct SpecProperty
     //기타.. 여러가지 스킬 기획에 따른 속성값 추가 필요...
 }
 
-public class UnitSpec : MonoBehaviour
+public class UnitProperty : MonoBehaviour
 {
     [SerializeField] private SpecProperty Spec = new SpecProperty();
 
     private BuffProperty Buff = null;
     private RGameSystemManager GameMgr = null;
     public UnitBase Owner { get; set; }
+    public SpecProperty BasicSpec { get { return Spec; } }
 
     public void Init(UnitBase owner)
     {
+        Name = gameObject.name;
+        Level = 1;
         Owner = owner;
         Buff = Owner.BuffValues;
         GameMgr = RGame.Get<RGameSystemManager>();
     }
 
+    public string Name { get; set; }
+    public int Level { get; set; }
     public float AttackDamage
     {
         get
         {
-            float attack = Spec.attackDamageBasic + (GameMgr.GetPower(Spec.attackType) * Spec.damagePerUpgrade);
+            float attack = Spec.attackDamageBasic + (GameMgr.GetPower(Spec.attackType) * Spec.damagePerUpgrade * Level);
             return attack * (1 + Buff.AttackDamage.Rate);
         }
     }

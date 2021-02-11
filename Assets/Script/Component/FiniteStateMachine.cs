@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitState { None, Appear, Idle, Move, Attack, Stun, Death, Disappear }
+public enum UnitState { None, Appear, Idle, Move, Attack, Stun, Death, Disappear, MotionA, MotionB }
 
 public abstract class MotionBase : MonoBehaviour
 {
+    [SerializeField] private UnitState state = UnitState.None;
+
+    public UnitState State { get { return state; } }
     public UnitBase Unit { get; set; }
-    public abstract UnitState State { get; }
     public abstract bool IsReady();
 
     public virtual void OnInit() { }

@@ -68,7 +68,7 @@ public class RGameObjectManager : RManager
         }
     }
 
-    public T[] GetUnitStaticInfo<T>()
+    public T[] GetPrefabsInfo<T>()
     {
         return _PrefabHolder.GetList<T>();
     }

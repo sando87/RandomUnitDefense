@@ -46,7 +46,12 @@ public class RUIFormLobby : RUiForm
     }
     private void OnGameStart()
     {
-        RGame.Get<RGameSystemManager>().StartGame(new string[1] { "MarineHero" });
+        List<string> userUnits = new List<string>();
+        UnitUser[] units = RGame.Get<RGameObjectManager>().GetPrefabsInfo<UnitUser>();
+        foreach (UnitUser unit in units)
+            userUnits.Add(unit.name);
+
+        RGame.Get<RGameSystemManager>().StartGame(userUnits.ToArray());
         RGame.Get<RUIManager>().SwitchToForm<RUIFormInGame>(default);
     }
     private void OnClickGoldUp()

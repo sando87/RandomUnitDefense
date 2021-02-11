@@ -7,7 +7,7 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Vilerunner
-  m_Controller: {fileID: 9100000, guid: 1bfbc8239966cae418d292a674f002b2, type: 2}
+  m_Controller: {fileID: 9100000, guid: a03174bff5416af40946cf3994d0fd44, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 189a550c2ae164848afc6b20146f7808, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 13d6af5941cfbea4898be6f0c6a1e87c, type: 2}

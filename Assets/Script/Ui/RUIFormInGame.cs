@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class RUIFormInGame : RUiForm
 {
+    [SerializeField] private AudioClip InGameBackround = null;
+
     [SerializeField] private Text KillPoint = null;
     [SerializeField] private Text Mineral = null;
     [SerializeField] private Text WaveNumber = null;
@@ -36,20 +38,12 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Text DamageText = null;
     [SerializeField] private Text DescriptionText = null;
 
-    private RGameSystemManager mGameMgr = null;
-    private RGameSystemManager GameMgr
-    {
-        get
-        {
-            if(mGameMgr == null)
-                mGameMgr = RGame.Get<RGameSystemManager>();
-            return mGameMgr;
-        }
-    }
+    private RGameSystemManager GameMgr = null;
 
     public override void Init()
     {
         base.Init();
+        GameMgr = RGame.Get<RGameSystemManager>();
     }
 
     public override void BindEvent()
@@ -65,6 +59,11 @@ public class RUIFormInGame : RUiForm
         UpgradeWeaponC.onClick.AddListener(OnClickUpgradeWeapon);
         UpgradeWeaponD.onClick.AddListener(OnClickUpgradeWeapon);
         UpgradeWeaponE.onClick.AddListener(OnClickUpgradeWeapon);
+    }
+    public override void Show()
+    {
+        base.Show();
+        RGame.Get<RSoundManager>().PlayBackgroundMusic(InGameBackround);
     }
 
 

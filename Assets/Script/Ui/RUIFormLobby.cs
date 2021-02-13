@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RUIFormLobby : RUiForm
 {
+    [SerializeField] private AudioClip LobbyBackround = null;
+
     [SerializeField] private Button UnitCardSelector = null;
     [SerializeField] private Button Shop = null;
     [SerializeField] private Button Setting = null;
@@ -28,6 +30,11 @@ public class RUIFormLobby : RUiForm
         base.UpdateForm(param);
 
         Gold.text = param.gold.ToString();
+    }
+    public override void Show()
+    {
+        base.Show();
+        RGame.Get<RSoundManager>().PlayBackgroundMusic(LobbyBackround);
     }
     #endregion
 

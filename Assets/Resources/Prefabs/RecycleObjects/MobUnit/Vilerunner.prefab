@@ -208,3 +208,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 6
+  DeathSound: {fileID: 8300000, guid: 1edd5533df71d4d4da157c9b9730d186, type: 3}

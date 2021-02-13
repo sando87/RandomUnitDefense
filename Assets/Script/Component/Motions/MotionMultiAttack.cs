@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MotionMultiAttack : MotionBase
 {
+    [SerializeField] private AudioClip AttackSound = null;
     [SerializeField] private AnimationClip ReferenceAnim = null;
     [SerializeField] private int AnimCount = 1;
     [SerializeField] private List<float> FirePoints = new List<float>();
@@ -73,7 +74,10 @@ public class MotionMultiAttack : MotionBase
                 if (nextFireTime < PlayTime)
                 {
                     if (Target != null)
+                    {
+                        RGame.Get<RSoundManager>().PlaySFX(AttackSound);
                         EventFired?.Invoke(Target, FirePointIndex);
+                    }
                     FirePointIndex++;
                 }
             }

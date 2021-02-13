@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 3
+  MoveSound: {fileID: 8300000, guid: cebf439f38f66fd43a389910f1ec1aaf, type: 3}
 --- !u!114 &-4814941259055143852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 4
+  AttackSound: {fileID: 8300000, guid: f23458f47ff00d947aab8b1ed372b197, type: 3}
   ReferenceAnim: {fileID: 7400000, guid: 8955ac367a7ad2246b06f0816862b6c6, type: 2}
   AnimCount: 3
   FirePoint: 0.3
@@ -246,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8233ba4d880f78048a9826537360f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectSound: {fileID: 8300000, guid: 8f859ffd886c7444d813dc4612dd31c7, type: 3}
   HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}
   BuffEffect: {fileID: 6278202292039781791, guid: 14259a582a6e7d54d99b64c3cc764e9d,

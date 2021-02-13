@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectSound: {fileID: 8300000, guid: eaed6afc19c01174abfc874401bc90ee, type: 3}
   BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
     type: 3}
   MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,
@@ -319,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 3
+  MoveSound: {fileID: 8300000, guid: 3fdfc96ca594fec43817af6529fde026, type: 3}
 --- !u!114 &2608754909594980643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 4
+  AttackSound: {fileID: 8300000, guid: 30a70c1518aca2e41ba8a19128baa7df, type: 3}
   ReferenceAnim: {fileID: 7400000, guid: 6331278dd925fdd45b0972da8ee9ef85, type: 2}
   AnimCount: 5
   FirePoint: 0.3

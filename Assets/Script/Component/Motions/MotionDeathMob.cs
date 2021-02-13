@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MotionDeathMob : MotionBase
 {
+    [SerializeField] private AudioClip DeathSound = null;
     public override bool IsReady() { return false; }
 
     public override void OnEnter()
@@ -13,6 +14,7 @@ public class MotionDeathMob : MotionBase
         ((UnitMob)Unit).HPBar.HideBar();
         Unit.Anim.SetTrigger("death");
         StartCoroutine(FadeOut());
+        RGame.Get<RSoundManager>().PlaySFX(DeathSound);
     }
 
     private IEnumerator FadeOut()

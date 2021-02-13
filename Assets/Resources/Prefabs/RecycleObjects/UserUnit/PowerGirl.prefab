@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 3
+  MoveSound: {fileID: 8300000, guid: 1c814752e5ffdce45a0355f42a369595, type: 3}
 --- !u!114 &6142581683196105223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a013d608581dd444b86dad28d2a648a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectSound: {fileID: 8300000, guid: 84e4acde2608ffd49b046221ca6ff81f, type: 3}
   SimpleMissile: {fileID: 1240864785425162540, guid: 603ae2d72cefe3941accf2f971083a9d,
     type: 3}
 --- !u!114 &6115370170154088263
@@ -347,6 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 4
+  AttackSound: {fileID: 8300000, guid: 16be643bf4edeb94daddafeb196e32c7, type: 3}
   ReferenceAnim: {fileID: 7400000, guid: 71c27ec0a00f45648ac4c546a720955e, type: 2}
   AnimCount: 2
   FirePoints:

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MotionMove : MotionBase
 {
+    [SerializeField] private AudioClip MoveSound = null;
+
     public Vector3 Destination { get; set; }
     public override bool IsReady() { return false; }
 
@@ -13,6 +15,7 @@ public class MotionMove : MotionBase
         Unit.TurnHead(Destination);
         Unit.Anim.SetTrigger("move");
         StartCoroutine("MovingLoop");
+        RGame.Get<RSoundManager>().PlaySFX(MoveSound);
     }
     public override void OnLeave()
     {

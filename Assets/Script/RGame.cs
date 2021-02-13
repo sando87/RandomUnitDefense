@@ -57,7 +57,6 @@ public class RGame : MonoBehaviour
             RManager[] managerList = FindObjectsOfType<RManager>();
             foreach (RManager manager in managerList)
             {
-                manager.Init();
                 manager.transform.parent = parentObj.transform;
                 _Mangers.Add(manager.GetType(), manager);
             }
@@ -72,14 +71,18 @@ public class RGame : MonoBehaviour
                 var manager = new GameObject().AddComponent(type) as RManager;
                 manager.gameObject.name = type.ToString();
                 manager.transform.parent = parentObj.transform;
-                manager.Init();
 
                 _Mangers.Add(manager.GetType(), manager);
             }
 
+            _IsAwake = true;
+            Screen.orientation = ScreenOrientation.Landscape;
+
+            foreach (var item in _Mangers)
+                item.Value.Init();
+
             DontDestroyOnLoad(parentObj);
 
-            _IsAwake = true;
             DontDestroyOnLoad(this);
         }
     }

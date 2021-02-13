@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MotionSingleAttack : MotionBase
 {
+    [SerializeField] private AudioClip AttackSound = null;
     [SerializeField] private AnimationClip ReferenceAnim = null;
     [SerializeField] private int AnimCount = 1;
     [Range(0, 1)][SerializeField] private float FirePoint = 0.3f; //0 ~ 1
@@ -59,6 +60,7 @@ public class MotionSingleAttack : MotionBase
 
     private void OnFired()
     {
+        RGame.Get<RSoundManager>().PlaySFX(AttackSound);
         if (Target == null)
             return;
 

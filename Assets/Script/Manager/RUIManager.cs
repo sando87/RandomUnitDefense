@@ -11,6 +11,7 @@ public class RUIManager : RManager
     {
         base.Init();
         InitChildForms();
+        SwitchToForm<RUIFormLobby>(default);
     }
 
     private void InitChildForms()

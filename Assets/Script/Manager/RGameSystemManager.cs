@@ -47,12 +47,8 @@ public class RGameSystemManager : RManager
     {
         CleanUpGame();
 
-        StartCoroutine(UserInputInterpreter());
-        StartCoroutine(LineMobGenerator());
-        StartCoroutine(MineralMining());
-
         KillPoint = StartKillPoint;
-        StageRoot = GameObject.Instantiate(StagePrefab);
+        StageRoot = Instantiate(StagePrefab);
         HUDObject = Instantiate(HUDPrefab, transform);
         WayPoints[0] = StageRoot.transform.Find("WayPoint_LB").position;
         WayPoints[1] = StageRoot.transform.Find("WayPoint_RB").position;
@@ -63,6 +59,10 @@ public class RGameSystemManager : RManager
         UnitMob[] mobs = RGame.Get<RGameObjectManager>().GetPrefabsInfo<UnitMob>();
         foreach(UnitMob mob in mobs)
             LineMobs.Add(mob.name);
+
+        StartCoroutine(UserInputInterpreter());
+        StartCoroutine(LineMobGenerator());
+        StartCoroutine(MineralMining());
     }
     public void CleanUpGame()
     {
@@ -115,7 +115,7 @@ public class RGameSystemManager : RManager
     }
     public UnitBase CreateUnit(string unitName)
     {
-        Vector3 pos = transform.position;
+        Vector3 pos = StageRoot.transform.position;
         pos.x += UnityEngine.Random.Range(-1.0f, 1.0f);
         pos.y += UnityEngine.Random.Range(-1.0f, 1.0f);
         RGame.Get<RGameObjectManager>().AcquireRGameObject(unitName, out RGameObject obj);
@@ -194,6 +194,7 @@ public class RGameSystemManager : RManager
     // Collider 컴포넌트가 게임오브젝트에 활성화되어 있어야 함
     private IEnumerator UserInputInterpreter()
     {
+        yield return null;
         List<IUserInputReciever> DownRecievers = new List<IUserInputReciever>();
         Vector3 DownPosition = Vector3.zero;
         bool IsDragged = false;

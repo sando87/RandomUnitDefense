@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class UnitUser : UnitBase, IUserInputReciever
 {
-    [SerializeField] private AudioClip SelectSound = null;
-
     public abstract string SkillDescription { get; }
 
     public override void Init()
@@ -20,7 +18,7 @@ public abstract class UnitUser : UnitBase, IUserInputReciever
     public virtual void OnClick()
     {
         //유닛 클릭시 Merge 선택창 UI 띄우기
-        RGame.Get<RSoundManager>().PlaySFX(SelectSound);
+        RGame.Get<RSoundManager>().PlaySFX(AudioClipType.ShowHUD);
         RGame.Get<RGameSystemManager>().HUDObject.Show(this);
     }
 
@@ -34,5 +32,8 @@ public abstract class UnitUser : UnitBase, IUserInputReciever
     public virtual void OnDragging(Vector3 draggingWorldPos)
     {
     }
+
+
+
 
 }

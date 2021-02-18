@@ -5,28 +5,33 @@ using UnityEngine;
 
 public class UnitBase : RGameObject
 {
+    [SerializeField] private SpecProperty Spec = new SpecProperty();
+
     public Animator Anim { get; set; }
     public SpriteRenderer SR { get; set; }
     public BoxCollider2D RectCollider { get; set; }
-    public UnitProperty Property { get; set; }
 
     public Vector3 Center { get { return transform.position + new Vector3(0, Height * 0.5f, 0); } }
     public float Height { get { return RectCollider.size.y; } }
+    public ref readonly SpecProperty BasicSpec { get { return ref Spec; } }
+    public UnitState CurrentState { get { return FSM.CurrentState; } }
+    public int Level { get => LevelObject.GetLevel(); set => LevelObject.SetLevel(value); }
+    private LevelDisplay LevelObject = null;
 
     public FiniteStateMachine FSM = new FiniteStateMachine();
     public BuffController BuffCtrl = new BuffController();
     public BuffProperty BuffValues = new BuffProperty();
-    public UnitState CurrentState { get { return FSM.CurrentState; } }
+    public UnitProperty Property = new UnitProperty();
 
     public override void Init()
     {
         Anim = GetComponent<Animator>();
         SR = GetComponent<SpriteRenderer>();
-        Property = GetComponent<UnitProperty>();
         RectCollider = GetComponent<BoxCollider2D>();
 
-        BuffCtrl.Init(this);
+        InstanceLevelDisplay();
         Property.Init(this);
+        BuffCtrl.Init(this);
         FSM.InitMotions(this);
     }
     public override void Release() { }
@@ -86,4 +91,14 @@ public class UnitBase : RGameObject
         return deg;
     }
 
+
+    private void InstanceLevelDisplay()
+    {
+        if (LevelObject == null)
+        {
+            LevelObject = Resources.Load<LevelDisplay>("Prefabs/@LevelDisplay");
+            LevelObject = Instantiate(LevelObject, transform);
+            LevelObject.SetLevel(1);
+        }
+    }
 }

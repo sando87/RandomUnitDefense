@@ -102,10 +102,10 @@ public class RUIFormInGame : RUiForm
         }
 
         UnitDetailPanel.gameObject.SetActive(true);
-        string damage = selectedUnit.Property.BasicSpec.attackDamageBasic + " + " + (selectedUnit.Property.BasicSpec.damagePerUpgrade * selectedUnit.Property.Level);
+        string damage = selectedUnit.BasicSpec.attackDamageBasic + " + " + (selectedUnit.BasicSpec.damagePerUpgrade * selectedUnit.Level);
         DamageText.text = damage;
         DescriptionText.text = selectedUnit.SkillDescription;
-        UnitPhoto.sprite = selectedUnit.Property.BasicSpec.unitPhoto;
+        UnitPhoto.sprite = selectedUnit.BasicSpec.unitPhoto;
     }
 
 

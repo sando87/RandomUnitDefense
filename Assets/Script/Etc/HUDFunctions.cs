@@ -66,7 +66,7 @@ public class HUDFunctions : MonoBehaviour
         UnitUser[] units = GameMgr.DetectAroundUnit<UnitUser>(TargetUnit.transform.position, DetectRange);
         foreach(UnitUser unit in units)
         {
-            if (unit.PrefabID == TargetUnit.PrefabID && unit.Property.Level == TargetUnit.Property.Level)
+            if (unit.PrefabID == TargetUnit.PrefabID && unit.Level == TargetUnit.Level)
                 DetectedUnits.Add(unit);
         }
     }
@@ -87,7 +87,7 @@ public class HUDFunctions : MonoBehaviour
         DetectedUnits[1].FSM.ChangeState(UnitState.Disappear);
         DetectedUnits[2].FSM.ChangeState(UnitState.Disappear);
         UnitBase unit = GameMgr.CreateUnit(TargetUnit.PrefabID);
-        unit.Property.Level = TargetUnit.Property.Level + 1;
+        unit.Level = TargetUnit.Level + 1;
         Hide();
     }
     private void OnClickChange()
@@ -105,13 +105,13 @@ public class HUDFunctions : MonoBehaviour
         DetectedUnits[0].FSM.ChangeState(UnitState.Disappear);
         DetectedUnits[1].FSM.ChangeState(UnitState.Disappear);
         UnitBase unit = GameMgr.CreateRandomUnit();
-        unit.Property.Level = TargetUnit.Property.Level;
+        unit.Level = TargetUnit.Level;
         Hide();
     }
     private void OnClickRefund()
     {
         TargetUnit.FSM.ChangeState(UnitState.Disappear);
-        GameMgr.AddMinerals(100 * TargetUnit.Property.Level * TargetUnit.Property.Level);
+        GameMgr.AddMinerals(100 * TargetUnit.Level * TargetUnit.Level);
         Hide();
     }
 

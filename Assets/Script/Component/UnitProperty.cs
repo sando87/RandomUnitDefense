@@ -24,39 +24,28 @@ public struct SpecProperty
     //기타.. 여러가지 스킬 기획에 따른 속성값 추가 필요...
 }
 
-public class UnitProperty : MonoBehaviour
+public class UnitProperty
 {
-    [SerializeField] private SpecProperty Spec = new SpecProperty();
-
-    private int level = 1;
-    private BuffProperty Buff = null;
+    private BuffProperty Buff => Owner.BuffValues;
+    private ref readonly SpecProperty Spec => ref Owner.BasicSpec;
     private RGameSystemManager GameMgr = null;
+    private readonly SpecProperty BasicSpec;
     public UnitBase Owner { get; set; }
-    public SpecProperty BasicSpec { get { return Spec; } }
 
     public void Init(UnitBase owner)
     {
         Owner = owner;
-        Buff = Owner.BuffValues;
         GameMgr = RGame.Get<RGameSystemManager>();
-    }
-
-    private void UpdateLevelImage()
-    {
-        LevelDisplay dis = GetComponentInChildren<LevelDisplay>();
-        if (dis != null)
-            dis.SetLevel(Level);
     }
 
     public float AttackDamage
     {
         get
         {
-            float attack = Spec.attackDamageBasic + (GameMgr.GetPower(Spec.attackType) * Spec.damagePerUpgrade * Level);
+            float attack = Spec.attackDamageBasic + (GameMgr.GetPower(Spec.attackType) * Spec.damagePerUpgrade * Owner.Level);
             return attack * (1 + Buff.AttackDamage.Rate);
         }
     }
-    public int Level { get { return level; } set { level = value; UpdateLevelImage(); } }
     public float TotalHP { get { return Spec.totalHP * (1 + Buff.TotalHP.Rate); } }
     public float Armor { get { return Spec.armor * (1 + Buff.Armor.Rate); } }
     public float MoveSpeed { get { return Spec.moveSpeed * (1 + Buff.MoveSpeed.Rate); } }

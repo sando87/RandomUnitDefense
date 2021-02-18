@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5574434739052675568}
   - component: {fileID: 5045492850868862453}
   - component: {fileID: 3119491572982675222}
-  - component: {fileID: 2348190621607351071}
   - component: {fileID: 9149058261331233287}
   - component: {fileID: 2860792855081192534}
   - component: {fileID: 6630721709445081463}
@@ -133,31 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.45, y: 0.45}
   m_EdgeRadius: 0
---- !u!114 &2348190621607351071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6540175376167864009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Spec:
-    unitPhoto: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
-    totalHP: 120
-    armor: 1
-    moveSpeed: 1
-    attackType: 0
-    attackDamageBasic: 0
-    damagePerUpgrade: 0
-    attackSpeed: 0
-    attackRange: 0
-    cooltime: 0
-    skillRange: 0
-    skillDuration: 0
 --- !u!114 &9149058261331233287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +156,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbaae0d927e4925489303ee5ebf99e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Spec:
+    unitPhoto: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
+    totalHP: 120
+    armor: 0
+    moveSpeed: 1.2
+    attackType: 0
+    attackDamageBasic: 0
+    damagePerUpgrade: 0
+    attackSpeed: 0
+    attackRange: 0
+    cooltime: 0
+    skillRange: 0
+    skillDuration: 0
 --- !u!114 &6630721709445081463
 MonoBehaviour:
   m_ObjectHideFlags: 0

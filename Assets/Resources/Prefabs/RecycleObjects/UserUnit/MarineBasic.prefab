@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3928256067794196426}
   - component: {fileID: 3928256067794196425}
   - component: {fileID: 3928256067794196424}
-  - component: {fileID: 3627322216758116843}
   - component: {fileID: -7860500495731628599}
   - component: {fileID: 8032733967090801035}
   - component: {fileID: 5726206172269430049}
@@ -135,31 +134,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35366285, y: 0.4668314}
   m_EdgeRadius: 0
---- !u!114 &3627322216758116843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3928256067794195509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Spec:
-    unitPhoto: {fileID: 21300000, guid: cfb356aca3d98da4884f60b69ee4fb35, type: 3}
-    totalHP: 100
-    armor: 0
-    moveSpeed: 1.5
-    attackType: 1
-    attackDamageBasic: 25
-    damagePerUpgrade: 1
-    attackSpeed: 1
-    attackRange: 3
-    cooltime: 10
-    skillRange: 2
-    skillDuration: 1
 --- !u!114 &-7860500495731628599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +222,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8233ba4d880f78048a9826537360f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectSound: {fileID: 8300000, guid: 8f859ffd886c7444d813dc4612dd31c7, type: 3}
+  Spec:
+    unitPhoto: {fileID: 21300000, guid: cfb356aca3d98da4884f60b69ee4fb35, type: 3}
+    totalHP: 100
+    armor: 0
+    moveSpeed: 1
+    attackType: 1
+    attackDamageBasic: 40
+    damagePerUpgrade: 1
+    attackSpeed: 0.5
+    attackRange: 2
+    cooltime: 10
+    skillRange: 1
+    skillDuration: 1
   HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}
   BuffEffect: {fileID: 6278202292039781791, guid: 14259a582a6e7d54d99b64c3cc764e9d,

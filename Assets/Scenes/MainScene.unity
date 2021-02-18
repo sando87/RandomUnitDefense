@@ -12040,6 +12040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1700157502}
+  ShowHUD: {fileID: 8300000, guid: c556c891e60d0234eb5fd167e2154afd, type: 3}
+  ClickButton: {fileID: 0}
 --- !u!82 &1700157502
 AudioSource:
   m_ObjectHideFlags: 0

@@ -1,105 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &272345352482416889
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8901151279594216558}
-  - component: {fileID: 3106262557292493547}
-  - component: {fileID: 8553733104346276644}
-  m_Layer: 0
-  m_Name: LevelDeco
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8901151279594216558
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272345352482416889}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 0.06, z: -0.001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8930169489800984891}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3106262557292493547
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272345352482416889}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -2026431883
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 515ec432eec87a84bb68dda9ac4bf1f9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.22, y: 0.16}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!114 &8553733104346276644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272345352482416889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a17171d264f1f94bb9df0a7d555f998, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LevelImages:
-  - {fileID: 21300000, guid: 515ec432eec87a84bb68dda9ac4bf1f9, type: 3}
-  - {fileID: 21300000, guid: 040b3f9e2d371d34fba3c6352bb7ec52, type: 3}
-  - {fileID: 21300000, guid: ff7a3a52883f2e84297a7337713e6cab, type: 3}
-  - {fileID: 21300000, guid: 3bc554837a25c2642a5db268e8e6856f, type: 3}
-  - {fileID: 21300000, guid: b080c47d6ab8d3b4aa884f6b533ac2e3, type: 3}
 --- !u!1 &3854764581410292545
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,13 +12,12 @@ GameObject:
   - component: {fileID: 4520171670724060371}
   - component: {fileID: 5649028196868471744}
   - component: {fileID: 1568189748543344842}
-  - component: {fileID: 7811123264913697842}
-  - component: {fileID: 6562073861646211009}
   - component: {fileID: 1064833574115720390}
   - component: {fileID: 2035953099435706008}
   - component: {fileID: 7138301309119963180}
   - component: {fileID: 2608754909594980643}
   - component: {fileID: 5611055773415757959}
+  - component: {fileID: 7811123264913697842}
   m_Layer: 0
   m_Name: MarineHero
   m_TagString: Untagged
@@ -136,8 +35,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8901151279594216558}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -236,48 +134,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 0.73}
   m_EdgeRadius: 0
---- !u!114 &7811123264913697842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3854764581410292545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectSound: {fileID: 8300000, guid: eaed6afc19c01174abfc874401bc90ee, type: 3}
-  BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
-    type: 3}
-  MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,
-    type: 3}
---- !u!114 &6562073861646211009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3854764581410292545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c224325578b17848a4a332211a705df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Spec:
-    unitPhoto: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}
-    totalHP: 100
-    armor: 0
-    moveSpeed: 1.5
-    attackType: 1
-    attackDamageBasic: 20
-    damagePerUpgrade: 1
-    attackSpeed: 1
-    attackRange: 3
-    cooltime: 10
-    skillRange: 2
-    skillDuration: 3
 --- !u!114 &1064833574115720390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,4 +209,33 @@ MonoBehaviour:
   state: 7
   AppearMaterial: {fileID: 2100000, guid: 84636f56f510dfd4c9993497f8bacc73, type: 2}
   AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
+    type: 3}
+--- !u!114 &7811123264913697842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854764581410292545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Spec:
+    unitPhoto: {fileID: 21300000, guid: 6b4e394cc9694504a9bc67c714d53615, type: 3}
+    totalHP: 100
+    armor: 0
+    moveSpeed: 1.2
+    attackType: 1
+    attackDamageBasic: 10
+    damagePerUpgrade: 1
+    attackSpeed: 1
+    attackRange: 2
+    cooltime: 20
+    skillRange: 3
+    skillDuration: 1
+  BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
+    type: 3}
+  MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,
     type: 3}

@@ -18,10 +18,10 @@ public class UnitBase : RGameObject
     public int Level { get => LevelObject.GetLevel(); set => LevelObject.SetLevel(value); }
     private LevelDisplay LevelObject = null;
 
-    public FiniteStateMachine FSM = new FiniteStateMachine();
-    public BuffController BuffCtrl = new BuffController();
-    public BuffProperty BuffValues = new BuffProperty();
-    public UnitProperty Property = new UnitProperty();
+    public FiniteStateMachine FSM = new FiniteStateMachine();   //각 Motion(Idle, Move, Attack 등)을 스위칭 해주며 관리한다.
+    public BuffController BuffCtrl = new BuffController();      //현재 유닛에 걸린 버프효과들 관리(지속시간이 지나면 소멸)
+    public BuffProperty BuffValues = new BuffProperty();        //유닛의 버프로 제어가능한 속성
+    public UnitProperty Property = new UnitProperty();          //유닛의 기본 속성
 
     public override void Init()
     {

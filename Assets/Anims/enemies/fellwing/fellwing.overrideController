@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: fellwing
+  m_Controller: {fileID: 9100000, guid: a03174bff5416af40946cf3994d0fd44, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 189a550c2ae164848afc6b20146f7808, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 347e2f640d42dee4791672552a9e9898, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 96e7c7620f587094ca797e6951eb31f3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 347e2f640d42dee4791672552a9e9898, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9a5564109e0c67145ac2f326b96ea3aa, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6048acd4c9053f1409e6b896920f23d1, type: 2}

@@ -9,15 +9,18 @@ public class MotionKeepAttack : MotionBase
     [SerializeField] private AudioClip AttackSound = null;
     [SerializeField] private AnimationClip ReferenceAnim = null;
     [SerializeField] private int AnimCount = 1;
-    [Range(0, 1)][SerializeField] private float FirePoint = 0.3f; //0 ~ 1
 
     public Action<UnitBase> EventStart { get; set; }
     public Action<UnitBase> EventUpdate { get; set; }
     public Action EventEnd { get; set; }
     private UnitMob Target = null;
+    private float nextAttackTime = 0;
 
     public override bool IsReady()
     {
+        if (nextAttackTime > Time.realtimeSinceStartup)
+            return false;
+
         UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Property.AttackRange);
         if (mobs == null)
             return false;
@@ -28,16 +31,6 @@ public class MotionKeepAttack : MotionBase
 
     public override void OnEnter()
     {
-        Unit.TurnHead(Target.transform.position);
-
-        //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-        float deg = Unit.CalcVerticalDegree(Target.transform.position);
-        int stepDegree = 180 / AnimCount;
-        int animIndex = (int)deg / stepDegree;
-        Unit.Anim.SetTrigger("attack" + (animIndex + 1));
-
-        SetAnimSpeed();
-
         EventStart?.Invoke(Target);
 
         RGame.Get<RSoundManager>().PlaySFX(AttackSound);
@@ -56,12 +49,23 @@ public class MotionKeepAttack : MotionBase
         }
         else
         {
+            Unit.TurnHead(Target.transform.position);
+
+            //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
+            float deg = Unit.CalcVerticalDegree(Target.transform.position);
+            int stepDegree = 180 / AnimCount;
+            int animIndex = (int)deg / stepDegree;
+            Unit.Anim.SetInteger("motionB_Num", animIndex + 1);
+            Unit.Anim.SetTrigger("motionB");
+
             EventUpdate?.Invoke(Target);
         }
     }
     public override void OnLeave()
     {
         base.OnLeave();
+        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Property.AttackSpeed);
+        Unit.Anim.SetInteger("motionB_Num", 0);
         EventEnd?.Invoke();
     }
 

@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class UnitGunner : UnitUser
 {
-    [SerializeField] private GameObject HitParticle = null;
-    [SerializeField] private GameObject BuffEffect = null;
+    [SerializeField] private Sprite[] IntroSprites = null;
+    [SerializeField] private Sprite[] ProjSprites = null;
+    [SerializeField] private Sprite[] OutroSprites = null;
+
+    private LaserAimming mLaserEffectObject = null;
 
     public override void Init()
     {
@@ -30,15 +34,17 @@ public class UnitGunner : UnitUser
 
     private void OnAttack(UnitBase target)
     {
-        UnitMob enemy = target as UnitMob;
-        enemy.GetDamaged(Property);
-        Vector3 pos = Utils.Random(enemy.Center, 0.1f);
-        GameObject obj = Instantiate(HitParticle, pos, Quaternion.identity);
-        Destroy(obj, 1.0f);
+        ShootProjectail(target);
     }
 
     private void OnAttackBeamStart(UnitBase target)
     {
+        if(mLaserEffectObject != null)
+        {
+            Destroy(mLaserEffectObject.gameObject);
+            mLaserEffectObject = null;
+        }
+        mLaserEffectObject = LaserAimming.Play(Center, target.gameObject);
         StartCoroutine(CoAttackBeam(target));
     }
     IEnumerator CoAttackBeam(UnitBase target)
@@ -51,6 +57,11 @@ public class UnitGunner : UnitUser
     }
     private void OnAttackBeamEnd()
     {
+        if (mLaserEffectObject != null)
+        {
+            Destroy(mLaserEffectObject.gameObject);
+            mLaserEffectObject = null;
+        }
         StopAllCoroutines();
     }
     private void ApplySlowDeBuff(UnitBase target)
@@ -60,6 +71,24 @@ public class UnitGunner : UnitUser
             buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
             target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
+    }
+    private void ShootProjectail(UnitBase target)
+    {
+        Vector3 dir = target.Center - Center;
+        dir.z = 0;
+        SpritesAnimator.Play(Center, IntroSprites);
+
+        SpritesAnimator proj = SpritesAnimator.Play(Center, ProjSprites, true);
+        proj.transform.right = dir.normalized;
+        proj.transform.DOMove(target.Center, 0.3f).OnComplete(() =>
+        {
+            SpritesAnimator.Play(proj.transform.position, OutroSprites);
+
+            UnitMob enemy = target as UnitMob;
+            enemy.GetDamaged(Property);
+
+            Destroy(proj.gameObject);
+        });
     }
 
     class DeBuffSlow : BuffBase
@@ -77,5 +106,4 @@ public class UnitGunner : UnitUser
             target.BuffValues.MoveSpeed += 20;
         }
     }
-
 }

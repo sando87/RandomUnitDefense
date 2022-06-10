@@ -31,6 +31,9 @@ public class MotionKeepAttack : MotionBase
 
     public override void OnEnter()
     {
+        SetVerticalDegreeIndex();
+        Unit.Anim.SetTrigger("motionB");
+
         EventStart?.Invoke(Target);
 
         RGame.Get<RSoundManager>().PlaySFX(AttackSound);
@@ -50,14 +53,7 @@ public class MotionKeepAttack : MotionBase
         else
         {
             Unit.TurnHead(Target.transform.position);
-
-            //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-            float deg = Unit.CalcVerticalDegree(Target.transform.position);
-            int stepDegree = 180 / AnimCount;
-            int animIndex = (int)deg / stepDegree;
-            Unit.Anim.SetInteger("motionB_Num", animIndex + 1);
-            Unit.Anim.SetTrigger("motionB");
-
+            SetVerticalDegreeIndex();
             EventUpdate?.Invoke(Target);
         }
     }
@@ -76,6 +72,15 @@ public class MotionKeepAttack : MotionBase
             Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
         else
             Unit.Anim.SetFloat("attackSpeed", 1);
+    }
+
+    private void SetVerticalDegreeIndex()
+    {
+        //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
+        float deg = Unit.CalcVerticalDegree(Target.transform.position);
+        int stepDegree = 180 / AnimCount;
+        int animIndex = (int)deg / stepDegree;
+        Unit.Anim.SetInteger("motionB_Num", animIndex + 1);
     }
 }
 

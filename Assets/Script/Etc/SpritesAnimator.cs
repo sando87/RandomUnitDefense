@@ -6,6 +6,7 @@ public class SpritesAnimator : MonoBehaviour
 {
     public Sprite[] Sprites = null;
     public bool IsLoop = false;
+    public System.Action EventEnd = null;
 
     public static SpritesAnimator Play(Vector3 pos, Sprite[] sprites, bool isLoop = false)
     {
@@ -53,6 +54,7 @@ public class SpritesAnimator : MonoBehaviour
             renderer.sprite = sprite;
             yield return new WaitForSeconds(1 / 12.0f);
         }
+        EventEnd?.Invoke();
         Destroy(gameObject);
     }
 

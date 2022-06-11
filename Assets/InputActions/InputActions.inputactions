@@ -1,0 +1,90 @@
+{
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "InGame",
+            "id": "c1152e60-2c8b-4972-959f-1a303342df02",
+            "actions": [
+                {
+                    "name": "OnClick",
+                    "type": "Button",
+                    "id": "5d474bc5-bcfd-411c-b1d5-215325f04c2b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PointerMoving",
+                    "type": "Value",
+                    "id": "f66b7dbb-47e4-43ba-9cc7-0121642478a5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "KeyA",
+                    "type": "Button",
+                    "id": "06c2f171-3e6a-461d-bc34-21828bb5ff31",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "KeyB",
+                    "type": "Button",
+                    "id": "9425a758-6f39-491a-a682-7684eee67971",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f3178489-8c49-4c48-9ee3-f7e74b4e1f50",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27a279c9-9870-4b7e-8a00-034ca8181344",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMoving",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d74f57d3-5aba-46e3-a824-8d4f533fdb58",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyA",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e6d9b93-5f00-421a-8472-aa273b87d328",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

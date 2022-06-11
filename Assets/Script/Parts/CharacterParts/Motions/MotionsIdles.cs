@@ -6,56 +6,24 @@ using UnityEngine.AI;
 
 public class MotionsIdles : MotionBasic 
 {
-    public override void OnInitMotion()
+    public override void OnInit()
     {
-        base.OnInitMotion();
+        base.OnInit();
     }
 
-    public override void OnEnterMotion()
+    public override void OnEnter()
     {
-        base.OnEnterMotion();
+        base.OnEnter();
     }
 
-    public override void OnUpdateMotion()
+    public override void OnUpdate()
     {
-        base.OnUpdateMotion();
-
-        if (mBaseObject.CharacterInput.VerticalMove < 0)
-        {
-            if (mBaseObject.CharacterPhy.Velocity.y == 0
-            && mBaseObject.Body.IsGrounded
-            && IsDroppable()
-            && IsOnTheThinGround())
-            {
-                mBaseObject.transform.position -= new Vector3(0, Consts.DropDistance, 0);
-            }
-        }
+        base.OnUpdate();
     }
 
-    public override void OnExitMotion()
+    public override void OnLeave()
     {
-        base.OnExitMotion();
+        base.OnLeave();
     }
 
-    private bool IsDroppable()
-    {
-        Bounds bounds = mBaseObject.Body.Collider.GetWorldBounds2D();
-        float heightHalf = bounds.extents.y;
-        if (Physics.Raycast(new Ray(bounds.Left(0.95f), new Vector3(0, -1, 0)), heightHalf + Consts.DropDistance, 1 << LayerID.Platforms)
-            || Physics.Raycast(new Ray(bounds.Right(0.95f), new Vector3(0, -1, 0)), heightHalf + Consts.DropDistance, 1 << LayerID.Platforms))
-        {
-            return false;
-        }
-
-        return true;
-    }
-    private bool IsOnTheThinGround()
-    {
-        ThinGround thinGround = mBaseObject.Body.FindBottomThinGround();
-        if(thinGround != null)
-        {
-            return thinGround.Collider.size.y < Consts.DropDistance;
-        }
-        return true;
-    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class BaseRenderer : MonoBehaviour
 {
     private BaseObject mBaseObject = null;
-    private RendererController[] mRenderers = null;
+    private ShaderController[] mRenderers = null;
 
     public bool Lock { get { return mRenderers[0].Lock; } set { foreach(var rd in mRenderers) rd.Lock = value; } }
     public int SortingLayerID { get { return mRenderers[0].SortingLayerID; } set { foreach(var rd in mRenderers) rd.SortingLayerID = value; } }
@@ -16,7 +16,7 @@ public class BaseRenderer : MonoBehaviour
     {
         mBaseObject = this.GetBaseObject();
 
-        mRenderers = GetComponentsInChildren<RendererController>();
+        mRenderers = GetComponentsInChildren<ShaderController>();
     }
 
 

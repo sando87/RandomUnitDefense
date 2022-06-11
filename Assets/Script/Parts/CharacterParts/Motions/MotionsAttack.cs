@@ -11,15 +11,12 @@ public class MotionsAttack : MotionBasic
     [SerializeField] float AttackDelay = 0.5f;
     [SerializeField] Collider AttackCollider = null;
 
-    private CharacterPhysics mCharPhysics = null;
     private Coroutine mCoAttack = null;
     private long mLastAttackTicks = 0;
 
-    public override void OnInitMotion()
+    public override void OnInit()
     {
-        base.OnInitMotion();
-
-        mCharPhysics = mBaseObject.CharacterPhy;
+        base.OnInit();
     }
 
     void Update()
@@ -48,11 +45,11 @@ public class MotionsAttack : MotionBasic
         Collider[] cols = Physics.OverlapBox(AttackCollider.bounds.center, AttackCollider.bounds.extents, Quaternion.identity, layerMaskAttackable);
         foreach(Collider col in cols)
         {
-            IDamagable target = col.GetDamagableObject();
-            if (target != null)
+            Health targetHp = col.GetComponentInBaseObject<Health>();
+            if (targetHp != null)
             {
-                col.GetBaseObject().Health.LastHitPoint = mBaseObject.transform.position;
-                target.OnDamaged(AttackDamage, mBaseObject);
+                targetHp.LastHitPoint = mBaseObject.transform.position;
+                targetHp.OnDamaged(AttackDamage, mBaseObject);
             }
         }
 
@@ -68,9 +65,9 @@ public class MotionsAttack : MotionBasic
         // }
     }
 
-    public override void OnExitMotion()
+    public override void OnLeave()
     {
-        base.OnExitMotion();
+        base.OnLeave();
 
         mAnim.SetLayerWeight(1, 0);
         mCoAttack = null;

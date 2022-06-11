@@ -13,7 +13,7 @@ public enum CharacterInputType
     MoveHori, Jump, AttackNormal, AttackMelee, Rolling, Throw, MoveVert, Detected, Transformed, TransformAttack, MoveFlying, Attack3, Interact, Pause
 }
 
-public class CharacterInput : MonoBehaviour, IMapEditorObject
+public class CharacterInput : MonoBehaviour
 {
     private float[] mInputData = new float[MyUtils.CountEnum<CharacterInputType>()];
 
@@ -50,9 +50,4 @@ public class CharacterInput : MonoBehaviour, IMapEditorObject
     public bool Transformed { get { return GetInput(CharacterInputType.Transformed) > 0; } }
     public bool TransformAttack { get { return GetInput(CharacterInputType.TransformAttack) > 0; } }
 
-    // 맵 제작 모드에서 실행시 호출됨(맵 수정시에는 각 객체의 input을 모두 막도록 처리) 
-    public void OnInitMapEditor()
-    {
-        Lock = true;
-    }
 }

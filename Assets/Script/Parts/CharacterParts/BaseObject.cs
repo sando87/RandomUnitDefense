@@ -8,7 +8,6 @@ public class BaseObject : MonoBehaviour
     public BodyCollider Body { get { return GetComponentInChildren<BodyCollider>(); } }
     public Animator Animator { get { return GetComponentInChildren<Animator>(); } }
     public BaseRenderer Renderer { get { return GetComponentInChildren<BaseRenderer>(); } }
-    public CharacterPhysics CharacterPhy { get { return GetComponentInChildren<CharacterPhysics>(); } }
     public Health Health { get { return GetComponentInChildren<Health>(); } }
     public CharacterInput CharacterInput { get { return GetComponentInChildren<CharacterInput>(); } }
     public MotionManager MotionManager { get { return GetComponentInChildren<MotionManager>(); } }
@@ -20,12 +19,10 @@ public class BaseObject : MonoBehaviour
         if (gameObject.layer == LayerID.Player)
         {
             mask |= (1 << LayerID.Enemies);
-            mask |= (1 << LayerID.Platforms);
         }
         else if (gameObject.layer == LayerID.Enemies)
         {
             mask |= (1 << LayerID.Player);
-            mask |= (1 << LayerID.Platforms);
         }
         
         return mask;
@@ -56,11 +53,6 @@ public class BaseObject : MonoBehaviour
             return LayerID.Player;
         }
 
-        return 0;
-    }
-
-    public int GetSuitLevel()
-    {
         return 0;
     }
 }

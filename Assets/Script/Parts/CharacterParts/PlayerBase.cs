@@ -21,27 +21,6 @@ public class PlayerBase : MonoBehaviour
         StartRespawnImmortalState();
     }
 
-    public void SleepPlayer()
-    {
-        mBaseObject.CharacterPhy.VelocityX = 0;
-        mBaseObject.CharacterPhy.VelocityY = 0;
-        mBaseObject.MotionManager.Lock = true;
-        mBaseObject.CharacterPhy.GravityLock = true;
-        mBaseObject.CharacterInput.Lock = true;
-        mBaseObject.Body.Lock = true;
-        mBaseObject.Renderer.Lock = true;
-    }
-    public void AwakePlayer()
-    {
-        mBaseObject.Renderer.Lock = false;
-        mBaseObject.CharacterPhy.VelocityX = 0;
-        mBaseObject.CharacterPhy.VelocityY = 0;
-        mBaseObject.MotionManager.Lock = false;
-        mBaseObject.CharacterPhy.GravityLock = false;
-        mBaseObject.CharacterInput.Lock = false;
-        mBaseObject.Body.Lock = false;
-    }
-
     public void StartRespawnImmortalState()
     {
         // player가 처음 시작하거나 죽었다 다시 시작할 경우 처음 수초간 깜빡거리며 무적상태진입...

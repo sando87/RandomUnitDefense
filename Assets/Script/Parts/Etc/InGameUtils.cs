@@ -19,15 +19,6 @@ public static class InGameUtils
     {
         return obj.GetComponentInParent<BaseObject>();
     }
-    public static IDamagable GetDamagableObject(this Collider obj)
-    {
-        BaseObject baseObj = obj.GetBaseObject();
-        if(baseObj != null)
-        {
-            return baseObj.GetComponentInChildren<IDamagable>();
-        }
-        return null;
-    }
     public static T GetComponentInBaseObject<T>(this Collider obj) where T : MonoBehaviour
     {
         BaseObject baseObj = obj.GetBaseObject();
@@ -37,20 +28,16 @@ public static class InGameUtils
         }
         return null;
     }
-    public static RaycastHit[] RaycastForwardPlatforms(this BoxCollider body)
+    public static Vector3 ZeroZ(this Vector3 vec)
     {
-        return Physics.RaycastAll(body.Forward(0.95f), body.transform.right, Consts.BlockSize, 1 << LayerID.Platforms);
+        return new Vector3(vec.x, vec.y, 0);
     }
-
-    public static Vector3 ZeroY(this Vector3 vec)
-    {
-        return new Vector3(vec.x, 0, vec.z);
-    }
-    public static Vector3 GetRandomPosInHori(Vector3 center, float radius)
+    public static Vector3 GetRandomPos(Vector3 center, float radius)
     {
         float ranX = UnityEngine.Random.Range(center.x - radius, center.x + radius);
+        float ranY = UnityEngine.Random.Range(center.y - radius, center.y + radius);
         float ranZ = UnityEngine.Random.Range(center.z - radius, center.z + radius);
-        return new Vector3(ranX, center.y, ranZ);
+        return new Vector3(ranX, ranY, ranZ);
     }
 
     // 100% 효과면 value의 2배, -100%이면 value의 0.5배로 동작
@@ -133,19 +120,5 @@ public static class InGameUtils
     public static bool IsCloseEnough(Vector3 posA, Vector3 posB, float distance)
     {
         return (posA - posB).sqrMagnitude <= (distance * distance);
-    }
-    public static Vector3 GetFirePosition(this BaseObject baseObj, Vector3 firePosition)
-    {
-        Vector3 sp = firePosition;
-        sp.x = baseObj.Body.Center.x;
-        if (MyUtils.RaycastFromTo(sp, firePosition, 1 << LayerID.Platforms))
-        {
-            return sp;
-        }
-        return firePosition;
-    }
-    public static int GetInteractiveLayerMask()
-    {
-        return 1 << LayerID.Player | 1 << LayerID.Enemies | 1 << LayerID.Platforms | 1 << LayerID.Props;
     }
 }

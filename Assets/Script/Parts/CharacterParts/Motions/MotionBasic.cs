@@ -32,21 +32,25 @@ public class MotionBasic : MonoBehaviour
     protected CharacterInput mCharacterInput = null;
     protected MotionManager mMotionManager = null;
 
-    public virtual void OnInitMotion()
+    public virtual void OnInit()
     {
         mBaseObject = this.GetBaseObject();
         mAnim = mBaseObject.Animator;
         mCharacterInput = mBaseObject.CharacterInput;
         mMotionManager = mBaseObject.MotionManager;
     }
-    public virtual void OnEnterMotion()
+    public virtual bool OnReady()
+    {
+        return false;
+    }
+    public virtual void OnEnter()
     {
         StartCoroutine(OnCoUpdateMotion());
     }
-    public virtual void OnUpdateMotion()
+    public virtual void OnUpdate()
     {
     }
-    public virtual void OnExitMotion()
+    public virtual void OnLeave()
     {
         NormalizedTime = 0;
         EventAnims.Clear();
@@ -111,7 +115,12 @@ public class MotionBasic : MonoBehaviour
     {
         EventAnims.Add(new Tuple<float, Action>(triggerRate, eventFunc));
     }
-    public void SetAnimParamVerticalDegreeIndex(GameObject target, int animCount)
+    protected void SetTrigger(AnimActionID actionID)
+    {
+        mAnim.SetInteger(AnimParam.ActionType, (int)actionID);
+        mAnim.SetTrigger(AnimParam.DoActionTrigger);
+    }
+    protected void SetAnimParamVerticalDegreeIndex(GameObject target, int animCount)
     {
         //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
         Vector3 dir = target.transform.position - transform.position;

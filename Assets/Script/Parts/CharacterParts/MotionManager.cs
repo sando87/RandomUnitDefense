@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MotionManager : MonoBehaviour, IMapEditorObject
+public class MotionManager : MonoBehaviour
 {
     [SerializeField] MotionBasic StartMotion = null;
 
@@ -17,7 +17,7 @@ public class MotionManager : MonoBehaviour, IMapEditorObject
         MotionBasic[] motions = GetComponentsInChildren<MotionBasic>();
         foreach (MotionBasic motion in motions)
         {
-            motion.OnInitMotion();
+            motion.OnInit();
             mMotions[motion.GetInstanceID()] = motion;
         }
 
@@ -49,22 +49,30 @@ public class MotionManager : MonoBehaviour, IMapEditorObject
         if (Lock) return;
 
         if (CurrentMotionID != 0)
-            mMotions[CurrentMotionID].OnExitMotion();
+            mMotions[CurrentMotionID].OnLeave();
 
         CurrentMotionID = motionID;
-        CurrentMotion.OnEnterMotion();
+        CurrentMotion.OnEnter();
     }
 
     void Update() 
     {
         if (Lock) return;
 
-        if(CurrentMotionID != 0)
-            CurrentMotion.OnUpdateMotion();
-    }
+        foreach (var each in mMotions)
+        {
+            MotionBasic motion = each.Value;
+            if(CurrentMotionID == motion.ID)
+                continue;
 
-    public void OnInitMapEditor()
-    {
-        transform.GetChild(0).gameObject.SetActive(false);
+            if(motion.OnReady())
+            {
+                SwitchMotion(motion);
+                break;
+            }
+        }
+
+        if(CurrentMotionID != 0)
+            CurrentMotion.OnUpdate();
     }
 }

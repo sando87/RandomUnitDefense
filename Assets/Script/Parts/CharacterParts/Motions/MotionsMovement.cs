@@ -18,7 +18,7 @@ public class MotionsMovement : MotionBasic
     void Update()
     {
         // 캐릭터 좌우로 움직임.
-        float inputHori = mCharacterInput.HorizontalMove;
+        float inputHori = mCharacterInput.GetInput(InputType.KeyA);
         if (inputHori != 0 && mCoMoving == null && IsCurrent<MotionsIdles>())
         {
             mCoMoving = StartCoroutine(CoMoving());
@@ -31,7 +31,7 @@ public class MotionsMovement : MotionBasic
 
         while(true)
         {
-            float inputHori = mCharacterInput.HorizontalMove;
+            float inputHori = mCharacterInput.GetInput(InputType.KeyA);
             if (inputHori == 0)
                 break;
 

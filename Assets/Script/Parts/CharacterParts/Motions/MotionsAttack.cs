@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MotionsAttack : MotionBasic
 {
-    [SerializeField] CharacterInputType InputType = CharacterInputType.AttackNormal;
+    [SerializeField] InputType InputType = InputType.KeyA;
     [SerializeField] float HitPointRate = 0.15f;
     [SerializeField] int AttackDamage = 10;
     [SerializeField] float AttackDelay = 0.5f;

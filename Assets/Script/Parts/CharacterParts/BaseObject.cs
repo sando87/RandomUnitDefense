@@ -12,6 +12,10 @@ public class BaseObject : MonoBehaviour
     public CharacterInput CharacterInput { get { return GetComponentInChildren<CharacterInput>(); } }
     public MotionManager MotionManager { get { return GetComponentInChildren<MotionManager>(); } }
     public PlayerBase PlayerState { get { return GetComponentInChildren<PlayerBase>(); } }
+    public BuffProperty BuffProp { get { return GetComponentInChildren<BuffProperty>(); } }
+    public SpecProperty SpecProp { get { return GetComponentInChildren<SpecProperty>(); } }
+    public BuffController BuffCtrl { get { return GetComponentInChildren<BuffController>(); } }
+    public UnitBase UnitBase { get { return GetComponentInChildren<UnitBase>(); } }
 
     public int GetLayerMaskAttackable()
     {

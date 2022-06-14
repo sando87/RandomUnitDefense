@@ -83,11 +83,11 @@ public class RUIFormInGame : RUiForm
         LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + RGameSystemManager.LineMobLimit;
         RemainGauge.fillAmount = (float)GameMgr.LineMobCount / RGameSystemManager.LineMobLimit;
 
-        WeaponA.text = GameMgr.GetPower(UpgradeType.TypeA).ToString();
-        WeaponB.text = GameMgr.GetPower(UpgradeType.TypeB).ToString();
-        WeaponC.text = GameMgr.GetPower(UpgradeType.TypeC).ToString();
-        WeaponD.text = GameMgr.GetPower(UpgradeType.TypeD).ToString();
-        WeaponE.text = GameMgr.GetPower(UpgradeType.TypeE).ToString();
+        WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.TypeA).ToString();
+        WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.TypeB).ToString();
+        WeaponC.text = GameMgr.GetUpgradeCount(UpgradeType.TypeC).ToString();
+        WeaponD.text = GameMgr.GetUpgradeCount(UpgradeType.TypeD).ToString();
+        WeaponE.text = GameMgr.GetUpgradeCount(UpgradeType.TypeE).ToString();
 
         UpdateUnitDetail();
     }
@@ -102,10 +102,10 @@ public class RUIFormInGame : RUiForm
         }
 
         UnitDetailPanel.gameObject.SetActive(true);
-        string damage = selectedUnit.BasicSpec.attackDamageBasic + " + " + (selectedUnit.BasicSpec.damagePerUpgrade * selectedUnit.Level);
+        string damage = selectedUnit.Property.AttackDamage.ToString();
         DamageText.text = damage;
         DescriptionText.text = selectedUnit.SkillDescription;
-        UnitPhoto.sprite = selectedUnit.BasicSpec.unitPhoto;
+        UnitPhoto.sprite = selectedUnit.UnitPhoto;
     }
 
 

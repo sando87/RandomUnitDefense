@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class UnitBase : RGameObject
 {
-    [SerializeField] private SpecProperty Spec = new SpecProperty();
+    [SerializeField] Sprite _UnitPhoto; // UI에 사용되는 유닛 대표 이미지
+    public Sprite UnitPhoto { get { return _UnitPhoto; } }
 
     public Animator Anim { get; set; }
     public SpriteRenderer SR { get; set; }
@@ -13,7 +14,6 @@ public class UnitBase : RGameObject
 
     public Vector3 Center { get { return transform.position + new Vector3(0, Height * 0.5f, 0); } }
     public float Height { get { return RectCollider.size.y; } }
-    public ref readonly SpecProperty BasicSpec { get { return ref Spec; } }
     public UnitState CurrentState { get { return FSM.CurrentState; } }
     public int Level { get => LevelObject.GetLevel(); set => LevelObject.SetLevel(value); }
     private LevelDisplay LevelObject = null;
@@ -21,7 +21,7 @@ public class UnitBase : RGameObject
     public FiniteStateMachine FSM = new FiniteStateMachine();   //각 Motion(Idle, Move, Attack 등)을 스위칭 해주며 관리한다.
     public BuffController BuffCtrl = new BuffController();      //현재 유닛에 걸린 버프효과들 관리(지속시간이 지나면 소멸)
     public BuffProperty BuffValues = new BuffProperty();        //유닛의 버프로 제어가능한 속성
-    public UnitProperty Property = new UnitProperty();          //유닛의 기본 속성
+    public SpecProperty Property = new SpecProperty();          //유닛의 기본 속성
 
     public override void Init()
     {
@@ -30,8 +30,6 @@ public class UnitBase : RGameObject
         RectCollider = GetComponent<BoxCollider2D>();
 
         InstanceLevelDisplay();
-        Property.Init(this);
-        BuffCtrl.Init(this);
         FSM.InitMotions(this);
     }
     public override void Release() { }

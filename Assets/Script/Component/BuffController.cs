@@ -3,25 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffController
+public class BuffController : MonoBehaviour
 {
-    public UnitBase Owner { get; private set; }
+    private List<BuffBase> mCurrentBuffObjects = new List<BuffBase>();
+    private UnitBase Owner = null;
 
-    private List<BuffBase> CurrentBuffObjects = new List<BuffBase>();
-
-    public void Init(UnitBase owner)
+    void Start()
     {
-        Owner = owner;
+        Owner = this.GetBaseObject().UnitBase;
     }
 
     public void AddBuff(BuffBase buff)
     {
-        CurrentBuffObjects.Add(buff);
+        mCurrentBuffObjects.Add(buff);
     }
 
     public T FindBuff<T>() where T : BuffBase
     {
-        foreach (BuffBase buff in CurrentBuffObjects)
+        foreach (BuffBase buff in mCurrentBuffObjects)
         {
             if (buff.GetType() == typeof(T))
                 return buff as T;
@@ -31,7 +30,7 @@ public class BuffController
     public T[] FindBuffs<T>() where T : BuffBase
     {
         List<T> rets = new List<T>();
-        foreach(BuffBase buff in CurrentBuffObjects)
+        foreach(BuffBase buff in mCurrentBuffObjects)
         {
             if (buff.GetType() == typeof(T))
                 rets.Add(buff as T);
@@ -41,7 +40,7 @@ public class BuffController
 
     public void UpdateBuffObjects()
     {
-        BuffBase[] buffs = CurrentBuffObjects.ToArray();
+        BuffBase[] buffs = mCurrentBuffObjects.ToArray();
         foreach (BuffBase buff in buffs)
         {
             float prvPlayTime = buff.PlayTime;
@@ -56,34 +55,10 @@ public class BuffController
                 buff.EndBuff(Owner);
 
             if (buff.Duration < buff.PlayTime)
-                CurrentBuffObjects.Remove(buff);
+                mCurrentBuffObjects.Remove(buff);
         }
     }
 
-}
-
-public struct Percent //단위 [%]
-{
-    private float value;
-    private Percent(float val) { value = val; }
-    public float Value { get => value; } // return 0 ~ 100%
-    public float Rate { get => value * 0.01f; }  // return 0 ~ 1.0
-    public void SetZero() { value = 0; }
-    public static Percent operator +(Percent a, float b) { return new Percent(a.value + b); }
-    public static Percent operator -(Percent a, float b) { return new Percent(a.value - b); }
-}
-
-public class BuffProperty
-{
-    public Percent TotalHP;
-    public Percent Armor;
-    public Percent MoveSpeed;
-    public Percent AttackDamage;
-    public Percent AttackSpeed;
-    public Percent AttackRange;
-    public Percent Cooltime;
-    public Percent SkillRange;
-    public Percent SkillDuration;
 }
 
 public class BuffBase

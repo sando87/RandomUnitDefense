@@ -188,7 +188,7 @@ public class RGameSystemManager : RManager
 
         return list.Count > 0 ? list.ToArray() : null;
     }
-    public int GetPower(UpgradeType type) { return UpgradePower[type]; }
+    public int GetUpgradeCount(UpgradeType type) { return UpgradePower[type]; }
 
     // Unity System Input을 최초로 받아 게임에서 사용하기 쉬운형태로 변환 후 호출해줌
     // Collider 컴포넌트가 게임오브젝트에 활성화되어 있어야 함

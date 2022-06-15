@@ -27,7 +27,7 @@ public class MotionsMovement : MotionBasic
 
     IEnumerator CoMoving()
     {
-        SwitchMotionThis();
+        SwitchMotionToThis();
 
         while(true)
         {

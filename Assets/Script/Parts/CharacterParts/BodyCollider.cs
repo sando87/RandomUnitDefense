@@ -54,4 +54,11 @@ public class BodyCollider : MonoBehaviour
     {
         mBodyCollider.size = new Vector3(mOriSize.x * rate, mOriSize.y, mOriSize.z);
     }
+    public void TurnHeadTo(Vector3 dest)
+    {
+        Vector3 scale = mBaseObject.transform.localScale;
+        float dir = dest.x < transform.position.x ? -1 : 1;
+        scale.x = Mathf.Abs(scale.x) * dir;
+        mBaseObject.transform.localScale = scale;
+    }
 }

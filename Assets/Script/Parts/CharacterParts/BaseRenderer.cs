@@ -42,6 +42,18 @@ public class BaseRenderer : MonoBehaviour
         }
     }
 
+
+    public void FadeOut(float duration)
+    {
+        float alpha = 1;
+        DOTween.To(() => alpha, (_alpha) => { SetAlpha(_alpha); alpha = _alpha; }, 0, duration);
+    }
+    public void FadeIn(float duration)
+    {
+        float alpha = 0;
+        DOTween.To(() => alpha, (_alpha) => { SetAlpha(_alpha); alpha = _alpha; }, 1, duration);
+    }
+
     // 하얗게 반짝거리는 효과
     public void StartTwinkle()
     {

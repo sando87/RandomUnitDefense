@@ -1,50 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 
-public class MotionMove : MotionBase
+public class MotionMove : MotionBasic
 {
     [SerializeField] private AudioClip MoveSound = null;
 
-    public Vector3 Destination { get; set; }
-    public override bool IsReady() { return false; }
+    private Vector3 mDestination = Vector3.zero;
+    private Tween mMoveTween = null;
+
+    public override void OnInit()
+    {
+        base.OnInit();
+
+        UserInput userInput = mBaseObject.CharacterInput as UserInput;
+        if(userInput != null)
+        {
+            userInput.EventMove += OnMoveInput;
+        }
+    }
+
+    private void OnMoveInput(Vector3 destination)
+    {
+        mDestination = destination;
+        SwitchMotionToThis();
+    }
 
     public override void OnEnter()
     {
-        Unit.TurnHead(Destination);
-        Unit.Anim.SetTrigger("move");
-        StartCoroutine("MovingLoop");
+        base.OnEnter();
+
         RGame.Get<RSoundManager>().PlaySFX(MoveSound);
+        mBaseObject.Body.TurnHeadTo(mDestination);
+
+        float dist = (mDestination - mBaseObject.transform.position).ZeroZ().magnitude;
+        float duration = dist / mBaseObject.SpecProp.MoveSpeed;
+        mMoveTween = mBaseObject.transform.DOMove(mDestination, duration).OnComplete(() =>
+        {
+            mMoveTween = null;
+            SwitchMotionToIdle();
+        });
     }
     public override void OnLeave()
     {
-        StopCoroutine("MovingLoop");
-    }
-
-    public IEnumerator MovingLoop()
-    {
-        //dest지점으로 유닛 Smoothly 이동
-        Vector3 dir = Destination - transform.position;
-        dir.z = 0;
-        dir.Normalize();
-        while (true)
+        if (mMoveTween != null)
         {
-            Vector3 nextPos = transform.position + (dir * Unit.Property.MoveSpeed * Time.deltaTime);
-            Vector3 nextDir = Destination - nextPos;
-            nextDir.z = 0;
-            if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우
-            {
-                transform.position = Destination;
-                break;
-            }
-            else
-            {
-                transform.position = nextPos;
-            }
-            yield return null;
+            mMoveTween.Kill();
+            mMoveTween = null;
         }
-        Unit.FSM.ChangeState(UnitState.Idle);
+
+        base.OnLeave();
     }
 }
 

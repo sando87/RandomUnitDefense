@@ -4,74 +4,65 @@ using UnityEngine;
 
 public class UnitPowerGirl : UnitUser
 {
-    [SerializeField] private SimpleMissile SimpleMissile = null;
+    [SerializeField] MotionSingleAttack NormalAttack = null;
+    [SerializeField] SimpleMissile SimpleMissile = null;
 
-    public override void Init()
-    {
-        base.Init();
-        FSM.ChangeState(UnitState.Appear);
-        GetComponent<MotionMultiAttack>().EventFired = OnAttack;
-        GetComponent<MotionRandomShooting>().EventFired = OnSkill;
-    }
-    public override void Release()
-    {
-        base.Release();
-    }
+    [SerializeField] MotionSingleAttack SkillAttack = null;
+    [SerializeField] GameObject HitFloorPrefab = null;
+    [SerializeField][Range(0, 1)] float Accuracy = 0.25f;
 
-    public override string SkillDescription
+    void Start()
     {
-        get
-        {
-            return "일정 시간마다 총기 난사";
-        }
+        mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
+
+        NormalAttack.EventFired = OnAttack;
+        SkillAttack.EventFired = OnSkill;
     }
 
-    private void OnAttack(UnitBase target, int firePointIndex)
+    // public override string SkillDescription
+    // {
+    //     get
+    //     {
+    //         return "일정 시간마다 총기 난사";
+    //     }
+    // }
+
+    void OnAttack(Collider[] targets)
     {
-        UnitMob enemy = target as UnitMob;
-        SimpleMissile missile = Instantiate(SimpleMissile, Center, Quaternion.identity);
+        BaseObject target = targets[0].GetBaseObject();
+        SimpleMissile missile = Instantiate(SimpleMissile, mBaseObj.Body.Center, Quaternion.identity);
         missile.EventHit = OnHitMissile;
-        missile.Launch(enemy);
+        missile.Launch(target);
+    }
+    void OnHitMissile(BaseObject target)
+    {
+        target.Health.GetDamaged(mBaseObj);
     }
 
-    private void OnSkill(UnitBase[] targets)
+    private void OnSkill(Collider[] targets)
     {
-        foreach (UnitBase target in targets)
+        StartCoroutine(CoRandomShoot(targets));
+    }
+    IEnumerator CoRandomShoot(Collider[] targets)
+    {
+        GameObject hitFloorObject = Instantiate(HitFloorPrefab, mBaseObj.transform);
+        while(true)
         {
-            UnitMob mob = target as UnitMob;
-            mob.GetDamaged(Property);
-        }
-    }
+            foreach (Collider col in targets)
+            {
+                int percent = (int)(Accuracy * 100.0f);
+                if (UnityEngine.Random.Range(0, 100) < percent)
+                {
+                    col.GetBaseObject().Health.GetDamaged(mBaseObj);
+                }
+            }
 
-    private void OnHitMissile(UnitBase target)
-    {
-        UnitMob mob = target as UnitMob;
-        mob.GetDamaged(Property);
-        //ApplySlowDeBuff(mob);
-    }
-    private void ApplySlowDeBuff(UnitBase target)
-    {
-        DeBuffSlow buff = target.BuffCtrl.FindBuff<DeBuffSlow>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
-        else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
-    }
+            yield return null;
 
-    class DeBuffSlow : BuffBase
-    {
-        //적 이동속도 20% 감소 디버프(duration시간만큼 지속)
-        public DeBuffSlow(float duration) { Duration = duration; }
-        public override void StartBuff(UnitBase target)
-        {
-            target.SR.color = Color.blue;
-            target.BuffValues.MoveSpeed -= 20;
+            if(mBaseObj.MotionManager.CurrentMotion != SkillAttack)
+                break;
         }
-        public override void EndBuff(UnitBase target)
-        {
-            target.SR.color = Color.white;
-            target.BuffValues.MoveSpeed += 20;
-        }
-    }
 
+        Destroy(hitFloorObject);
+    }
 }

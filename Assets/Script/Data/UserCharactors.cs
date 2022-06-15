@@ -5,10 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UserCharactors", menuName = "Scriptable Object Asset/UserCharactors")]
 public class UserCharactors : ScriptableObjectDictionary<long, UserCharactor>
 {
-     protected override long GetID(UserCharactor data)
-     {
-         return data.ID;
-     }
+    private static UserCharactors mInst = null;
+    public static UserCharactors Inst
+    {
+        get
+        {
+            if (mInst == null)
+            {
+                mInst = Resources.Load<UserCharactors>("Database/UserCharactors");
+            }
+            return mInst;
+        }
+    }
+    protected override long GetID(UserCharactor data)
+    {
+        return data.ID;
+    }
 }
 
 [System.Serializable]
@@ -18,4 +30,5 @@ public class UserCharactor
     public string name;
     public Sprite image;
     public GameObject prefab;
+    public string skillDescription;
 }

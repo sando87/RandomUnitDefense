@@ -1,86 +1,107 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 
-public class MotionKeepAttack : MotionBase
+public class MotionKeepAttack : MotionBasic
 {
-    [SerializeField] private AudioClip AttackSound = null;
-    [SerializeField] private AnimationClip ReferenceAnim = null;
-    [SerializeField] private int AnimCount = 1;
+    [SerializeField] bool _Delayable = true;
+    [SerializeField][ShowIf("_Delayable")] float _Delaytime = 5.0f;
 
-    public Action<UnitBase> EventStart { get; set; }
-    public Action<UnitBase> EventUpdate { get; set; }
+    [SerializeField] bool _Detectable = false;
+    [SerializeField][ShowIf("_Detectable")] float _Range = 3.0f;
+
+    [SerializeField] float _Duration = 0;
+    [SerializeField] int _AnimCount = 1;
+
+    public Action<BaseObject> EventStart { get; set; }
+    public Action<BaseObject> EventUpdate { get; set; }
     public Action EventEnd { get; set; }
-    private UnitMob Target = null;
-    private float nextAttackTime = 0;
+    
+    private BaseObject mTarget = null;
 
-    public override bool IsReady()
+    private float Delaytime { get { return _Delaytime * mBaseObject.BuffProp.Cooltime; } }
+    private float DetectRange { get { return _Range * mBaseObject.BuffProp.SkillRange; } }
+    private float Duration { get { return _Duration * mBaseObject.BuffProp.SkillDuration; } }
+
+    public override void OnInit()
     {
-        if (nextAttackTime > Time.realtimeSinceStartup)
+        base.OnInit();
+
+        if (_Delayable)
+            SetCooltime(Delaytime);
+    }
+
+    public override bool OnReady()
+    {
+        if (_Delayable && IsCooltime())
             return false;
 
-        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Property.AttackRange);
-        if (mobs == null)
-            return false;
+        if (_Detectable)
+        {
+            Collider[] cols = mBaseObject.DetectAround(DetectRange, mBaseObject.GetLayerMaskAttackable());
+            if (cols.Length == 0)
+                return false;
 
-        Target = mobs[0];
+            mTarget = cols[0].GetBaseObject();
+        }
+
         return true;
     }
 
     public override void OnEnter()
     {
-        SetVerticalDegreeIndex();
-        Unit.Anim.SetTrigger("motionB");
+        if (mTarget != null)
+        {
+            mBaseObject.Body.TurnHeadTo(mTarget.transform.position);
+            SetAnimParamVerticalDegreeIndex(mTarget.transform.position, _AnimCount);
+        }
 
-        EventStart?.Invoke(Target);
+        base.OnEnter();
 
-        RGame.Get<RSoundManager>().PlaySFX(AttackSound);
+        EventStart?.Invoke(mTarget);
     }
     public override void OnUpdate()
     {
         base.OnUpdate();
 
-        if (Target == null || Target.CurrentState == UnitState.Death)
+        if(_Detectable) //감지 모드일 경우 타겟이 멀어지거나 죽거나 하면 idle로 전환
         {
-            Unit.FSM.ChangeState(UnitState.Idle);
+            if(mTarget == null || mTarget.Body.Lock || IsOutOfRange(mTarget))
+            {
+                SwitchMotionToIdle();
+                return;
+            }
         }
-        else if ((Target.transform.position - transform.position).magnitude > Unit.Property.AttackRange)
+
+        if(_Duration > 0) // 지속시간 모드일 경우 일정 시간이 지난 후 idle로 전환
         {
-            Unit.FSM.ChangeState(UnitState.Idle);
+            if(PlayTime > Duration)
+            {
+                SwitchMotionToIdle();
+                return;
+            }
         }
-        else
-        {
-            Unit.TurnHead(Target.transform.position);
-            SetVerticalDegreeIndex();
-            EventUpdate?.Invoke(Target);
-        }
+        
+        mBaseObject.Body.TurnHeadTo(mTarget.transform.position);
+        SetAnimParamVerticalDegreeIndex(mTarget.transform.position, _AnimCount);
+        EventUpdate?.Invoke(mTarget);
     }
     public override void OnLeave()
     {
         base.OnLeave();
-        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Property.AttackSpeed);
-        Unit.Anim.SetInteger("motionB_Num", 0);
+
+        mTarget = null;
+        if (_Delayable)
+            SetCooltime(Delaytime);
+
         EventEnd?.Invoke();
     }
-
-    private void SetAnimSpeed()
+    private bool IsOutOfRange(BaseObject target)
     {
-        float timePerAttack = 1 / Unit.Property.AttackSpeed;
-        if (timePerAttack < ReferenceAnim.length)
-            Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
-        else
-            Unit.Anim.SetFloat("attackSpeed", 1);
-    }
-
-    private void SetVerticalDegreeIndex()
-    {
-        //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-        float deg = Unit.CalcVerticalDegree(Target.transform.position);
-        int stepDegree = 180 / AnimCount;
-        int animIndex = (int)deg / stepDegree;
-        Unit.Anim.SetInteger("motionB_Num", animIndex + 1);
+        return (target.transform.position - mBaseObject.transform.position).magnitude > (DetectRange * 1.2f);
     }
 }
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MotionMoveAround : MotionBase
+public class MotionMoveAround : MotionBasic
 {
+    [SerializeField] float _MoveSpeed = 3.0f;
+
     private Vector3[] WayPoints = null;
     private int WayPointIndex = 0;
-
-    public override bool IsReady() { return false; }
 
     public override void OnInit()
     {
@@ -19,12 +19,13 @@ public class MotionMoveAround : MotionBase
 
     public override void OnEnter()
     {
-        Unit.Anim.SetTrigger("move");
+        base.OnEnter();
         StartCoroutine("MoveAround");
     }
     public override void OnLeave()
     {
         StopCoroutine("MoveAround");
+        base.OnLeave();
     }
 
     private IEnumerator MoveAround()
@@ -34,14 +35,15 @@ public class MotionMoveAround : MotionBase
         while (true)
         {
             Vector3 dest = WayPoints[WayPointIndex];
-            Unit.TurnHead(dest);
+            mBaseObject.Body.TurnHeadTo(dest);
 
             Vector3 dir = dest - transform.position;
             dir.z = 0;
             dir.Normalize();
             while (true)
             {
-                Vector3 nextPos = transform.position + (dir * Unit.Property.MoveSpeed * Time.deltaTime);
+                float moveSpeed = _MoveSpeed * mBaseObject.BuffProp.MoveSpeed;
+                Vector3 nextPos = transform.position + (dir * moveSpeed * Time.deltaTime);
                 Vector3 nextDir = dest - nextPos;
                 nextDir.z = 0;
                 if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우

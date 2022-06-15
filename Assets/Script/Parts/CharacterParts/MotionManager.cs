@@ -54,6 +54,10 @@ public class MotionManager : MonoBehaviour
         CurrentMotionID = motionID;
         CurrentMotion.OnEnter();
     }
+    public T FindMotion<T>() where T : MotionBasic
+    {
+        return GetComponentInChildren<T>();
+    }
 
     void Update() 
     {

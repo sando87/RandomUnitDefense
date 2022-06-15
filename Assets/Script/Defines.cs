@@ -96,9 +96,9 @@ public class SortingLayerID
 
 public struct Percent //단위 [%]
 {
-    private int value;
+    private int value; // ~ -100 ~ 0 ~ 100% ~
     public Percent(int val) { value = val; }
-    public int Value { get => value; } // return 0 ~ 100% ~
+    public int Value { get => value; }
     private float Factor { get => (1 + Mathf.Abs(value) * 0.01f); }  // return 1.0 ~ 2.0 ~
     private float Multiplier { get => value > 0 ? Factor : (1 / Factor); } // 100% => x2, -100% => x0.5
     public void SetZero() { value = 0; }

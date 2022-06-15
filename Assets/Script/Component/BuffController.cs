@@ -6,11 +6,11 @@ using UnityEngine;
 public class BuffController : MonoBehaviour
 {
     private List<BuffBase> mCurrentBuffObjects = new List<BuffBase>();
-    private UnitBase Owner = null;
+    private BaseObject mBaseObj = null;
 
     void Start()
     {
-        Owner = this.GetBaseObject().UnitBase;
+        mBaseObj = this.GetBaseObject();
     }
 
     public void AddBuff(BuffBase buff)
@@ -46,13 +46,13 @@ public class BuffController : MonoBehaviour
             float prvPlayTime = buff.PlayTime;
             buff.PlayTime += Time.deltaTime;
             if(prvPlayTime <= 0 && 0 < buff.PlayTime)
-                buff.StartBuff(Owner);
+                buff.StartBuff(mBaseObj);
 
             if(0 <= buff.PlayTime && buff.PlayTime < buff.Duration)
-                buff.UpdateBuff(Owner);
+                buff.UpdateBuff(mBaseObj);
 
             if(prvPlayTime <= buff.Duration && buff.Duration < buff.PlayTime)
-                buff.EndBuff(Owner);
+                buff.EndBuff(mBaseObj);
 
             if (buff.Duration < buff.PlayTime)
                 mCurrentBuffObjects.Remove(buff);
@@ -75,7 +75,7 @@ public class BuffBase
         PlayTime = 0.0001f;
     }
 
-    public virtual void StartBuff(UnitBase target) { }
-    public virtual void UpdateBuff(UnitBase target) { }
-    public virtual void EndBuff(UnitBase target) { }
+    public virtual void StartBuff(BaseObject target) { }
+    public virtual void UpdateBuff(BaseObject target) { }
+    public virtual void EndBuff(BaseObject target) { }
 }

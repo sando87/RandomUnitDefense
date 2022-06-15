@@ -94,7 +94,7 @@ public class RUIFormInGame : RUiForm
 
     private void UpdateUnitDetail()
     {
-        UnitUser selectedUnit = GameMgr.HUDObject.TargetUnit;
+        BaseObject selectedUnit = GameMgr.HUDObject.TargetUnit;
         if (selectedUnit == null || UpgradePanel.gameObject.activeSelf)
         {
             UnitDetailPanel.gameObject.SetActive(false);
@@ -102,10 +102,10 @@ public class RUIFormInGame : RUiForm
         }
 
         UnitDetailPanel.gameObject.SetActive(true);
-        string damage = selectedUnit.Property.AttackDamage.ToString();
+        string damage = selectedUnit.SpecProp.AttackDamage.ToString();
         DamageText.text = damage;
-        DescriptionText.text = selectedUnit.SkillDescription;
-        UnitPhoto.sprite = selectedUnit.UnitPhoto;
+        DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.UnitUser.ResourceID).skillDescription;
+        UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.UnitUser.ResourceID).image;
     }
 
 

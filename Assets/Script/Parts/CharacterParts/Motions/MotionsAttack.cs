@@ -49,7 +49,7 @@ public class MotionsAttack : MotionBasic
             if (targetHp != null)
             {
                 targetHp.LastHitPoint = mBaseObject.transform.position;
-                targetHp.OnDamaged(AttackDamage, mBaseObject);
+                targetHp.GetDamaged(mBaseObject);
             }
         }
 

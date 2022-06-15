@@ -11,7 +11,7 @@ public class MagicGun : MonoBehaviour
     [SerializeField] private float SplashRange = 0;
 
     public Vector3 Destination { get; set; }
-    public Action<UnitMob[]> EventHit { get; set; }
+    public Action<Vector3> EventHit { get; set; }
 
     // Start is called before the first frame update
     public void Launch()
@@ -42,9 +42,7 @@ public class MagicGun : MonoBehaviour
             yield return null;
         }
 
-        UnitMob[] units = RGame.Get<RGameSystemManager>().DetectAroundUnit<UnitMob>(Destination, SplashRange);
-        if(units != null && units.Length > 0)
-            EventHit?.Invoke(units);
+        EventHit?.Invoke(transform.position);
 
         HitEffect.gameObject.SetActive(true);
         Destroy(gameObject, 1.0f);

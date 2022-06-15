@@ -121,4 +121,33 @@ public static class InGameUtils
     {
         return (posA - posB).sqrMagnitude <= (distance * distance);
     }
+
+    public static Collider[] DetectAround(this BaseObject obj, float range, int layerMask)
+    {
+        return DetectAround(obj.transform.position, range, layerMask);
+    }
+    public static Collider[] DetectAround(Vector3 pos, float range, int layerMask)
+    {
+        return Physics.OverlapSphere(pos, range, layerMask);
+    }
+
+    public static bool DetectAround<T>(this BaseObject obj, float range, int layerMask, List<T> rets) where T : MonoBehaviour
+    {
+        bool isFounded = false;
+        Collider[] hitColliders = Physics.OverlapSphere(obj.transform.position, range, layerMask);
+        foreach (Collider hitCollider in hitColliders)
+        {
+            BaseObject baseObj = hitCollider.GetBaseObject();
+            if (baseObj == null || baseObj == obj)
+                continue;
+
+            T mob = hitCollider.GetComponentInBaseObject<T>();
+            if (mob != null)
+            {
+                rets.Add(mob);
+                isFounded = true;
+            }
+        }
+        return isFounded;
+    }
 }

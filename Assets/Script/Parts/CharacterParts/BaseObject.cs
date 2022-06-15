@@ -15,7 +15,7 @@ public class BaseObject : MonoBehaviour
     public BuffProperty BuffProp { get { return GetComponentInChildren<BuffProperty>(); } }
     public SpecProperty SpecProp { get { return GetComponentInChildren<SpecProperty>(); } }
     public BuffController BuffCtrl { get { return GetComponentInChildren<BuffController>(); } }
-    public UnitBase UnitBase { get { return GetComponentInChildren<UnitBase>(); } }
+    public UnitUser UnitUser { get { return GetComponentInChildren<UnitUser>(); } }
 
     public int GetLayerMaskAttackable()
     {

@@ -2,38 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class UnitUser : UnitBase, IUserInputReciever
+public class UnitUser : MonoBehaviour
 {
-    public abstract string SkillDescription { get; }
+    protected BaseObject mBaseObj = null;
 
-    public override void Init()
+    public long ResourceID { get; set; } = 0;
+
+    protected virtual void Awake()
     {
-        base.Init();
+        mBaseObj = this.GetBaseObject();
     }
-    public override void Release()
-    {
-        base.Release();
-    }
-
-    public virtual void OnClick()
-    {
-        //유닛 클릭시 Merge 선택창 UI 띄우기
-        RGame.Get<RSoundManager>().PlaySFX(AudioClipType.ShowHUD);
-        RGame.Get<RGameSystemManager>().HUDObject.Show(this);
-    }
-
-    public virtual void OnDragAndDrop(Vector3 dropWorldPos)
-    {
-        //Drag한 지점으로 유닛 이동
-        GetComponent<MotionMove>().Destination = dropWorldPos;
-        FSM.ChangeState(UnitState.Move);
-    }
-
-    public virtual void OnDragging(Vector3 draggingWorldPos)
-    {
-    }
-
-
-
-
 }

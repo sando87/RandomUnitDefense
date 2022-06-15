@@ -34,6 +34,7 @@ public class SpecProperty : MonoBehaviour
     public float Cooltime { get { return 0; } }
     public float SkillRange { get { return 0; } }
     public float SkillDuration { get { return 0; } }
+    public int Level { get { return _Spec.level; } set { _Spec.level = value; } }
 
 }
 

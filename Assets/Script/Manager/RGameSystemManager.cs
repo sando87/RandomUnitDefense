@@ -107,21 +107,22 @@ public class RGameSystemManager : RManager
         CreateRandomUnit();
         return true;
     }
-    public UnitBase CreateRandomUnit()
+    public BaseObject CreateRandomUnit()
     {
-        int randomIndex = UnityEngine.Random.Range(0, StartingMembers.Count);
-        string unitName = StartingMembers[randomIndex];
-        return CreateUnit(unitName);
+        int randomIndex = UnityEngine.Random.Range(0, UserCharactors.Inst.Count);
+        UserCharactor data = UserCharactors.Inst.GetDataOfIndex(randomIndex);
+        return CreateUnit(data.ID);
     }
-    public UnitBase CreateUnit(string unitName)
+    public BaseObject CreateUnit(long unitResourceID)
     {
         Vector3 pos = StageRoot.transform.position;
         pos.x += UnityEngine.Random.Range(-1.0f, 1.0f);
         pos.y += UnityEngine.Random.Range(-1.0f, 1.0f);
-        RGame.Get<RGameObjectManager>().AcquireRGameObject(unitName, out RGameObject obj);
-        obj.transform.SetParent(StageRoot.transform);
-        obj.transform.position = pos;
-        return obj.GetComponent<UnitBase>();
+        UserCharactor data = UserCharactors.Inst.GetDataOfId(unitResourceID);
+        GameObject obj = Instantiate(data.prefab, pos, Quaternion.identity, StageRoot.transform);
+        BaseObject baseObj = obj.GetBaseObject();
+        baseObj.UnitUser.ResourceID = unitResourceID;
+        return baseObj;
     }
     public bool RaiseMineralStep()
     {
@@ -167,26 +168,6 @@ public class RGameSystemManager : RManager
                 RGame.Get<RUIManager>().SwitchToForm<RUIFormLobby>(default);
             });
         }
-    }
-    public T[] DetectAroundUnit<T>(Vector3 pos, float range) where T : UnitBase
-    {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
-        if (hitColliders == null || hitColliders.Length <= 0)
-            return null;
-
-        List<T> list = new List<T>();
-        foreach (var hitCollider in hitColliders)
-        {
-            Vector2 dir = hitCollider.transform.position - pos;
-            if (dir.magnitude >= range)
-                continue;
-
-            T mob = hitCollider.GetComponent<T>();
-            if (mob != null && mob.CurrentState != UnitState.Death)
-                list.Add(mob);
-        }
-
-        return list.Count > 0 ? list.ToArray() : null;
     }
     public int GetUpgradeCount(UpgradeType type) { return UpgradePower[type]; }
 

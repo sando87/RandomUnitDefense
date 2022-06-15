@@ -31,10 +31,11 @@ public class Health : MonoBehaviour
         CurrentHealth = _MaxHealth;
     }
 
-    public void OnDamaged(int damage, BaseObject attacker)
+    public void GetDamaged(BaseObject attacker)
     {
         if(IsDead) return;
 
+        int damage = (int)attacker.SpecProp.AttackDamage;
         if(IsImmortal)
             damage = 0;
 
@@ -74,6 +75,11 @@ public class Health : MonoBehaviour
         }
 
         SoundPlayManager.Instance.PlayInGameSFX(_DeadSFX);
+    }
+
+    public void ShowHideHealthBar(bool isShow)
+    {
+        
     }
 
 }

@@ -8,11 +8,11 @@ public class SimpleMissile : MonoBehaviour
     [SerializeField] private GameObject Explosion = null;
     [SerializeField] private float MoveSpeed = 5;
 
-    public UnitBase Target { get; private set; }
-    public Action<UnitBase> EventHit { get; set; }
+    public BaseObject Target { get; private set; }
+    public Action<BaseObject> EventHit { get; set; }
 
     // Start is called before the first frame update
-    public void Launch(UnitBase target)
+    public void Launch(BaseObject target)
     {
         Target = target;
         StartCoroutine(MoveToDestination());
@@ -24,7 +24,7 @@ public class SimpleMissile : MonoBehaviour
         while (true)
         {
             if (Target != null)
-                destination = Target.Center;
+                destination = Target.Body.Center;
 
             Vector3 dir = destination - transform.position;
             dir.z = 0;

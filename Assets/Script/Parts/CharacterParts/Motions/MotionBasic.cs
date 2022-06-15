@@ -26,11 +26,13 @@ public class MotionBasic : MonoBehaviour
 
     private List<Tuple<float, Action>> EventAnims = new List<Tuple<float, Action>>();
     public float NormalizedTime { get; private set; } = 0;
+    public float PlayTime { get { return AnimState.ClipLength * NormalizedTime; } }
 
     protected BaseObject mBaseObject = null;
     protected Animator mAnim = null;
     protected CharacterInput mCharacterInput = null;
     protected MotionManager mMotionManager = null;
+    private float mCooltime = float.MaxValue;
 
     public virtual void OnInit()
     {
@@ -45,6 +47,7 @@ public class MotionBasic : MonoBehaviour
     }
     public virtual void OnEnter()
     {
+        SetTrigger(AnimActionType);
         StartCoroutine(OnCoUpdateMotion());
     }
     public virtual void OnUpdate()
@@ -70,7 +73,7 @@ public class MotionBasic : MonoBehaviour
     {
         mMotionManager.SwitchMotion<T>();
     }
-    public void SwitchMotionThis()
+    public void SwitchMotionToThis()
     {
         mMotionManager.SwitchMotion(ID);
     }
@@ -120,16 +123,25 @@ public class MotionBasic : MonoBehaviour
         mAnim.SetInteger(AnimParam.ActionType, (int)actionID);
         mAnim.SetTrigger(AnimParam.DoActionTrigger);
     }
-    protected void SetAnimParamVerticalDegreeIndex(GameObject target, int animCount)
+    protected void SetAnimParamVerticalDegreeIndex(Vector3 targetPos, int animCount)
     {
         //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-        Vector3 dir = target.transform.position - transform.position;
+        Vector3 dir = targetPos - transform.position;
         dir.z = 0;
         float deg = MyUtils.GetDegree(Vector3.up, dir.normalized);
         deg = Mathf.Abs(deg);
         int stepDegree = 180 / animCount;
         int animIndex = (int)deg / stepDegree;
         mAnim.SetInteger(AnimParam.VerticalDegreeIndex, animIndex + 1);
+    }
+
+    protected bool IsCooltime()
+    {
+        return mCooltime <= Time.realtimeSinceStartup;
+    }
+    protected void SetCooltime(float cooltimeSeconds)
+    {
+        mCooltime = Time.realtimeSinceStartup + cooltimeSeconds;
     }
 
 }

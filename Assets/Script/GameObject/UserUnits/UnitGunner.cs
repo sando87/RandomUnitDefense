@@ -11,48 +11,62 @@ public class UnitGunner : UnitUser
 
     private LaserAimming mLaserEffectObject = null;
 
-    public override void Init()
+    void Start()
     {
-        base.Init();
-        FSM.ChangeState(UnitState.Appear);
+        mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
+
         GetComponent<MotionSingleAttack>().EventFired = OnAttack;
         GetComponent<MotionKeepAttack>().EventStart = OnAttackBeamStart;
         GetComponent<MotionKeepAttack>().EventEnd = OnAttackBeamEnd;
     }
-    public override void Release()
-    {
-        base.Release();
-    }
 
-    public override string SkillDescription
-    {
-        get
-        {
-            return "근접 거리의 적 유닛은 Beam공격으로 감속 효과";
-        }
-    }
+    // public override string SkillDescription
+    // {
+    //     get
+    //     {
+    //         return "근접 거리의 적 유닛은 Beam공격으로 감속 효과";
+    //     }
+    // }
 
-    private void OnAttack(UnitBase target)
+    private void OnAttack(Collider[] targets)
     {
+        BaseObject target = targets[0].GetBaseObject();
         ShootProjectail(target);
     }
+    private void ShootProjectail(BaseObject target)
+    {
+        Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
+        dir.z = 0;
+        SpritesAnimator.Play(mBaseObj.Body.Center, IntroSprites);
 
-    private void OnAttackBeamStart(UnitBase target)
+        SpritesAnimator proj = SpritesAnimator.Play(mBaseObj.Body.Center, ProjSprites, true);
+        proj.transform.right = dir.normalized;
+        proj.transform.DOMove(target.Body.Center, 0.3f).OnComplete(() =>
+        {
+            SpritesAnimator.Play(proj.transform.position, OutroSprites);
+
+            target.Health.GetDamaged(mBaseObj);
+
+            Destroy(proj.gameObject);
+        });
+    }
+
+    private void OnAttackBeamStart(BaseObject target)
     {
         if(mLaserEffectObject != null)
         {
             Destroy(mLaserEffectObject.gameObject);
             mLaserEffectObject = null;
         }
-        mLaserEffectObject = LaserAimming.Play(Center, target.gameObject);
+        mLaserEffectObject = LaserAimming.Play(mBaseObj.Body.Center, target.gameObject);
         StartCoroutine(CoAttackBeam(target));
     }
-    IEnumerator CoAttackBeam(UnitBase target)
+    IEnumerator CoAttackBeam(BaseObject target)
     {
         while (true)
         {
             ApplySlowDeBuff(target);
-            yield return new WaitForSeconds(Property.SkillDuration - 0.1f);
+            yield return new WaitForSeconds(mBaseObj.SpecProp.SkillDuration - 0.1f);
         }
     }
     private void OnAttackBeamEnd()
@@ -64,46 +78,28 @@ public class UnitGunner : UnitUser
         }
         StopAllCoroutines();
     }
-    private void ApplySlowDeBuff(UnitBase target)
+    private void ApplySlowDeBuff(BaseObject target)
     {
         DeBuffSlow buff = target.BuffCtrl.FindBuff<DeBuffSlow>();
         if (buff != null)
             buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(Property.SkillDuration));
-    }
-    private void ShootProjectail(UnitBase target)
-    {
-        Vector3 dir = target.Center - Center;
-        dir.z = 0;
-        SpritesAnimator.Play(Center, IntroSprites);
-
-        SpritesAnimator proj = SpritesAnimator.Play(Center, ProjSprites, true);
-        proj.transform.right = dir.normalized;
-        proj.transform.DOMove(target.Center, 0.3f).OnComplete(() =>
-        {
-            SpritesAnimator.Play(proj.transform.position, OutroSprites);
-
-            UnitMob enemy = target as UnitMob;
-            enemy.GetDamaged(Property);
-
-            Destroy(proj.gameObject);
-        });
+            target.BuffCtrl.AddBuff(new DeBuffSlow(mBaseObj.SpecProp.SkillDuration));
     }
 
     class DeBuffSlow : BuffBase
     {
         //적 이동속도 20% 감소 디버프(duration시간만큼 지속)
         public DeBuffSlow(float duration) { Duration = duration; }
-        public override void StartBuff(UnitBase target)
+        public override void StartBuff(BaseObject target)
         {
-            target.SR.color = Color.green;
-            target.BuffValues.MoveSpeed -= 20;
+            target.Renderer.SetColor(Color.green);
+            target.BuffProp.MoveSpeed -= 20;
         }
-        public override void EndBuff(UnitBase target)
+        public override void EndBuff(BaseObject target)
         {
-            target.SR.color = Color.white;
-            target.BuffValues.MoveSpeed += 20;
+            target.Renderer.SetColor(Color.white);
+            target.BuffProp.MoveSpeed += 20;
         }
     }
 }

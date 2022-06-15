@@ -12,46 +12,37 @@ public class UnitSniper : UnitUser
 
     private SpritesAnimator mAimingEffect = null;
 
-    public override void Init()
+    void Start()
     {
-        base.Init();
-        FSM.ChangeState(UnitState.Appear);
-        GetComponent<MotionSingleAttack>().EventFired = OnAttack;
+        mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
+
         GetComponent<MotionKeepAttack>().EventStart = OnAttackBeamStart;
         GetComponent<MotionKeepAttack>().EventEnd = OnAttackBeamEnd;
-    }
-    public override void Release()
-    {
-        base.Release();
+        GetComponent<MotionSingleAttack>().EventFired = OnAttack;
     }
 
-    public override string SkillDescription
-    {
-        get
-        {
-            return "일정 확률로 크리티컬";
-        }
-    }
+    // public override string SkillDescription
+    // {
+    //     get
+    //     {
+    //         return "일정 확률로 크리티컬";
+    //     }
+    // }
 
-    private void OnAttack(UnitBase target)
-    {
-        ShootProjectail(target);
-    }
-
-    private void OnAttackBeamStart(UnitBase target)
+    private void OnAttackBeamStart(BaseObject target)
     {
         if(mAimingEffect != null)
         {
             Destroy(mAimingEffect.gameObject);
             mAimingEffect = null;
         }
-        mAimingEffect = SpritesAnimator.Play(target.Center, AimingSprites, false);
+        mAimingEffect = SpritesAnimator.Play(target.Body.Center, AimingSprites, false);
         mAimingEffect.transform.SetParent(target.transform);
         mAimingEffect.EventEnd = OnEndAiming;
     }
     private void OnEndAiming()
     {
-        FSM.ChangeState(UnitState.Attack);
+        mBaseObj.MotionManager.SwitchMotion<MotionSingleAttack>();
     }
     private void OnAttackBeamEnd()
     {
@@ -62,17 +53,22 @@ public class UnitSniper : UnitUser
         }
         StopAllCoroutines();
     }
-    private void ShootProjectail(UnitBase target)
+
+    private void OnAttack(Collider[] targets)
     {
-        Vector3 dir = target.Center - Center;
+        BaseObject target = targets[0].GetBaseObject();
+        ShootProjectail(target);
+    }
+    private void ShootProjectail(BaseObject target)
+    {
+        Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
         dir.z = 0;
 
-        SpritesAnimator trail = SpritesAnimator.Play(Center, LaserSprites);
+        SpritesAnimator trail = SpritesAnimator.Play(mBaseObj.Body.Center, LaserSprites);
         trail.transform.right = dir.normalized;
 
-        SpritesAnimator.Play(target.Center, OutroSprites);
+        SpritesAnimator.Play(target.Body.Center, OutroSprites);
 
-        UnitMob enemy = target as UnitMob;
-        enemy.GetDamaged(Property);
+        target.Health.GetDamaged(mBaseObj);
     }
 }

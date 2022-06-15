@@ -16,8 +16,8 @@ public class HUDFunctions : MonoBehaviour
     [SerializeField] private GameObject Refund_OFF = null;
 
     RGameSystemManager GameMgr = null;
-    public UnitUser TargetUnit { get; private set; } = null;
-    List<UnitUser> DetectedUnits = new List<UnitUser>();
+    public BaseObject TargetUnit { get; private set; } = null;
+    List<BaseObject> DetectedUnits = new List<BaseObject>();
 
 
     private void Start()
@@ -42,10 +42,10 @@ public class HUDFunctions : MonoBehaviour
         MergeChange_OFF.SetActive(DetectedUnits.Count < MergeCountForChange);
     }
 
-    public void Show(UnitUser unit)
+    public void Show(BaseObject unit)
     {
         TargetUnit = unit;
-        Vector3 pos = TargetUnit.Center;
+        Vector3 pos = TargetUnit.Body.Center;
         pos.z = -1;
         transform.position = pos;
         transform.SetParent(TargetUnit.transform);
@@ -63,11 +63,12 @@ public class HUDFunctions : MonoBehaviour
     private void DetectSameUnit()
     {
         DetectedUnits.Clear();
-        UnitUser[] units = GameMgr.DetectAroundUnit<UnitUser>(TargetUnit.transform.position, DetectRange);
-        foreach(UnitUser unit in units)
+        Collider[] cols = InGameUtils.DetectAround(TargetUnit.transform.position, DetectRange, 1 << TargetUnit.gameObject.layer);
+        foreach(Collider col in cols)
         {
-            if (unit.PrefabID == TargetUnit.PrefabID && unit.Level == TargetUnit.Level)
-                DetectedUnits.Add(unit);
+            BaseObject obj = col.GetBaseObject();
+            if (obj.UnitUser.ResourceID == TargetUnit.UnitUser.ResourceID && obj.SpecProp.Level == TargetUnit.SpecProp.Level)
+                DetectedUnits.Add(obj);
         }
     }
 
@@ -83,11 +84,11 @@ public class HUDFunctions : MonoBehaviour
             return distA > distB ? 1 : -1;
         });
 
-        DetectedUnits[0].FSM.ChangeState(UnitState.Disappear);
-        DetectedUnits[1].FSM.ChangeState(UnitState.Disappear);
-        DetectedUnits[2].FSM.ChangeState(UnitState.Disappear);
-        UnitBase unit = GameMgr.CreateUnit(TargetUnit.PrefabID);
-        unit.Level = TargetUnit.Level + 1;
+        DetectedUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
+        DetectedUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
+        DetectedUnits[2].MotionManager.SwitchMotion<MotionDisappear>();
+        BaseObject newUnit = GameMgr.CreateUnit(TargetUnit.UnitUser.ResourceID);
+        newUnit.SpecProp.Level = TargetUnit.SpecProp.Level + 1;
         Hide();
     }
     private void OnClickChange()
@@ -102,16 +103,16 @@ public class HUDFunctions : MonoBehaviour
             return distA > distB ? 1 : -1;
         });
 
-        DetectedUnits[0].FSM.ChangeState(UnitState.Disappear);
-        DetectedUnits[1].FSM.ChangeState(UnitState.Disappear);
-        UnitBase unit = GameMgr.CreateRandomUnit();
-        unit.Level = TargetUnit.Level;
+        DetectedUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
+        DetectedUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
+        BaseObject unit = GameMgr.CreateRandomUnit();
+        unit.SpecProp.Level = TargetUnit.SpecProp.Level;
         Hide();
     }
     private void OnClickRefund()
     {
-        TargetUnit.FSM.ChangeState(UnitState.Disappear);
-        GameMgr.AddMinerals(100 * TargetUnit.Level * TargetUnit.Level);
+        TargetUnit.MotionManager.SwitchMotion<MotionDisappear>();
+        GameMgr.AddMinerals(100 * TargetUnit.SpecProp.Level * TargetUnit.SpecProp.Level);
         Hide();
     }
 

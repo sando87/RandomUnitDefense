@@ -2,82 +2,115 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
-
-public class MotionSingleAttack : MotionBase
+public class MotionSingleAttack : MotionBasic
 {
-    [SerializeField] private AudioClip AttackSound = null;
-    [SerializeField] private AnimationClip ReferenceAnim = null;
-    [SerializeField] private int AnimCount = 1;
-    [Range(0, 1)][SerializeField] private float FirePoint = 0.3f; //0 ~ 1
+    [SerializeField] bool _IsSkillType = false;
 
-    public Action<UnitBase> EventFired { get; set; }
-    private UnitMob Target = null;
-    private float nextAttackTime = 0;
+    [SerializeField] bool _Delayable = true;
+    [SerializeField][ShowIf("_Delayable")] float _Delaytime = 5.0f;
 
-    public override bool IsReady()
+    [SerializeField] bool _Detectable = false;
+    [SerializeField][ShowIf("_Detectable")] float _Range = 3.0f;
+
+    [SerializeField] int _AnimCount = 1;
+    [Range(0, 1)][SerializeField] float[] _FirePoints = null;
+
+    public Action<Collider[]> EventFired { get; set; }
+    private Collider[] mTargets = null;
+
+    public override void OnInit()
     {
-        if (nextAttackTime > Time.realtimeSinceStartup)
+        base.OnInit();
+
+        if(_Delayable)
+            SetCooltime(Delaytime);
+    }
+
+    public override bool OnReady()
+    {
+        if (_Delayable && IsCooltime())
             return false;
 
-        if(Target != null && Target.CurrentState != UnitState.Death)
+        if (_Detectable)
         {
-            if ((Target.transform.position - transform.position).magnitude < Unit.Property.AttackRange)
-                return true;
-            else
-                Target = null;
+            Collider[] cols = mBaseObject.DetectAround(DetectRange, mBaseObject.GetLayerMaskAttackable());
+            if (cols.Length == 0)
+                return false;
+
+            mTargets = cols;
         }
 
-        UnitMob[] mobs = Unit.DetectAround<UnitMob>(Unit.Property.AttackRange);
-        if (mobs == null)
-            return false;
-
-        Target = mobs[0];
         return true;
     }
 
     public override void OnEnter()
     {
-        Unit.TurnHead(Target.transform.position);
+        if(mTargets != null && mTargets.Length > 0)
+        {
+            BaseObject target = mTargets[0].GetBaseObject();
+            mBaseObject.Body.TurnHeadTo(target.transform.position);
+            SetAnimParamVerticalDegreeIndex(target.transform.position, _AnimCount);
+        }
 
-        //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-        float deg = Unit.CalcVerticalDegree(Target.transform.position);
-        int stepDegree = 180 / AnimCount;
-        int animIndex = (int)deg / stepDegree;
-        Unit.Anim.SetTrigger("attack" + (animIndex + 1));
+        base.OnEnter();
 
-        SetAnimSpeed();
-        float animSpeed = Unit.Anim.GetFloat("attackSpeed");
-        float animPlayTime = ReferenceAnim.length / animSpeed;
-        Invoke("OnFired", animPlayTime * FirePoint);
-        Invoke("OnAnimationEnd", animPlayTime);
+        StartCoroutine(CoUpdate());
+    }
+    IEnumerator CoUpdate()
+    {
+        foreach(float firePoint in _FirePoints)
+        {
+            yield return new WaitUntil(() => firePoint < NormalizedTime);
+            DoAttack();
+        }
+        yield return new WaitUntil(() => 1.0f <= NormalizedTime);
+        SwitchMotionToIdle();
     }
     public override void OnLeave()
     {
-        CancelInvoke("OnFired");
-        CancelInvoke("OnAnimationEnd");
+        base.OnLeave();
+        mTargets = null;
+        StopAllCoroutines();
     }
 
-    private void OnFired()
+    private void DoAttack()
     {
-        RGame.Get<RSoundManager>().PlaySFX(AttackSound);
-        if (Target == null)
-            return;
+        if (_Delayable)
+            SetCooltime(Delaytime);
 
-        nextAttackTime = Time.realtimeSinceStartup + (1 / Unit.Property.AttackSpeed);
-        EventFired?.Invoke(Target);
+        EventFired?.Invoke(mTargets);
     }
-    private void OnAnimationEnd()
+
+    private float Delaytime
     {
-        Unit.FSM.ChangeState(UnitState.Idle);
+        get
+        {
+            if (_IsSkillType)
+            {
+                return _Delaytime * mBaseObject.BuffProp.Cooltime;
+            }
+            else
+            {
+                return 1 / ((1 / _Delaytime) * mBaseObject.BuffProp.AttackSpeed);
+            }
+        }
     }
-    private void SetAnimSpeed()
+
+    private float DetectRange
     {
-        float timePerAttack = 1 / Unit.Property.AttackSpeed;
-        if (timePerAttack < ReferenceAnim.length)
-            Unit.Anim.SetFloat("attackSpeed", ReferenceAnim.length / timePerAttack);
-        else
-            Unit.Anim.SetFloat("attackSpeed", 1);
+        get
+        {
+            if (_IsSkillType)
+            {
+                return _Range * mBaseObject.BuffProp.SkillRange;
+            }
+            else
+            {
+                return _Range * mBaseObject.BuffProp.AttackRange;
+            }
+        }
     }
 }
 

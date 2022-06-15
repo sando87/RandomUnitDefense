@@ -38,12 +38,12 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Text DamageText = null;
     [SerializeField] private Text DescriptionText = null;
 
-    private RGameSystemManager GameMgr = null;
+    private InGameSystem GameMgr = null;
 
     public override void Init()
     {
         base.Init();
-        GameMgr = RGame.Get<RGameSystemManager>();
+        GameMgr = InGameSystem.Instance;
     }
 
     public override void BindEvent()
@@ -63,7 +63,6 @@ public class RUIFormInGame : RUiForm
     public override void Show()
     {
         base.Show();
-        RGame.Get<RSoundManager>().PlayBackgroundMusic(InGameBackround);
     }
 
 
@@ -80,8 +79,8 @@ public class RUIFormInGame : RUiForm
         Mineral.text = GameMgr.Mineral.ToString();
         WaveNumber.text = "Wave " + GameMgr.WaveNumber.ToString();
         RemainTimer.text = TimeSpan.FromSeconds(GameMgr.RemainSecond).ToString(@"mm\:ss");
-        LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + RGameSystemManager.LineMobLimit;
-        RemainGauge.fillAmount = (float)GameMgr.LineMobCount / RGameSystemManager.LineMobLimit;
+        LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + InGameSystem.LineMobLimit;
+        RemainGauge.fillAmount = (float)GameMgr.LineMobCount / InGameSystem.LineMobLimit;
 
         WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.TypeA).ToString();
         WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.TypeB).ToString();
@@ -104,8 +103,8 @@ public class RUIFormInGame : RUiForm
         UnitDetailPanel.gameObject.SetActive(true);
         string damage = selectedUnit.SpecProp.AttackDamage.ToString();
         DamageText.text = damage;
-        DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.UnitUser.ResourceID).skillDescription;
-        UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.UnitUser.ResourceID).image;
+        DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
+        UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
     }
 
 

@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class RUIFormLobby : RUiForm
 {
-    [SerializeField] private AudioClip LobbyBackround = null;
-
     [SerializeField] private Button UnitCardSelector = null;
     [SerializeField] private Button Shop = null;
     [SerializeField] private Button Setting = null;
@@ -34,14 +32,13 @@ public class RUIFormLobby : RUiForm
     public override void Show()
     {
         base.Show();
-        RGame.Get<RSoundManager>().PlayBackgroundMusic(LobbyBackround);
     }
     #endregion
 
     #region event handler
     private void OnSelector()
     {
-        RGame.Get<RUIManager>().SwitchToForm<RUIFormUnitSelector>(default);
+        RUIManager.Instance.SwitchToForm<RUIFormUnitSelector>(default);
     }
     private void OnShop()
     {
@@ -53,13 +50,8 @@ public class RUIFormLobby : RUiForm
     }
     private void OnGameStart()
     {
-        List<string> userUnits = new List<string>();
-        UnitUser[] units = RGame.Get<RGameObjectManager>().GetPrefabsInfo<UnitUser>();
-        foreach (UnitUser unit in units)
-            userUnits.Add(unit.name);
-
-        RGame.Get<RGameSystemManager>().StartGame(userUnits.ToArray());
-        RGame.Get<RUIManager>().SwitchToForm<RUIFormInGame>(default);
+        InGameSystem.Instance.StartGame();
+        RUIManager.Instance.SwitchToForm<RUIFormInGame>(default);
     }
     private void OnClickGoldUp()
     {

@@ -14,7 +14,7 @@ public class RUiMessageBox : MonoBehaviour
 
     public static RUiMessageBox PopUp(string message, Action<bool> eventReturn)
     {
-        RUIManager mgr = RGame.Get<RUIManager>();
+        RUIManager mgr = RUIManager.Instance;
         GameObject prefab = (GameObject)Resources.Load("Prefabs/Ui/UIMessageBox", typeof(GameObject));
         GameObject objMenu = GameObject.Instantiate(prefab, mgr.Canvas.transform);
         RUiMessageBox box = objMenu.GetComponent<RUiMessageBox>();

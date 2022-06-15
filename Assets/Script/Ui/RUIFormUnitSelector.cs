@@ -87,11 +87,11 @@ public class RUIFormUnitSelector : RUiForm
         //현재 수정된 정보를 file로 저장
         //lobby쪽 선택된 영웅 정보에 set
 
-        RGame.Get<RUIManager>().SwitchToForm<RUIFormLobby>(default);
+        RUIManager.Instance.SwitchToForm<RUIFormLobby>(default);
     }
     private void OnCancle()
     {
-        RGame.Get<RUIManager>().SwitchToForm<RUIFormLobby>(default);
+        RUIManager.Instance.SwitchToForm<RUIFormLobby>(default);
     }
     #endregion
 

@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a7102dec795450486e188711d27238, type: 3}
   m_Name: UserCharactors
   m_EditorClassIdentifier: 
-  DataList: []
+  DataList:
+  - ID: 637908139998713110
+    name: 
+    image: {fileID: 0}
+    prefab: {fileID: 0}
+    skillDescription: 
+  - ID: 637908139994254920
+    name: 
+    image: {fileID: 0}
+    prefab: {fileID: 0}
+    skillDescription: 
+  - ID: 637908139987952620
+    name: 
+    image: {fileID: 0}
+    prefab: {fileID: 0}
+    skillDescription: 

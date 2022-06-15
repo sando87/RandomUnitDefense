@@ -15,17 +15,14 @@ public class HUDFunctions : MonoBehaviour
     [SerializeField] private GameObject Refund_ON = null;
     [SerializeField] private GameObject Refund_OFF = null;
 
-    RGameSystemManager GameMgr = null;
+    InGameSystem GameMgr = null;
     public BaseObject TargetUnit { get; private set; } = null;
     List<BaseObject> DetectedUnits = new List<BaseObject>();
 
 
     private void Start()
     {
-        GameMgr = RGame.Get<RGameSystemManager>();
-        MergeLevelUP_ON.GetComponent<HUDFunction>().EventClick = OnClickLevelUp;
-        MergeChange_ON.GetComponent<HUDFunction>().EventClick = OnClickChange;
-        Refund_ON.GetComponent<HUDFunction>().EventClick = OnClickRefund;
+        GameMgr = InGameSystem.Instance;
         Refund_ON.SetActive(true);
         Refund_OFF.SetActive(false);
 
@@ -67,12 +64,12 @@ public class HUDFunctions : MonoBehaviour
         foreach(Collider col in cols)
         {
             BaseObject obj = col.GetBaseObject();
-            if (obj.UnitUser.ResourceID == TargetUnit.UnitUser.ResourceID && obj.SpecProp.Level == TargetUnit.SpecProp.Level)
+            if (obj.Unit.ResourceID == TargetUnit.Unit.ResourceID && obj.SpecProp.Level == TargetUnit.SpecProp.Level)
                 DetectedUnits.Add(obj);
         }
     }
 
-    private void OnClickLevelUp()
+    public void OnClickLevelUp()
     {
         if (DetectedUnits.Count < MergeCountForLevelUP)
             return;
@@ -87,11 +84,11 @@ public class HUDFunctions : MonoBehaviour
         DetectedUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
         DetectedUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
         DetectedUnits[2].MotionManager.SwitchMotion<MotionDisappear>();
-        BaseObject newUnit = GameMgr.CreateUnit(TargetUnit.UnitUser.ResourceID);
+        BaseObject newUnit = GameMgr.CreateUnit(TargetUnit.Unit.ResourceID);
         newUnit.SpecProp.Level = TargetUnit.SpecProp.Level + 1;
         Hide();
     }
-    private void OnClickChange()
+    public void OnClickChange()
     {
         if (DetectedUnits.Count < MergeCountForChange)
             return;
@@ -109,7 +106,7 @@ public class HUDFunctions : MonoBehaviour
         unit.SpecProp.Level = TargetUnit.SpecProp.Level;
         Hide();
     }
-    private void OnClickRefund()
+    public void OnClickRefund()
     {
         TargetUnit.MotionManager.SwitchMotion<MotionDisappear>();
         GameMgr.AddMinerals(100 * TargetUnit.SpecProp.Level * TargetUnit.SpecProp.Level);

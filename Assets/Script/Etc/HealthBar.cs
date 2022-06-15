@@ -42,7 +42,7 @@ public class HealthBar : MonoBehaviour
         HealthBarGreen.transform.localScale = localScale;
         HealthBarRed.transform.localScale = localScale;
         CancelInvoke();
-        Invoke("HideBar", RSystemConfig.HealthBarDisplaySec);
+        Invoke("HideBar", 5);
     }
 
     public void HideBar()

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6377826677833743761}
   - component: {fileID: 6377826677833743760}
   - component: {fileID: 6377826677833743763}
+  - component: {fileID: 622547147699294387}
   m_Layer: 0
   m_Name: Motions
   m_TagString: Untagged
@@ -61,12 +62,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: 
+    StateName: idle
     AnimatorParamActionType: 0
-    AnimationClipName: 
-    MotionName: 
+    AnimationClipName: idle
+    MotionName: MotionAppear
     LayerIndex: 0
-    ClipLength: 0
+    ClipLength: 0.18333334
   AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
     type: 3}
 --- !u!114 &6377826677833743761
@@ -82,12 +83,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: 
+    StateName: idle
     AnimatorParamActionType: 0
-    AnimationClipName: 
-    MotionName: 
+    AnimationClipName: idle
+    MotionName: MotionIdle
     LayerIndex: 0
-    ClipLength: 0
+    ClipLength: 0.18333334
 --- !u!114 &6377826677833743760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,12 +102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: 
-    AnimatorParamActionType: 0
-    AnimationClipName: 
-    MotionName: 
+    StateName: move
+    AnimatorParamActionType: 1
+    AnimationClipName: move
+    MotionName: MotionMove
     LayerIndex: 0
-    ClipLength: 0
+    ClipLength: 0.75
 --- !u!114 &6377826677833743763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,14 +121,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: 
+    StateName: idle
     AnimatorParamActionType: 0
-    AnimationClipName: 
-    MotionName: 
+    AnimationClipName: idle
+    MotionName: MotionDisappear
     LayerIndex: 0
-    ClipLength: 0
+    ClipLength: 0.18333334
   AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
     type: 3}
+--- !u!114 &622547147699294387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377826677833743773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a93d6e88bccb147f1b9c8cc4dd4acb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: actionA1
+    AnimatorParamActionType: 3
+    AnimationClipName: actionA1
+    MotionName: MotionActionSingle
+    LayerIndex: 0
+    ClipLength: 1.3333334
+  _IsSkillType: 0
+  _Delayable: 0
+  _Delaytime: 5
+  _Detectable: 0
+  _Range: 3
+  _AnimCount: 1
+  _FirePoints: []
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,49 +211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502df12f5b8af45328ec488e1479d896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6377826678974524266
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6377826678974524267}
-  - component: {fileID: 6377826678974524264}
-  m_Layer: 0
-  m_Name: Input
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6377826678974524267
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377826678974524266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6377826679273638807}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6377826678974524264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377826678974524266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b650a48e46704c45ae2a159248bc65c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6377826679025231451
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +220,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6377826679025231448}
-  - component: {fileID: 6377826679025231455}
   - component: {fileID: 6377826679025231454}
   - component: {fileID: 6377826679025231449}
   m_Layer: 0
@@ -260,25 +243,6 @@ Transform:
   m_Father: {fileID: 6377826679273638807}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6377826679025231455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377826679025231451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimState:
-    StateName: 
-    AnimatorParamActionType: 0
-    AnimationClipName: 
-    MotionName: 
-    LayerIndex: 0
-    ClipLength: 0
 --- !u!61 &6377826679025231454
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -332,6 +296,7 @@ GameObject:
   - component: {fileID: 6377826679273638803}
   - component: {fileID: 6377826679273638802}
   - component: {fileID: 6377826679273638813}
+  - component: {fileID: 9000639117217138068}
   m_Layer: 0
   m_Name: MarineBasic
   m_TagString: Untagged
@@ -354,7 +319,6 @@ Transform:
   - {fileID: 6377826679025231448}
   - {fileID: 6377826677833743762}
   - {fileID: 6377826677845741547}
-  - {fileID: 6377826678974524267}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -452,6 +416,18 @@ MonoBehaviour:
     cooltime: 0
     skillRange: 0
     skillDuration: 0
+--- !u!114 &9000639117217138068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377826679273638812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b650a48e46704c45ae2a159248bc65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9202556232064597003
 GameObject:
   m_ObjectHideFlags: 0

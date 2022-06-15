@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class MotionBase : MonoBehaviour
 {
-    [SerializeField] AnimatorStateSelector AnimState = new AnimatorStateSelector();
+    [StateSelector][SerializeField]
+    public AnimatorStateSelector AnimState = new AnimatorStateSelector();
 
     public int ID { get { return GetInstanceID(); } }
     public AnimActionID AnimActionType { get { return (AnimActionID)AnimState.AnimatorParamActionType; } }
@@ -138,7 +139,7 @@ public class AnimatorStateSelector
 {
     // Inspector에서 변경하면 액션ID와 애니메이션클립이름까지 같이 세팅된다.(유니티 에디터에서 세팅해준 후 건드리지 않는 데이터)
     // StateSelectorAttribute.cs
-    [StateSelector][SerializeField] public string StateName = ""; //인스펙터에서 세팅됨(런타임시는 readonly)
+    [HideInInspector][SerializeField] public string StateName = ""; //인스펙터에서 세팅됨(런타임시는 readonly)
     [HideInInspector][SerializeField] public int AnimatorParamActionType = 0; //인스펙터에서 세팅됨(런타임시는 readonly)
     [HideInInspector][SerializeField] public string AnimationClipName = ""; //인스펙터에서 세팅됨(런타임시는 readonly)
     [HideInInspector][SerializeField] public string MotionName = ""; //인스펙터에서 세팅됨(런타임시는 readonly)

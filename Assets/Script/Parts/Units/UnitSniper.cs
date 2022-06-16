@@ -69,6 +69,6 @@ public class UnitSniper : UnitBase
 
         SpritesAnimator.Play(target.Body.Center, OutroSprites);
 
-        target.Health.GetDamaged(mBaseObj);
+        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
     }
 }

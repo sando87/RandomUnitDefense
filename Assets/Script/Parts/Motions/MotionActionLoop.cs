@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class MotionActionLoop : MotionBase
 {
-    [SerializeField] bool _Delayable = true;
-    [SerializeField][ShowIf("_Delayable")] float _Delaytime = 5.0f;
+    [SerializeField] bool _IsCooltime = true;
+    [SerializeField][ShowIf("_IsCooltime")] float _Delaytime = 5.0f;
 
     [SerializeField] bool _Detectable = false;
     [SerializeField][ShowIf("_Detectable")] float _Range = 3.0f;
@@ -30,13 +30,13 @@ public class MotionActionLoop : MotionBase
     {
         base.OnInit();
 
-        if (_Delayable)
+        if (_IsCooltime)
             SetCooltime(Delaytime);
     }
 
     public override bool OnReady()
     {
-        if (_Delayable && IsCooltime())
+        if (_IsCooltime && IsCooltime())
             return false;
 
         if (_Detectable)
@@ -94,7 +94,7 @@ public class MotionActionLoop : MotionBase
         base.OnLeave();
 
         mTarget = null;
-        if (_Delayable)
+        if (_IsCooltime)
             SetCooltime(Delaytime);
 
         EventEnd?.Invoke();

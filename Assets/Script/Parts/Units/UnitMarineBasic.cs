@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UnitMarineBasic : UnitBase
 {
+    [SerializeField] float _BuffRange = 3.0f;
+    float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
+
     [SerializeField] private GameObject HitParticle = null;
     [SerializeField] private GameObject BuffEffect = null;
 
@@ -25,7 +28,7 @@ public class UnitMarineBasic : UnitBase
     private void OnAttack(Collider[] targets)
     {
         BaseObject target = targets[0].GetBaseObject();
-        target.Health.GetDamaged(mBaseObj);
+        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
 
         Vector3 pos = MyUtils.Random(target.Body.Center, 0.1f);
         GameObject obj = Instantiate(HitParticle, pos, Quaternion.identity);
@@ -37,7 +40,7 @@ public class UnitMarineBasic : UnitBase
         while(true)
         {
             yield return newWaitForSeconds.Cache(0.5f);
-            Collider[] cols = mBaseObj.DetectAround(mBaseObj.SpecProp.SkillRange, 1 << mBaseObj.gameObject.layer);
+            Collider[] cols = mBaseObj.DetectAround(BuffRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
                 ApplyAttackSpeedUpBuff(col.GetBaseObject());
         }

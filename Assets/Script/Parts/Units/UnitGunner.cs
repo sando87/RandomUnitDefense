@@ -9,6 +9,9 @@ public class UnitGunner : UnitBase
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
+    [SerializeField] float _SlowDuration = 1.0f;
+    float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
+
     private LaserAimming mLaserEffectObject = null;
 
     void Start()
@@ -45,7 +48,7 @@ public class UnitGunner : UnitBase
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
-            target.Health.GetDamaged(mBaseObj);
+            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
 
             Destroy(proj.gameObject);
         });
@@ -66,7 +69,7 @@ public class UnitGunner : UnitBase
         while (true)
         {
             ApplySlowDeBuff(target);
-            yield return new WaitForSeconds(mBaseObj.SpecProp.SkillDuration - 0.1f);
+            yield return new WaitForSeconds(SlowDuration);
         }
     }
     private void OnAttackBeamEnd()
@@ -84,7 +87,7 @@ public class UnitGunner : UnitBase
         if (buff != null)
             buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(mBaseObj.SpecProp.SkillDuration));
+            target.BuffCtrl.AddBuff(new DeBuffSlow(SlowDuration - 0.1f));
     }
 
     class DeBuffSlow : BuffBase

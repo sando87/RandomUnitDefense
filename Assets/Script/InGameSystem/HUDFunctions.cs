@@ -19,10 +19,10 @@ public class HUDFunctions : MonoBehaviour
     public BaseObject TargetUnit { get; private set; } = null;
     List<BaseObject> DetectedUnits = new List<BaseObject>();
 
-
     private void Start()
     {
         GameMgr = InGameSystem.Instance;
+
         Refund_ON.SetActive(true);
         Refund_OFF.SetActive(false);
 

@@ -101,7 +101,7 @@ public class RUIFormInGame : RUiForm
         }
 
         UnitDetailPanel.gameObject.SetActive(true);
-        string damage = selectedUnit.SpecProp.AttackDamage.ToString();
+        string damage = selectedUnit.SpecProp.Damage.ToString();
         DamageText.text = damage;
         DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
         UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;

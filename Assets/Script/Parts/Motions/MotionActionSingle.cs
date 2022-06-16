@@ -8,8 +8,8 @@ public class MotionActionSingle : MotionBase
 {
     [SerializeField] bool _IsSkillType = false;
 
-    [SerializeField] bool _Delayable = true;
-    [SerializeField][ShowIf("_Delayable")] float _Delaytime = 5.0f;
+    [SerializeField] bool _IsCooltime = true;
+    [SerializeField][ShowIf("_IsCooltime")] float _Delaytime = 5.0f;
 
     [SerializeField] bool _Detectable = false;
     [SerializeField][ShowIf("_Detectable")] float _Range = 3.0f;
@@ -24,13 +24,13 @@ public class MotionActionSingle : MotionBase
     {
         base.OnInit();
 
-        if(_Delayable)
+        if(_IsCooltime)
             SetCooltime(Delaytime);
     }
 
     public override bool OnReady()
     {
-        if (_Delayable && IsCooltime())
+        if (_IsCooltime && IsCooltime())
             return false;
 
         if (_Detectable)
@@ -77,7 +77,7 @@ public class MotionActionSingle : MotionBase
 
     private void DoAttack()
     {
-        if (_Delayable)
+        if (_IsCooltime)
             SetCooltime(Delaytime);
 
         EventFired?.Invoke(mTargets);

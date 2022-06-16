@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UnitMarineHero : UnitBase
 {
+    [SerializeField] float _SlowDuration = 3.0f;
+    float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
+
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
 
@@ -34,7 +37,7 @@ public class UnitMarineHero : UnitBase
 
     private void ShootSimpleGun(BaseObject target)
     {
-        target.Health.GetDamaged(mBaseObj);
+        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
         Vector3 pos = MyUtils.Random(target.Body.Center, 0.1f);
         GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
         Destroy(obj, 1.0f);
@@ -51,7 +54,7 @@ public class UnitMarineHero : UnitBase
         Collider[] cols = InGameUtils.DetectAround(dest, 0.1f, 1 << LayerID.Enemies);
         foreach(Collider col in cols)
         {
-            col.GetBaseObject().Health.GetDamaged(mBaseObj);
+            col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
             ApplySlowDeBuff(col.GetBaseObject());
         }
     }
@@ -61,7 +64,7 @@ public class UnitMarineHero : UnitBase
         if (buff != null)
             buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
         else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(mBaseObj.SpecProp.SkillDuration));
+            target.BuffCtrl.AddBuff(new DeBuffSlow(SlowDuration));
     }
 
     class DeBuffSlow : BuffBase

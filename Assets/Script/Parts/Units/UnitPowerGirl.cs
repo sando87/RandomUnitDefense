@@ -36,7 +36,7 @@ public class UnitPowerGirl : UnitBase
     }
     void OnHitMissile(BaseObject target)
     {
-        target.Health.GetDamaged(mBaseObj);
+        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
     }
 
     private void OnSkill(Collider[] targets)
@@ -53,7 +53,7 @@ public class UnitPowerGirl : UnitBase
                 int percent = (int)(Accuracy * 100.0f);
                 if (UnityEngine.Random.Range(0, 100) < percent)
                 {
-                    col.GetBaseObject().Health.GetDamaged(mBaseObj);
+                    col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
                 }
             }
 

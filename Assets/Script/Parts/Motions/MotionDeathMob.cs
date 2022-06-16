@@ -33,7 +33,6 @@ public class MotionDeathMob : MotionBase
         base.OnEnter();
 
         InGameSystem.Instance.DeathLineMob();
-        mHealth.ShowHideHealthBar(false);
         mBaseObject.Body.Lock = true;
         mBaseObject.MotionManager.Lock = true;
         this.ExDelayedCoroutine(2.0f, () =>

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6377826677833743767}
   - component: {fileID: 6143247454181054881}
   - component: {fileID: 2692086414479507882}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Motions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cd3dce050b64f9dae1cd58d35b3a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartMotion: {fileID: 0}
+  StartMotion: {fileID: 6143247454181054881}
 --- !u!114 &6143247454181054881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6377826677845741547}
   - component: {fileID: 6377826677845741545}
   - component: {fileID: 6377826677845741544}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Buffs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 6377826679025231448}
   - component: {fileID: 6377826679025231449}
   - component: {fileID: 6414762315202661277}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 6377826679273638802}
   - component: {fileID: 6377826679273638813}
   - component: {fileID: 7642616187725792085}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: fenrir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
   _Spec:
     totalHP: 100
     armor: 0
-    moveSpeed: 3
+    moveSpeed: 1
     attackType: 1
     damage: 10
     damagesPerUp:
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 9202556232064598007}
   - component: {fileID: 9202556232064597006}
   - component: {fileID: 9202556232064597001}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,6 +450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114234973489686864, guid: 15417470db5f68347bbb3d742a658eb6,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234973489686864, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -522,6 +527,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638617229969337287, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411333472486698026, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15417470db5f68347bbb3d742a658eb6, type: 3}

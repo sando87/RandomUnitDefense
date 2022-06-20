@@ -11,11 +11,11 @@ public class SpecProperty : MonoBehaviour
     private InGameSystem mGameSystem = null;
 
     public int Level { get; set; } = 1;
+    public BuffProperty Buff { get { if (mBuff == null) mBuff = this.GetBaseObject().BuffProp; return mBuff; } }
 
     void Start()
     {
         mGameSystem = InGameSystem.Instance;
-        mBuff = this.GetBaseObject().BuffProp;
     }
 
     public float Damage
@@ -24,12 +24,12 @@ public class SpecProperty : MonoBehaviour
         {
             float damagePerUp = _Spec.damagesPerUp[Level - 1];
             float damage = _Spec.damage + mGameSystem.GetUpgradeCount(_Spec.attackType) * damagePerUp;
-            return damage * mBuff.AttackDamage;
+            return damage * Buff.AttackDamage;
         }
     }
-    public float TotalHP { get { return _Spec.totalHP * mBuff.TotalHP; } }
-    public float Armor { get { return _Spec.armor * mBuff.Armor; } }
-    public float MoveSpeed { get { return _Spec.moveSpeed * mBuff.MoveSpeed; } }
+    public float TotalHP { get { return _Spec.totalHP * Buff.TotalHP; } }
+    public float Armor { get { return _Spec.armor * Buff.Armor; } }
+    public float MoveSpeed { get { return _Spec.moveSpeed * Buff.MoveSpeed; } }
 }
 
 

@@ -56,9 +56,11 @@ public class BodyCollider : MonoBehaviour
     }
     public void TurnHeadTo(Vector3 dest)
     {
-        Vector3 scale = mBaseObject.transform.localScale;
-        float dir = dest.x < transform.position.x ? -1 : 1;
-        scale.x = Mathf.Abs(scale.x) * dir;
-        mBaseObject.transform.localScale = scale;
+        // Vector3 scale = mBaseObject.transform.localScale;
+        // float dir = dest.x < transform.position.x ? -1 : 1;
+        // scale.x = Mathf.Abs(scale.x) * dir;
+        // mBaseObject.transform.localScale = scale;
+
+        mBaseObject.transform.rotation = dest.x < transform.position.x ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
     }
 }

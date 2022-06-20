@@ -19,13 +19,3 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: 54b90e8f8b1f07b4695f670fa1c04603,
       type: 3}
     skillDescription: "\uC8FC\uBCC0 \uC720\uB2DB \uACF5\uACA9 \uC18D\uB3C4 20% \uC99D\uAC00(\uD328\uC2DC\uBE0C)"
-  - ID: 637908139994254920
-    name: 
-    image: {fileID: 0}
-    prefab: {fileID: 0}
-    skillDescription: 
-  - ID: 637908139987952620
-    name: 
-    image: {fileID: 0}
-    prefab: {fileID: 0}
-    skillDescription: 

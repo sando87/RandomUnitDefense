@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MotionMoveAround : MotionBase
 {
-    [SerializeField] float _MoveSpeed = 3.0f;
-
     private Vector3[] WayPoints = null;
     private int WayPointIndex = 0;
 
@@ -42,7 +40,7 @@ public class MotionMoveAround : MotionBase
             dir.Normalize();
             while (true)
             {
-                float moveSpeed = _MoveSpeed * mBaseObject.BuffProp.MoveSpeed;
+                float moveSpeed = mBaseObject.SpecProp.MoveSpeed;
                 Vector3 nextPos = transform.position + (dir * moveSpeed * Time.deltaTime);
                 Vector3 nextDir = dest - nextPos;
                 nextDir.z = 0;

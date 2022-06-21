@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42c39f92976d472faee8e75b1fe9361, type: 3}
   m_Name: EnemyCharactors
   m_EditorClassIdentifier: 
-  DataList: []
+  DataList:
+  - ID: 637913702227389895
+    name: fenrir
+    image: {fileID: 21300000, guid: 54cffca366e46b84fbde12c0c6123ab8, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 579e8e0269415c34f88d1bd49d06f19a,
+      type: 3}

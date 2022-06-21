@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class MotionDeathMob : MotionBase
 {
-    [SerializeField] private AudioClip DeathSound = null;
-
     private Health mHealth = null;
 
     public override void OnInit()

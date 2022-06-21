@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MotionMoveAround : MotionBase
 {
-    [SerializeField] float _MoveSpeed = 3.0f;
-
     private Vector3[] WayPoints = null;
     private int WayPointIndex = 0;
 
@@ -37,23 +35,23 @@ public class MotionMoveAround : MotionBase
             Vector3 dest = WayPoints[WayPointIndex];
             mBaseObject.Body.TurnHeadTo(dest);
 
-            Vector3 dir = dest - transform.position;
+            Vector3 dir = dest - mBaseObject.transform.position;
             dir.z = 0;
             dir.Normalize();
             while (true)
             {
-                float moveSpeed = _MoveSpeed * mBaseObject.BuffProp.MoveSpeed;
-                Vector3 nextPos = transform.position + (dir * moveSpeed * Time.deltaTime);
+                float moveSpeed = mBaseObject.SpecProp.MoveSpeed;
+                Vector3 nextPos = mBaseObject.transform.position + (dir * moveSpeed * Time.deltaTime);
                 Vector3 nextDir = dest - nextPos;
                 nextDir.z = 0;
                 if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우
                 {
-                    transform.position = dest;
+                    mBaseObject.transform.position = dest;
                     break;
                 }
                 else
                 {
-                    transform.position = nextPos;
+                    mBaseObject.transform.position = nextPos;
                 }
                 yield return null;
             }

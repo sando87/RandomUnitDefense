@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6377826677833743760}
   - component: {fileID: 6377826677833743763}
   - component: {fileID: 622547147699294387}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Motions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,10 +151,11 @@ MonoBehaviour:
   _IsSkillType: 0
   _IsCooltime: 1
   _Delaytime: 5
-  _Detectable: 0
-  _Range: 3
-  _AnimCount: 1
-  _FirePoints: []
+  _Detectable: 1
+  _Range: 1
+  _AnimCount: 5
+  _FirePoints:
+  - 0.44
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +167,7 @@ GameObject:
   - component: {fileID: 6377826677845741547}
   - component: {fileID: 6377826677845741545}
   - component: {fileID: 6377826677845741544}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Buffs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +223,7 @@ GameObject:
   - component: {fileID: 6377826679025231448}
   - component: {fileID: 6377826679025231449}
   - component: {fileID: 6414762315202661277}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +285,7 @@ GameObject:
   - component: {fileID: 6377826679273638802}
   - component: {fileID: 6377826679273638813}
   - component: {fileID: 9000639117217138068}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MarineBasic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8233ba4d880f78048a9826537360f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _BuffRange: 3
+  _BuffRange: 1
   HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}
   BuffEffect: {fileID: 6278202292039781791, guid: 14259a582a6e7d54d99b64c3cc764e9d,
@@ -375,7 +376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de88ee8215a954fb0884798e6e048ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _HealthBar: {fileID: 0}
 --- !u!114 &6377826679273638813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,10 +389,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Spec:
-    totalHP: 0
+    totalHP: 100
     armor: 0
-    moveSpeed: 0
-    attackType: 0
+    moveSpeed: 1
+    attackType: 1
     damage: 10
     damagesPerUp:
     - 1
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 1198640892927973645}
   - component: {fileID: 4629411459028451208}
   - component: {fileID: 2130667268207519303}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LevelDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 9202556232064598007}
   - component: {fileID: 9202556232064597006}
   - component: {fileID: 9202556232064597001}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,6 +654,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114234973489686864, guid: 15417470db5f68347bbb3d742a658eb6,
         type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234973489686864, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -726,6 +731,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638617229969337287, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411333472486698026, guid: 15417470db5f68347bbb3d742a658eb6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15417470db5f68347bbb3d742a658eb6, type: 3}

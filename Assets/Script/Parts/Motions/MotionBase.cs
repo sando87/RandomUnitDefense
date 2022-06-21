@@ -125,7 +125,7 @@ public class MotionBase : MonoBehaviour
 
     protected bool IsCooltime()
     {
-        return mCooltime <= Time.realtimeSinceStartup;
+        return mCooltime > Time.realtimeSinceStartup;
     }
     protected void SetCooltime(float cooltimeSeconds)
     {

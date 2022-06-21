@@ -27,8 +27,8 @@ public class InGameInput : MonoBehaviour
             return;
 
         mDownObject = null;
-        Vector3 worldPt = Camera.main.ScreenToWorldPoint(InputWrapper.Instance.MousePosition());
-        RaycastHit[] hits = MyUtils.RaycastAllFromTo(mWorldCam.transform.position, worldPt, 1 << LayerID.Player);
+        Ray ray = Camera.main.ScreenPointToRay(InputWrapper.Instance.MousePosition());
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1 << LayerID.Player);
         foreach(RaycastHit hit in hits)
         {
             UserInput userInput = hit.collider.GetComponentInBaseObject<UserInput>();
@@ -39,12 +39,18 @@ public class InGameInput : MonoBehaviour
             }
         }
 
-        mDownPosition = worldPt;
+        if(Physics.Raycast(ray, out RaycastHit hitOnBackground, 1 << LayerID.ThemeBackground))
+        {
+            mDownPosition = hitOnBackground.point;
+        }
     }
     private void OnUpTriggered(InputType obj)
     {
-        Vector3 worldPt = Camera.main.ScreenToWorldPoint(InputWrapper.Instance.MousePosition());
-        if ((worldPt - mDownPosition).magnitude < 0.1f)
+        Ray ray = Camera.main.ScreenPointToRay(InputWrapper.Instance.MousePosition());
+        Physics.Raycast(ray, out RaycastHit hitOnBackground, 1 << LayerID.ThemeBackground);
+        Vector3 worldPt = hitOnBackground.point;
+        Vector3 diff = (worldPt - mDownPosition).ZeroZ();
+        if (diff.magnitude < 0.1f)
         {
             SelecteObject(mDownObject);
         }
@@ -53,7 +59,7 @@ public class InGameInput : MonoBehaviour
             if(mDownObject != null)
             {
                 SelecteObject(null);
-                mDownObject.OnMove(worldPt);
+                mDownObject.OnMove(worldPt.ZeroZ());
             }
         }
 

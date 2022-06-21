@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151517834299360406}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: WayPoint_LT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4151517834471360948}
   - component: {fileID: 4151517834471360949}
-  m_Layer: 0
+  - component: {fileID: 6378641855900484600}
+  m_Layer: 15
   m_Name: background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +112,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &6378641855900484600
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151517834471360947}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 35.00855, y: 24.000002, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4151517834614413594
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151517834614413595}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: WayPoint_RB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151517835311082003}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: WayPoint_LB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151517835312715840}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: WayPoint_RT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4151517836278080746}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

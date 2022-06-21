@@ -10,6 +10,8 @@ public class SpritesAnimator : MonoBehaviour
 
     public static SpritesAnimator Play(Vector3 pos, Sprite[] sprites, bool isLoop = false)
     {
+        if(sprites == null) return null;
+        
         SpritesAnimator prefab = ResourcesCache.Load<SpritesAnimator>("Prefabs/SpritesAnimator");
         SpritesAnimator obj = Instantiate(prefab, pos, Quaternion.identity);
         obj.Sprites = sprites;

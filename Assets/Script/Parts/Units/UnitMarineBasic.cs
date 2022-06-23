@@ -4,26 +4,30 @@ using UnityEngine;
 
 public class UnitMarineBasic : UnitBase
 {
+    [SerializeField] float _AttackSpeed = 0.5f;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    [SerializeField] float _AttackRange = 0.5f;
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField] float _BuffRange = 3.0f;
     float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
 
     [SerializeField] private GameObject HitParticle = null;
     [SerializeField] private GameObject BuffEffect = null;
 
+    private MotionActionSingle mMotionAttack = null;
+
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
-        mBaseObj.MotionManager.FindMotion<MotionActionSingle>().EventFired = OnAttack;
-        StartCoroutine(RepeatBuff());
+        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
+        mMotionAttack.EventFired = OnAttack;
     }
 
-    // public override string SkillDescription
-    // {
-    //     get
-    //     {
-    //         return "주변 유닛 공격 속도 20% 증가(패시브)";
-    //     }
-    // }
+    void OnEnable() 
+    {
+        StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(RepeatBuff());
+    }
 
     private void OnAttack(Collider[] targets)
     {

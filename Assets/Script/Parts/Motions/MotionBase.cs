@@ -21,6 +21,8 @@ public class MotionBase : MonoBehaviour
     protected CharacterInput mCharacterInput = null;
     protected MotionManager mMotionManager = null;
     private float mCooltime = float.MaxValue;
+    
+    public BaseObject Target { get; set; } = null;
 
     public virtual void OnInit()
     {

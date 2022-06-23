@@ -25,6 +25,10 @@ public class MotionManager : MonoBehaviour
             SwitchMotion(StartMotion);
     }
 
+    public bool IsCurrentMotion(MotionBase motion)
+    {
+        return motion == CurrentMotion;
+    }
     public bool IsCurrentMotion<T>() where T : MotionBase
     {
         T motion = GetComponentInChildren<T>();

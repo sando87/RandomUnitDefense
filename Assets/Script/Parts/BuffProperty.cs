@@ -14,5 +14,6 @@ public class BuffProperty : MonoBehaviour
     public Percent Cooltime;
     public Percent SkillRange;
     public Percent SkillDuration;
+    public Percent Percentage;
 }
 

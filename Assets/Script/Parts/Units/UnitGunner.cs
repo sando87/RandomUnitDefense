@@ -5,36 +5,45 @@ using UnityEngine;
 
 public class UnitGunner : UnitBase
 {
+    [SerializeField] float _AttackSpeed = 0.5f;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    [SerializeField] float _AttackRange = 2;
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
+    [SerializeField] float _SkillRange = 2;
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] float _SlowDuration = 1.0f;
     float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
 
     private LaserAimming mLaserEffectObject = null;
+    private MotionActionSingle mAttackMotion = null;
+    private MotionActionLoop mLaserMotion = null;
 
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        GetComponent<MotionActionSingle>().EventFired = OnAttack;
-        GetComponent<MotionActionLoop>().EventStart = OnAttackBeamStart;
-        GetComponent<MotionActionLoop>().EventEnd = OnAttackBeamEnd;
+        mAttackMotion = GetComponent<MotionActionSingle>();
+        mAttackMotion.EventFired = OnAttack;
+
+        mLaserMotion = GetComponent<MotionActionLoop>();
+        mLaserMotion.EventStart = OnAttackBeamStart;
+        mLaserMotion.EventEnd = OnAttackBeamEnd;
     }
 
-    // public override string SkillDescription
-    // {
-    //     get
-    //     {
-    //         return "근접 거리의 적 유닛은 Beam공격으로 감속 효과";
-    //     }
-    // }
-
-    private void OnAttack(Collider[] targets)
+    void OnEnable()
     {
-        BaseObject target = targets[0].GetBaseObject();
-        ShootProjectail(target);
+        StartCoroutine(CoMotionSwitcher(mAttackMotion, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mLaserMotion, 0, SkillRange));
+    }
+
+    private void OnAttack(int idx)
+    {
+        ShootProjectail(mAttackMotion.Target);
     }
     private void ShootProjectail(BaseObject target)
     {
@@ -70,7 +79,16 @@ public class UnitGunner : UnitBase
         {
             ApplySlowDeBuff(target);
             yield return new WaitForSeconds(SlowDuration);
+            if(IsOutOfSkillRange(target))
+            {
+                break;
+            }
         }
+        mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
+    }
+    private bool IsOutOfSkillRange(BaseObject target)
+    {
+        return (target.transform.position - mBaseObj.transform.position).magnitude > (SkillRange * 1.2f);
     }
     private void OnAttackBeamEnd()
     {

@@ -29,7 +29,7 @@ public class UnitBrawler : UnitBase
     //     }
     // }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
         mStunableCounter = (mStunableCounter + 1) % 3;
         if(mStunableCounter == 0)

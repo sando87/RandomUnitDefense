@@ -5,29 +5,41 @@ using UnityEngine;
 
 public class UnitSniper : UnitBase
 {
+    [SerializeField] float _AttackSpeed = 0.5f;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    [SerializeField] float _AttackRange = 3;
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    [SerializeField][Range(0, 1)] float _CriticalPercent = 0.2f;
+    float CriticalPercent { get { return _CriticalPercent * mBaseObj.BuffProp.Percentage; } }
+    [SerializeField][Range(1, 10)] float _CriticalDamage = 3.0f;
+    float CriticalDamage { get { return _CriticalDamage; } }
+
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] LaserSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] private Sprite[] AimingSprites = null;
 
     private SpritesAnimator mAimingEffect = null;
+    private MotionActionLoop mMotionAiming = null;
+    private MotionActionSingle mMotionShoot = null;
 
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        GetComponent<MotionActionLoop>().EventStart = OnAttackBeamStart;
-        GetComponent<MotionActionLoop>().EventEnd = OnAttackBeamEnd;
-        GetComponent<MotionActionSingle>().EventFired = OnAttack;
+        mMotionAiming = GetComponent<MotionActionLoop>();
+        mMotionAiming.EventStart = OnAttackBeamStart;
+        mMotionAiming.EventUpdate = OnAttackBeamUpdate;
+        mMotionAiming.EventEnd = OnAttackBeamEnd;
+
+        mMotionShoot = GetComponent<MotionActionSingle>();
+        mMotionShoot.EventFired = OnAttack;
     }
 
-    // public override string SkillDescription
-    // {
-    //     get
-    //     {
-    //         return "일정 확률로 크리티컬";
-    //     }
-    // }
+    void OnEnable()
+    {
+        StartCoroutine(CoMotionSwitcher(mMotionAiming, 1 / AttackSpeed, AttackRange));
+    }
 
     private void OnAttackBeamStart(BaseObject target)
     {
@@ -38,11 +50,18 @@ public class UnitSniper : UnitBase
         }
         mAimingEffect = SpritesAnimator.Play(target.Body.Center, AimingSprites, false);
         mAimingEffect.transform.SetParent(target.transform);
-        mAimingEffect.EventEnd = OnEndAiming;
+        mAimingEffect.EventEnd = () => mBaseObj.MotionManager.SwitchMotion(mMotionShoot);
     }
-    private void OnEndAiming()
+    private void OnAttackBeamUpdate(BaseObject target)
     {
-        mBaseObj.MotionManager.SwitchMotion<MotionActionSingle>();
+        if (IsOutOfRange(target))
+        {
+            mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
+        }
+    }
+    private bool IsOutOfRange(BaseObject target)
+    {
+        return (target.transform.position - mBaseObj.transform.position).magnitude > (AttackRange * 1.2f);
     }
     private void OnAttackBeamEnd()
     {
@@ -54,9 +73,9 @@ public class UnitSniper : UnitBase
         StopAllCoroutines();
     }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
-        BaseObject target = targets[0].GetBaseObject();
+        BaseObject target = mMotionShoot.Target;
         ShootProjectail(target);
     }
     private void ShootProjectail(BaseObject target)
@@ -69,6 +88,13 @@ public class UnitSniper : UnitBase
 
         SpritesAnimator.Play(target.Body.Center, OutroSprites);
 
-        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        float damage = mBaseObj.SpecProp.Damage;
+        int percent = (int)(CriticalPercent * 100.0f);
+        if (UnityEngine.Random.Range(0, 100) < percent)
+        {
+            damage *= CriticalDamage;
+        }
+
+        target.Health.GetDamaged(damage, mBaseObj);
     }
 }

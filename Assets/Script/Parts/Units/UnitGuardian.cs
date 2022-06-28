@@ -14,7 +14,7 @@ public class UnitGuardian : UnitBase
         GetComponent<MotionActionSingle>().EventFired = OnAttack;
     }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
         Collider[] cols = Physics.OverlapBox(AttackArea.bounds.center, AttackArea.bounds.extents, Quaternion.identity, 1 << LayerID.Enemies);
         foreach (Collider col in cols)

@@ -18,7 +18,7 @@ public class UnitFlamer : UnitBase
         GetComponent<MotionActionSingle>().EventFired = OnAttack;
     }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
         StartCoroutine(CoAttack());
     }

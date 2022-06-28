@@ -5,9 +5,17 @@ using UnityEngine;
 public class UnitPowerGirl : UnitBase
 {
     [SerializeField] MotionActionSingle NormalAttack = null;
+    [SerializeField] float _AttackSpeed = 0.5f;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    [SerializeField] float _AttackRange = 2;
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField] SimpleMissile SimpleMissile = null;
 
     [SerializeField] MotionActionSingle SkillAttack = null;
+    [SerializeField] float _Cooltime = 3;
+    float Cooltime { get { return _Cooltime * mBaseObj.BuffProp.Cooltime; } }
+    [SerializeField] float _SkillRange = 1;
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] GameObject HitFloorPrefab = null;
     [SerializeField][Range(0, 1)] float Accuracy = 0.25f;
 
@@ -19,17 +27,15 @@ public class UnitPowerGirl : UnitBase
         SkillAttack.EventFired = OnSkill;
     }
 
-    // public override string SkillDescription
-    // {
-    //     get
-    //     {
-    //         return "일정 시간마다 총기 난사";
-    //     }
-    // }
-
-    void OnAttack(Collider[] targets)
+    void OnEnable()
     {
-        BaseObject target = targets[0].GetBaseObject();
+        StartCoroutine(CoMotionSwitcher(NormalAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(SkillAttack, Cooltime, SkillRange));
+    }
+
+    void OnAttack(int idx)
+    {
+        BaseObject target = NormalAttack.Target;
         SimpleMissile missile = Instantiate(SimpleMissile, mBaseObj.Body.Center, Quaternion.identity);
         missile.EventHit = OnHitMissile;
         missile.Launch(target);
@@ -39,13 +45,15 @@ public class UnitPowerGirl : UnitBase
         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
     }
 
-    private void OnSkill(Collider[] targets)
+    private void OnSkill(int idx)
     {
-        StartCoroutine(CoRandomShoot(targets));
+        StartCoroutine(CoRandomShoot());
     }
-    IEnumerator CoRandomShoot(Collider[] targets)
+    IEnumerator CoRandomShoot()
     {
         GameObject hitFloorObject = Instantiate(HitFloorPrefab, mBaseObj.transform);
+        
+        Collider[] targets = mBaseObj.DetectAround(SkillRange, 1 << LayerID.Enemies);
         while(true)
         {
             foreach (Collider col in targets)

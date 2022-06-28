@@ -6,53 +6,15 @@ using NaughtyAttributes;
 
 public class MotionActionSingle : MotionBase
 {
-    [SerializeField] bool _IsSkillType = false;
-
-    [SerializeField] bool _IsCooltime = true;
-    [SerializeField][ShowIf("_IsCooltime")] float _Delaytime = 5.0f;
-
-    [SerializeField] bool _Detectable = false;
-    [SerializeField][ShowIf("_Detectable")] float _Range = 3.0f;
-
     [SerializeField] int _AnimCount = 1;
-    [Range(0, 1)][SerializeField] float[] _FirePoints = null;
+    [SerializeField][Range(0, 1)] float[] _FirePoints = null;
 
-    public Action<Collider[]> EventFired { get; set; }
-    private Collider[] mTargets = null;
-
-    public override void OnInit()
-    {
-        base.OnInit();
-
-        if(_IsCooltime)
-            SetCooltime(Delaytime);
-    }
-
-    public override bool OnReady()
-    {
-        if (_IsCooltime && IsCooltime())
-            return false;
-
-        if (_Detectable)
-        {
-            Collider[] cols = mBaseObject.DetectAround(DetectRange, mBaseObject.GetLayerMaskAttackable());
-            if (cols.Length == 0)
-                return false;
-
-            mTargets = cols;
-        }
-
-        return true;
-    }
+    public Action<int> EventFired { get; set; }
 
     public override void OnEnter()
     {
-        if(mTargets != null && mTargets.Length > 0)
-        {
-            BaseObject target = mTargets[0].GetBaseObject();
-            mBaseObject.Body.TurnHeadTo(target.transform.position);
-            SetAnimParamVerticalDegreeIndex(target.transform.position, _AnimCount);
-        }
+        mBaseObject.Body.TurnHeadTo(Target.transform.position);
+        SetAnimParamVerticalDegreeIndex(Target.transform.position, _AnimCount);
 
         base.OnEnter();
 
@@ -60,10 +22,11 @@ public class MotionActionSingle : MotionBase
     }
     IEnumerator CoUpdate()
     {
-        foreach(float firePoint in _FirePoints)
+        for (int i = 0; i < _FirePoints.Length; ++i)
         {
+            float firePoint = _FirePoints[i];
             yield return new WaitUntil(() => firePoint < NormalizedTime);
-            DoAttack();
+            EventFired?.Invoke(i);
         }
         yield return new WaitUntil(() => 1.0f <= NormalizedTime);
         SwitchMotionToIdle();
@@ -71,46 +34,7 @@ public class MotionActionSingle : MotionBase
     public override void OnLeave()
     {
         base.OnLeave();
-        mTargets = null;
         StopAllCoroutines();
-    }
-
-    private void DoAttack()
-    {
-        if (_IsCooltime)
-            SetCooltime(Delaytime);
-
-        EventFired?.Invoke(mTargets);
-    }
-
-    private float Delaytime
-    {
-        get
-        {
-            if (_IsSkillType)
-            {
-                return _Delaytime * mBaseObject.BuffProp.Cooltime;
-            }
-            else
-            {
-                return 1 / ((1 / _Delaytime) * mBaseObject.BuffProp.AttackSpeed);
-            }
-        }
-    }
-
-    private float DetectRange
-    {
-        get
-        {
-            if (_IsSkillType)
-            {
-                return _Range * mBaseObject.BuffProp.SkillRange;
-            }
-            else
-            {
-                return _Range * mBaseObject.BuffProp.AttackRange;
-            }
-        }
     }
 }
 

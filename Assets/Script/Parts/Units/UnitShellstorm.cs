@@ -17,7 +17,7 @@ public class UnitShellstorm : UnitBase
         GetComponent<MotionActionSingle>().EventFired = OnAttack;
     }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
         GameObject missile = Instantiate(MissilePrefab, MissileStartPosition.position, Quaternion.identity);
         //missile.EventHit = OnExplosionMssile;

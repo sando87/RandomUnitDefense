@@ -29,9 +29,9 @@ public class UnitMarineBasic : UnitBase
         StartCoroutine(RepeatBuff());
     }
 
-    private void OnAttack(Collider[] targets)
-    {
-        BaseObject target = targets[0].GetBaseObject();
+    private void OnAttack(int idx)
+    {   
+        BaseObject target = mMotionAttack.Target;
         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
 
         Vector3 pos = MyUtils.Random(target.Body.Center, 0.1f);

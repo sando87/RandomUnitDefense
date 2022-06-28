@@ -24,10 +24,6 @@ public class UnitMarineHero : UnitBase
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-    }
-
-    void OnEnable()
-    {
         StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
     }
 
@@ -39,9 +35,9 @@ public class UnitMarineHero : UnitBase
     //     }
     // }
 
-    private void OnAttack(Collider[] targets)
+    private void OnAttack(int idx)
     {
-        BaseObject target = targets[0].GetBaseObject();
+        BaseObject target = mMotionAttack.Target;
         // 20% 확률로 스킬샷 발동 부분
         float rate = Mathf.Clamp(SkillCastRate, 0, 1);
         bool isSkillShoot = UnityEngine.Random.Range(0, 1.0f) < rate;

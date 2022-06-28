@@ -15,8 +15,6 @@ public class UnitBase : MonoBehaviour
 
     protected IEnumerator CoMotionSwitcher(MotionBase motion, float motionCooltime, float detectRange)
     {
-        yield return null;
-
         while (true)
         {
             if (motionCooltime > 0)
@@ -24,6 +22,7 @@ public class UnitBase : MonoBehaviour
 
             while (true)
             {
+                yield return null;
                 if (!mBaseObj.MotionManager.IsCurrentMotion<MotionIdle>())
                     continue;
 

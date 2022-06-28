@@ -18,3 +18,8 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 54cffca366e46b84fbde12c0c6123ab8, type: 3}
     prefab: {fileID: 6377826679273638812, guid: 579e8e0269415c34f88d1bd49d06f19a,
       type: 3}
+  - ID: 637920602613186265
+    name: vilerunner
+    image: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 6f12893c35e456949ac6b3ac9d026ced,
+      type: 3}

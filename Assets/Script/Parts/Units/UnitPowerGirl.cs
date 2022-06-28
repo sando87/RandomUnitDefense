@@ -25,10 +25,6 @@ public class UnitPowerGirl : UnitBase
 
         NormalAttack.EventFired = OnAttack;
         SkillAttack.EventFired = OnSkill;
-    }
-
-    void OnEnable()
-    {
         StartCoroutine(CoMotionSwitcher(NormalAttack, 1 / AttackSpeed, AttackRange));
         StartCoroutine(CoMotionSwitcher(SkillAttack, Cooltime, SkillRange));
     }

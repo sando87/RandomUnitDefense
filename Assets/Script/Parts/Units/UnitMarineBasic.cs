@@ -21,10 +21,6 @@ public class UnitMarineBasic : UnitBase
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-    }
-
-    void OnEnable() 
-    {
         StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
         StartCoroutine(RepeatBuff());
     }

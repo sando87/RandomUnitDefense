@@ -148,11 +148,6 @@ MonoBehaviour:
     MotionName: MotionActionSingle
     LayerIndex: 0
     ClipLength: 1.3333334
-  _IsSkillType: 0
-  _IsCooltime: 1
-  _Delaytime: 5
-  _Detectable: 1
-  _Range: 1
   _AnimCount: 5
   _FirePoints:
   - 0.44
@@ -335,6 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8233ba4d880f78048a9826537360f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _AttackSpeed: 0.5
+  _AttackRange: 2
   _BuffRange: 1
   HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}

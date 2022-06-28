@@ -19,3 +19,16 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: 54b90e8f8b1f07b4695f670fa1c04603,
       type: 3}
     skillDescription: "\uC8FC\uBCC0 \uC720\uB2DB \uACF5\uACA9 \uC18D\uB3C4 20% \uC99D\uAC00(\uD328\uC2DC\uBE0C)"
+  - ID: 637920598405065368
+    name: MarineHero
+    image: {fileID: 21300000, guid: 63f61a610763d304aae1dfc2a1a5a648, type: 3}
+    prefab: {fileID: 1305606861373442141, guid: 05b343ea198442b4c91d5d93c6c8aed0,
+      type: 3}
+    skillDescription: "\uACF5\uACA9\uC2DC 20% \uD655\uB960\uB85C \uC2A4\uD0AC\uBC1C\uB3D9"
+  - ID: 637920598416570152
+    name: PowerGirl
+    image: {fileID: 21300000, guid: 8b027592d7db7aa4fa0b9f6483c8d985, type: 3}
+    prefab: {fileID: 1367240741272029638, guid: 9b12042992a632743b379bf31d80011e,
+      type: 3}
+    skillDescription: "\uC77C\uC815\uC2DC\uAC04\uB9C8\uB2E4 \uC8FC\uC704 \uC801\uC5D0\uAC8C
+      \uB09C\uC0AC"

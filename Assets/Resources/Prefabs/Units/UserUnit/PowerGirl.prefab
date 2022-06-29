@@ -201,8 +201,8 @@ MonoBehaviour:
   SimpleMissile: {fileID: 1240864785425162540, guid: 603ae2d72cefe3941accf2f971083a9d,
     type: 3}
   SkillAttack: {fileID: 1913461482294829942}
-  _Cooltime: 3
-  _SkillRange: 1
+  _Cooltime: 5
+  _SkillRange: 3
   HitFloorPrefab: {fileID: 9086029617494144678, guid: 7e675bb887289864695d0501cf9331df,
     type: 3}
   Accuracy: 0.25

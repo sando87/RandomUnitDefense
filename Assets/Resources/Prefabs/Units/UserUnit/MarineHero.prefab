@@ -206,7 +206,8 @@ MonoBehaviour:
     ClipLength: 1.3333334
   _AnimCount: 5
   _FirePoints:
-  - 0.44
+  - 0.1
+  - 0.6
 --- !u!1 &1305606861373442141
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AttackSpeed: 0.5
+  _AttackSpeed: 2
   _AttackRange: 3
   _SkillCastRate: 0.2
   _SlowDuration: 3

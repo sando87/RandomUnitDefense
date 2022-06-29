@@ -41,7 +41,7 @@ public class UnitMarineHero : UnitBase
         // 20% 확률로 스킬샷 발동 부분
         float rate = Mathf.Clamp(SkillCastRate, 0, 1);
         bool isSkillShoot = UnityEngine.Random.Range(0, 1.0f) < rate;
-        if (isSkillShoot)
+        if (isSkillShoot && idx == 0)
             ShootMagicGun(target);
         else
             ShootSimpleGun(target);

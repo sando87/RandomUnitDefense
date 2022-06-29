@@ -16,7 +16,14 @@ public class HealthBar : MonoBehaviour
         mHP = this.GetBaseObject().Health;
         mHP.EventDamaged += OnDamaged;
         
+        transform.forward = Vector3.forward;
+        
         HideBar();
+    }
+
+    void Update()
+    {
+        transform.forward = Vector3.forward;
     }
 
     private void OnDamaged(float validDamage, BaseObject attacker)

@@ -52,12 +52,23 @@ public class UnitPowerGirl : UnitBase
         Collider[] targets = mBaseObj.DetectAround(SkillRange, 1 << LayerID.Enemies);
         while(true)
         {
-            foreach (Collider col in targets)
+            if(SkillAttack.NormalizedTime < 0.8f)
             {
-                int percent = (int)(Accuracy * 100.0f);
-                if (UnityEngine.Random.Range(0, 100) < percent)
+                foreach (Collider col in targets)
                 {
-                    col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+                    int percent = (int)(Accuracy * 100.0f);
+                    if (UnityEngine.Random.Range(0, 100) < percent)
+                    {
+                        col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+                    }
+                }
+            }
+            else
+            {
+                if(hitFloorObject != null)
+                {
+                    Destroy(hitFloorObject);
+                    hitFloorObject = null;
                 }
             }
 
@@ -67,6 +78,10 @@ public class UnitPowerGirl : UnitBase
                 break;
         }
 
-        Destroy(hitFloorObject);
+        if (hitFloorObject != null)
+        {
+            Destroy(hitFloorObject);
+            hitFloorObject = null;
+        }
     }
 }

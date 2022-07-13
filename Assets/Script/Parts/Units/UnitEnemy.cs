@@ -29,7 +29,9 @@ public class UnitEnemy : UnitBase
 
             yield return new WaitUntil(() => mBaseObj.MotionManager.IsCurrentMotion<MotionIdle>());
 
-            mWayPointIndex = (mWayPointIndex + 1) % mWayPoints.Length;
+            if((mBaseObj.transform.position - dest).sqrMagnitude < 0.1)
+                mWayPointIndex = (mWayPointIndex + 1) % mWayPoints.Length;
+                
             yield return null;
         }
     }

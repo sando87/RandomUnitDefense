@@ -69,6 +69,7 @@ public enum AnimActionID
     ActionA = 3,
     ActionB = 4,
     ActionLoop = 5,
+    Stun = 6,
 }
 
 public class LayerID

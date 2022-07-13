@@ -8,7 +8,6 @@ public class MotionIdle : MotionBase
     public override void OnEnter()
     {
         base.OnEnter();
-        SetTrigger(AnimActionID.Idle);
     }
 }
 

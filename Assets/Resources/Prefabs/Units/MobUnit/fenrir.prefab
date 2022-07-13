@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2692086414479507882}
   - component: {fileID: 1772596904491287636}
   - component: {fileID: 1400860830029086242}
+  - component: {fileID: 4014932488818754747}
   m_Layer: 11
   m_Name: Motions
   m_TagString: Untagged
@@ -102,6 +103,25 @@ MonoBehaviour:
     AnimatorParamActionType: 0
     AnimationClipName: idle
     MotionName: MotionIdle
+    LayerIndex: 0
+    ClipLength: 0.18333334
+--- !u!114 &4014932488818754747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377826677833743773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cbd45989efe644a836ec861b43127d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: stun
+    AnimatorParamActionType: 6
+    AnimationClipName: stun
+    MotionName: MotionStun
     LayerIndex: 0
     ClipLength: 0.18333334
 --- !u!1 &6377826677845741546

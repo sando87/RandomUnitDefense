@@ -26,13 +26,9 @@ public class UnitBrawler : UnitBase
 
         mMotionAttack = GetComponent<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-    }
-
-    void OnEnable() 
-    {
         StartCoroutine(CoMotionAttack(mMotionAttack, 1 / AttackSpeed));
     }
-    
+
     protected IEnumerator CoMotionAttack(MotionBase motion, float motionCooltime)
     {
         while (true)

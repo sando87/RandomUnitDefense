@@ -5,27 +5,55 @@ using UnityEngine;
 
 public class UnitShellstorm : UnitBase
 {
-    [SerializeField] GameObject MissilePrefab = null;
-    [SerializeField] Transform MissileStartPosition = null;
-    [SerializeField] GameObject BarrelPrefab = null;
-    [SerializeField] Transform BarrelStartPosition = null;
-    
+    [SerializeField] MotionActionSingle _MotionMissileAttack = null;
+    [SerializeField] float _AttackSpeed = 0.5f;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    [SerializeField] float _AttackRange = 0.5f;
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+
+    [SerializeField] MotionActionSingle _SkillAttack = null;
+    [SerializeField] float _Cooltime = 3;
+    float Cooltime { get { return _Cooltime * mBaseObj.BuffProp.Cooltime; } }
+    [SerializeField] float _SkillRange = 1;
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
+    [SerializeField] float _SplshRange = 1;
+    float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
+
+    [SerializeField] SimpleMissile SimpleMissilePrefab = null;
+
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        GetComponent<MotionActionSingle>().EventFired = OnAttack;
+        _MotionMissileAttack.EventFired = OnAttack;
+        _SkillAttack.EventFired = OnSkill;
+        StartCoroutine(CoMotionSwitcher(_MotionMissileAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(_SkillAttack, Cooltime, SkillRange));
     }
 
     private void OnAttack(int idx)
     {
-        GameObject missile = Instantiate(MissilePrefab, MissileStartPosition.position, Quaternion.identity);
-        //missile.EventHit = OnExplosionMssile;
+        BaseObject target = _MotionMissileAttack.Target;
+        SimpleMissile missile = Instantiate(SimpleMissilePrefab, mBaseObj.Body.Center, Quaternion.identity);
+        missile.EventHit = OnHitMissile;
+        missile.Launch(target);
+    }
+    void OnHitMissile(BaseObject target)
+    {
+        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
     }
 
-    void OnExplosionMssile(GameObject missile)
+    private void OnSkill(int idx)
     {
-        Collider[] cols = Physics.OverlapSphere(missile.transform.position, 0.5f, 1 << LayerID.Enemies);
+        BaseObject target = _SkillAttack.Target;
+        SimpleMissile barrel = Instantiate(SimpleMissilePrefab, mBaseObj.Body.Center, Quaternion.identity);
+        barrel.EventHit = OnHitGasBarrel;
+        barrel.Launch(target);
+    }
+
+    void OnHitGasBarrel(BaseObject target)
+    {
+        Collider[] cols = Physics.OverlapSphere(target.transform.position, SplshRange, 1 << LayerID.Enemies);
         foreach (Collider col in cols)
         {
             Health hp = col.GetComponentInBaseObject<Health>();
@@ -34,21 +62,5 @@ public class UnitShellstorm : UnitBase
                 hp.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
             }
         }
-        Destroy(missile);
-    }
-
-    void OnExplosionGasBarrel(GameObject barrel)
-    {
-        Collider[] cols = Physics.OverlapSphere(barrel.transform.position, 1.0f, 1 << LayerID.Enemies);
-        foreach (Collider col in cols)
-        {
-            Health hp = col.GetComponentInBaseObject<Health>();
-            if (hp != null)
-            {
-                hp.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
-            }
-        }
-        Destroy(barrel);
-
     }
 }

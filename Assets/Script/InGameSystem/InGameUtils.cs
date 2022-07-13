@@ -126,6 +126,10 @@ public static class InGameUtils
     {
         return DetectAround(obj.transform.position, range, layerMask);
     }
+    public static Collider[] DetectAround(this BaseObject obj, BoxCollider boxArea, int layerMask)
+    {
+        return Physics.OverlapBox(boxArea.bounds.center, boxArea.bounds.extents, Quaternion.identity, layerMask);
+    }
     public static Collider[] DetectAround(Vector3 pos, float range, int layerMask)
     {
         return Physics.OverlapSphere(pos, range, layerMask);

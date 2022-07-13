@@ -15,6 +15,7 @@ public class BaseObject : MonoBehaviour
     public SpecProperty SpecProp { get { return GetComponentInChildren<SpecProperty>(); } }
     public BuffController BuffCtrl { get { return GetComponentInChildren<BuffController>(); } }
     public UnitBase Unit { get { return GetComponentInChildren<UnitBase>(); } }
+    public GameObject FirePoint { get { FirePosition point = GetComponentInChildren<FirePosition>();  return point != null ? point.gameObject : gameObject;} }
 
     public int GetLayerMaskAttackable()
     {

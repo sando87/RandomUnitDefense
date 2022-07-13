@@ -33,10 +33,6 @@ public class UnitGunner : UnitBase
         mLaserMotion = GetComponent<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
-    }
-
-    void OnEnable()
-    {
         StartCoroutine(CoMotionSwitcher(mAttackMotion, 1 / AttackSpeed, AttackRange));
         StartCoroutine(CoMotionSwitcher(mLaserMotion, 0, SkillRange));
     }

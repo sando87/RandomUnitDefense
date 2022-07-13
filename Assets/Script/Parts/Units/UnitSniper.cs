@@ -34,10 +34,6 @@ public class UnitSniper : UnitBase
 
         mMotionShoot = GetComponent<MotionActionSingle>();
         mMotionShoot.EventFired = OnAttack;
-    }
-
-    void OnEnable()
-    {
         StartCoroutine(CoMotionSwitcher(mMotionAiming, 1 / AttackSpeed, AttackRange));
     }
 

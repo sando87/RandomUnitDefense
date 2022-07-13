@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ShaderController : MonoBehaviour
 {
+    private const string KeyColor = "_Color";
+    private const string KeyBrightness = "_Brightness";
+    private const string KeyBlindAmount = "_BlindAmount";
+
     private BaseObject mBaseObject = null;
     private Renderer mRenderer = null;
-    private MaterialPropertyBlock mBlock = null;
-    private int mPropertyToIDColor = 0;
-    private int mPropertyToIDAlpha = 0;
-    private int mPropertyToIDBrightness = 0;// AddAllIn1Shader 사용해야하고 Contrast & Brightness 항목을 켜줘야한다.
 
     public bool Lock { get { return !mRenderer.enabled; } set { mRenderer.enabled = !value; } }
     public int SortingLayerID { get { return mRenderer.sortingLayerID; } set { mRenderer.sortingLayerID = value; } }
@@ -22,47 +22,44 @@ public class ShaderController : MonoBehaviour
 
         mRenderer = GetComponent<Renderer>();
 
-        mPropertyToIDColor = Shader.PropertyToID("_Color");
-        mPropertyToIDAlpha = Shader.PropertyToID("_Alpha");
-        mPropertyToIDBrightness = Shader.PropertyToID("_Brightness");
-
-        mBlock = new MaterialPropertyBlock();
-        mRenderer.GetPropertyBlock(mBlock);
-        mBlock.SetColor(mPropertyToIDColor, Color.white);
-        mBlock.SetFloat(mPropertyToIDAlpha, 1);
-        mBlock.SetFloat(mPropertyToIDBrightness, 0);
+        SetColor(Color.white);
+        SetBrightness(0);
+        SetBlindAmount(1);
     }
 
     public Color GetColor()
     {
-        Color color = mBlock.GetColor(mPropertyToIDColor);
-        color.a = 1;
-        return color;
+        return mRenderer.material.GetColor(KeyColor);
     }
     public void SetColor(Color color)
     {
-        color.a = 1;
-        mBlock.SetColor(mPropertyToIDColor, color);
-        mRenderer.SetPropertyBlock(mBlock);
+        mRenderer.material.SetColor(KeyColor, color);
     }
     public float GetAlpha()
     {
-        return mBlock.GetFloat(mPropertyToIDAlpha);
+        return GetColor().a;
     }
     public void SetAlpha(float alpha)
     {
-        mBlock.SetFloat(mPropertyToIDAlpha, alpha);
-        mRenderer.SetPropertyBlock(mBlock);
+        Color color = GetColor();
+        color.a = alpha;
+        SetColor(color);
     }
     public float GetBrightness()
     {
-        return mBlock.GetFloat(mPropertyToIDBrightness);
+        return mRenderer.material.GetFloat(KeyBrightness);
     }
     public void SetBrightness(float brightness)
     {
-        // AddAllIn1Shader 사용해야하고 Contrast & Brightness 항목을 켜줘야한다.
-        mBlock.SetFloat(mPropertyToIDBrightness, brightness);
-        mRenderer.SetPropertyBlock(mBlock);
+        mRenderer.material.SetFloat(KeyBrightness, brightness);
+    }
+    public float GetBlindAmount()
+    {
+        return mRenderer.material.GetFloat(KeyBlindAmount);
+    }
+    public void SetBlindAmount(float blindAmount)
+    {
+        mRenderer.material.SetFloat(KeyBlindAmount, blindAmount);
     }
 
 

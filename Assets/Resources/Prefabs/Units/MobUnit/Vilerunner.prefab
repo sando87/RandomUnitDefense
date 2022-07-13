@@ -193,8 +193,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3393111535141930679}
   - component: {fileID: 3393111535141930674}
-  - component: {fileID: 2510022760167154308}
   - component: {fileID: 5965124567714544271}
+  - component: {fileID: 7460796346438966203}
+  - component: {fileID: 6336006749178562802}
   m_Layer: 11
   m_Name: Motions
   m_TagString: Untagged
@@ -228,26 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cd3dce050b64f9dae1cd58d35b3a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartMotion: {fileID: 2510022760167154308}
---- !u!114 &2510022760167154308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393111535141930680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d6fd8492128f7e4da1ce4392d9e03e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimState:
-    StateName: move
-    AnimatorParamActionType: 1
-    AnimationClipName: move
-    MotionName: MotionMoveAround
-    LayerIndex: 0
-    ClipLength: 0.75
+  StartMotion: {fileID: 6336006749178562802}
 --- !u!114 &5965124567714544271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +249,44 @@ MonoBehaviour:
     MotionName: MotionDeathMob
     LayerIndex: 0
     ClipLength: 1.0833334
+--- !u!114 &7460796346438966203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393111535141930680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionMove
+    LayerIndex: 0
+    ClipLength: 0.18333334
+--- !u!114 &6336006749178562802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393111535141930680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35709f2abfe525a44ab516e70888c85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionIdle
+    LayerIndex: 0
+    ClipLength: 0.18333334
 --- !u!1 &3393111536044945593
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,9 +300,9 @@ GameObject:
   - component: {fileID: 3393111536044945589}
   - component: {fileID: 3393111536044945591}
   - component: {fileID: 3393111536044945592}
-  - component: {fileID: 2126914577243027568}
+  - component: {fileID: 4642133873994698210}
   m_Layer: 11
-  m_Name: vilerunner
+  m_Name: Vilerunner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,7 +387,7 @@ MonoBehaviour:
     - 3
     - 4
     - 5
---- !u!114 &2126914577243027568
+--- !u!114 &4642133873994698210
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -376,7 +396,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3393111536044945593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce0a77afb78d4c0f933554e2c10a02d, type: 3}
+  m_Script: {fileID: 11500000, guid: 65fa914e58b2df74e8396a0502ea411c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3393111536333397374

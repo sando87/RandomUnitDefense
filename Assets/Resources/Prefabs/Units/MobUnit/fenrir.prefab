@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6377826677833743762}
   - component: {fileID: 6377826677833743767}
-  - component: {fileID: 6143247454181054881}
   - component: {fileID: 2692086414479507882}
+  - component: {fileID: 1772596904491287636}
+  - component: {fileID: 1400860830029086242}
   m_Layer: 11
   m_Name: Motions
   m_TagString: Untagged
@@ -45,26 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cd3dce050b64f9dae1cd58d35b3a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartMotion: {fileID: 6143247454181054881}
---- !u!114 &6143247454181054881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377826677833743773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d6fd8492128f7e4da1ce4392d9e03e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimState:
-    StateName: move
-    AnimatorParamActionType: 1
-    AnimationClipName: move
-    MotionName: MotionMoveAround
-    LayerIndex: 0
-    ClipLength: 0.75
+  StartMotion: {fileID: 1400860830029086242}
 --- !u!114 &2692086414479507882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +66,44 @@ MonoBehaviour:
     MotionName: MotionDeathMob
     LayerIndex: 0
     ClipLength: 1.0833334
+--- !u!114 &1772596904491287636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377826677833743773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: move
+    AnimatorParamActionType: 1
+    AnimationClipName: move
+    MotionName: MotionMove
+    LayerIndex: 0
+    ClipLength: 0.75
+--- !u!114 &1400860830029086242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377826677833743773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35709f2abfe525a44ab516e70888c85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionIdle
+    LayerIndex: 0
+    ClipLength: 0.18333334
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +230,7 @@ GameObject:
   - component: {fileID: 6377826679273638800}
   - component: {fileID: 6377826679273638802}
   - component: {fileID: 6377826679273638813}
-  - component: {fileID: 7642616187725792085}
+  - component: {fileID: 2873208203209152841}
   m_Layer: 11
   m_Name: fenrir
   m_TagString: Untagged
@@ -297,7 +317,7 @@ MonoBehaviour:
     - 3
     - 4
     - 5
---- !u!114 &7642616187725792085
+--- !u!114 &2873208203209152841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -306,7 +326,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6377826679273638812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce0a77afb78d4c0f933554e2c10a02d, type: 3}
+  m_Script: {fileID: 11500000, guid: 65fa914e58b2df74e8396a0502ea411c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9202556232064597003

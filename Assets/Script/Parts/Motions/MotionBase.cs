@@ -23,6 +23,7 @@ public class MotionBase : MonoBehaviour
     private float mCooltime = float.MaxValue;
     
     public BaseObject Target { get; set; } = null;
+    public Vector3 Destination { get; set; } = Vector3.zero;
 
     public virtual void OnInit()
     {

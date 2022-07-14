@@ -1,17 +1,19 @@
-﻿Shader "Custom/flashWhite"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/flashWhite"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-		_SelfIllum("Self Illumination",Range(0.0,1.0)) = 1.0
-		_FlashAmount("Flash Amount",Range(0.0,1.0)) = 0.0
-		_LightAmount("Light Amount",Range(0.0,1.0)) = 1.0
-		_Color("Tint", Color) = (1,1,1,1)
-		[MaterialToggle] PixelSnap("Pixel snap", Float) = 0
+		_Brightness("Brightness",Range(0.0,1.0)) = 0.0
+		_BlindAmount("Blind Amount",Range(0.0,1.0)) = 1.0
+		_Color("Color", Color) = (1,1,1,1)
 	}
 
-		SubShader
-		{
+    SubShader
+    {
+        Pass
+        {
 			Tags
 			{
 				"Queue" = "Transparent"
@@ -27,41 +29,61 @@
 			Fog { Mode Off }
 			Blend SrcAlpha OneMinusSrcAlpha
 
-			CGPROGRAM
-			#pragma surface surf Lambert alpha vertex:vert
-			#pragma multi_compile DUMMY PIXELSNAP_ON
+            CGPROGRAM
+            // use "vert" function as the vertex shader
+            #pragma vertex vert
+            // use "frag" function as the pixel (fragment) shader
+            #pragma fragment frag
 
-			sampler2D _MainTex;
-			fixed4 _Color;
-			float _FlashAmount,_SelfIllum,_LightAmount;
+            // vertex shader inputs
+            struct appdata
+            {
+                float4 vertex : POSITION; // vertex position
+                float2 uv : TEXCOORD0; // texture coordinate
+            };
 
-			struct Input
-			{
-				float2 uv_MainTex;
-				fixed4 color;
-			};
+            // vertex shader outputs ("vertex to fragment")
+            struct v2f
+            {
+                float2 uv : TEXCOORD0; // texture coordinate
+                float4 vertex : SV_POSITION; // clip space position
+            };
 
-			void vert(inout appdata_full v, out Input o)
-			{
-				#if defined(PIXELSNAP_ON) && !defined(SHADER_API_FLASH)
-				v.vertex = UnityPixelSnap(v.vertex);
-				#endif
-				v.normal = float3(0,0,-1);
+            // vertex shader
+            v2f vert (appdata v)
+            {
+                v2f o;
+                // transform position to clip space
+                // (multiply with model*view*projection matrix)
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                // just pass the texture coordinate
+                o.uv = v.uv;
+                return o;
+            }
+            
+            // texture we will sample
+            sampler2D _MainTex;
+			float _Brightness;
+			float _BlindAmount;
+			half4 _Color;
 
-				UNITY_INITIALIZE_OUTPUT(Input, o);
-				o.color = _Color;
-			}
+            // pixel shader; returns low precision ("fixed4" type)
+            // color ("SV_Target" semantic)
+            fixed4 frag (v2f i) : SV_Target
+            {
+				clip(i.uv.y - 1 + _BlindAmount);
 
-			void surf(Input IN, inout SurfaceOutput o)
-			{
-				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * IN.color;
-				o.Albedo = lerp(c.rgb,float3(1.0,1.0,1.0),_FlashAmount);
-				o.Emission = lerp(c.rgb,float3(1.0,1.0,1.0),_FlashAmount) * _SelfIllum;
-				clip(IN.uv_MainTex.y - 1 + _LightAmount);
-				o.Alpha = c.a;
-			}
-			ENDCG
-		}
+                // sample texture and return it
+                fixed4 col = tex2D(_MainTex, i.uv);
+				col *= _Color;
+				col += _Brightness;
+				
+                return col;
+            }
+            ENDCG
 
-    FallBack "Diffuse"
+        }
+    }
 }
+
+

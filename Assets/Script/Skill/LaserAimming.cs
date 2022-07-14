@@ -13,7 +13,7 @@ public class LaserAimming : MonoBehaviour
 
     public static LaserAimming Play(Vector3 startPos, GameObject target)
     {
-        LaserAimming prefab = ResourcesCache.Load<LaserAimming>("Prefabs/GunnerLaser");
+        LaserAimming prefab = ResourcesCache.Load<LaserAimming>("Prefabs/Effects/GunnerLaser");
         LaserAimming obj = Instantiate(prefab, startPos, Quaternion.identity);
         obj.Target = target;
         obj.UpdateTranform();

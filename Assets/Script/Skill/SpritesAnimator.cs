@@ -12,7 +12,7 @@ public class SpritesAnimator : MonoBehaviour
     {
         if(sprites == null) return null;
         
-        SpritesAnimator prefab = ResourcesCache.Load<SpritesAnimator>("Prefabs/SpritesAnimator");
+        SpritesAnimator prefab = ResourcesCache.Load<SpritesAnimator>("Prefabs/Effects/SpritesAnimator");
         SpritesAnimator obj = Instantiate(prefab, pos, Quaternion.identity);
         obj.Sprites = sprites;
         obj.IsLoop = isLoop;
@@ -21,7 +21,7 @@ public class SpritesAnimator : MonoBehaviour
 
     public static SpritesAnimator Play(Vector3 startPos, Vector3 destPos, Sprite[] sprites, bool isLoop = false)
     {
-        SpritesAnimator prefab = ResourcesCache.Load<SpritesAnimator>("Prefabs/SpritesAnimator");
+        SpritesAnimator prefab = ResourcesCache.Load<SpritesAnimator>("Prefabs/Effects/SpritesAnimator");
         SpritesAnimator obj = Instantiate(prefab, startPos, Quaternion.identity);
         obj.Sprites = sprites;
         obj.IsLoop = isLoop;

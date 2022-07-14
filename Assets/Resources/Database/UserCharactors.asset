@@ -32,3 +32,9 @@ MonoBehaviour:
       type: 3}
     skillDescription: "\uC77C\uC815\uC2DC\uAC04\uB9C8\uB2E4 \uC8FC\uC704 \uC801\uC5D0\uAC8C
       \uB09C\uC0AC"
+  - ID: 637934369096802367
+    name: gunner
+    image: {fileID: 21300000, guid: c9e0ed8a0ab80574694d838519c383d1, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: bf754f57f9f0dac48b2aed72899bcf8a,
+      type: 3}
+    skillDescription: "\uB808\uC774\uC800 \uACF5\uACA9\uC73C\uB85C \uC801\uC744 \uB454\uD654"

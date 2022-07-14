@@ -27,10 +27,10 @@ public class UnitGunner : UnitBase
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mAttackMotion = GetComponent<MotionActionSingle>();
+        mAttackMotion = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mAttackMotion.EventFired = OnAttack;
 
-        mLaserMotion = GetComponent<MotionActionLoop>();
+        mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
         StartCoroutine(CoMotionSwitcher(mAttackMotion, 1 / AttackSpeed, AttackRange));
@@ -67,10 +67,11 @@ public class UnitGunner : UnitBase
             mLaserEffectObject = null;
         }
         mLaserEffectObject = LaserAimming.Play(mBaseObj.Body.Center, target.gameObject);
-        StartCoroutine(CoAttackBeam(target));
+        StartCoroutine("CoAttackBeam");
     }
-    IEnumerator CoAttackBeam(BaseObject target)
+    IEnumerator CoAttackBeam()
     {
+        BaseObject target = mLaserMotion.Target;
         while (true)
         {
             ApplySlowDeBuff(target);
@@ -93,7 +94,7 @@ public class UnitGunner : UnitBase
             Destroy(mLaserEffectObject.gameObject);
             mLaserEffectObject = null;
         }
-        StopAllCoroutines();
+        StopCoroutine("CoAttackBeam");
     }
     private void ApplySlowDeBuff(BaseObject target)
     {

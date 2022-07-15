@@ -7,11 +7,10 @@ using UnityEngine;
 
 public class UnitBrawler : UnitBase
 {
-    [SerializeField] Transform HitPoint = null;
-    [SerializeField] private Sprite[] HitSprites = null;
+    [SerializeField] BoxCollider DetectArea = null;
+    [SerializeField] BoxCollider AttackArea = null;
+    [SerializeField] Sprite[] HitSprites = null;
 
-    [SerializeField] float _AttackRange = 0.1f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _StunDuration = 1;
@@ -24,7 +23,7 @@ public class UnitBrawler : UnitBase
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mMotionAttack = GetComponent<MotionActionSingle>();
+        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionAttack(mMotionAttack, 1 / AttackSpeed));
     }
@@ -43,7 +42,7 @@ public class UnitBrawler : UnitBase
                     continue;
 
                 BaseObject target = null;
-                Collider[] cols = GetEnemies();
+                Collider[] cols = Physics.OverlapBox(DetectArea.bounds.center, DetectArea.bounds.extents, Quaternion.identity, 1 << LayerID.Enemies);
                 if (cols.Length <= 0)
                     continue;
                 else
@@ -63,10 +62,10 @@ public class UnitBrawler : UnitBase
         mStunableCounter = (mStunableCounter + 1) % 3;
         if(mStunableCounter == 0)
         {
-            SpritesAnimator.Play(HitPoint.position, HitSprites);
+            SpritesAnimator.Play(AttackArea.bounds.center, HitSprites);
         }
 
-        Collider[] cols = GetEnemies();
+        Collider[] cols = Physics.OverlapBox(AttackArea.bounds.center, AttackArea.bounds.extents, Quaternion.identity, 1 << LayerID.Enemies);
         foreach (Collider col in cols)
         {
             BaseObject target = col.GetBaseObject();
@@ -85,10 +84,5 @@ public class UnitBrawler : UnitBase
                 }
             }
         }
-    }
-
-    private Collider[] GetEnemies()
-    {
-        return Physics.OverlapSphere(HitPoint.position, AttackRange, 1 << LayerID.Enemies);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitGuardian : UnitBase
 {
-    [SerializeField] BoxCollider AttackArea = null;
+    [SerializeField] BoxCollider DetectArea = null;
     [SerializeField] private GameObject BuffEffectPrefab = null;
     
     [SerializeField] float _AttackSpeed = 0.5f;
@@ -17,7 +17,6 @@ public class UnitGuardian : UnitBase
     
     [SerializeField] MotionActionSingle MotionAttackA = null;
     [SerializeField] MotionActionSingle MotionAttackB = null;
-    [SerializeField] MotionActionSingle MotionAttackC = null;
 
     private BaseObject mTarget = null;
 
@@ -28,7 +27,7 @@ public class UnitGuardian : UnitBase
         MotionAttackA.EventFired = OnAttack;
         MotionAttackB.EventFired = OnAttack;
 
-        StartCoroutine(CoMotionSwitcherMelee(new MotionBase[] { MotionAttackA, MotionAttackB }, 1 / AttackSpeed, AttackArea));
+        StartCoroutine(CoMotionSwitcherMelee(new MotionBase[] { MotionAttackA, MotionAttackB }, 1 / AttackSpeed, DetectArea));
         StartCoroutine(RepeatBuff());
     }
     

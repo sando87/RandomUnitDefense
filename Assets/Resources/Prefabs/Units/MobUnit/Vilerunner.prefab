@@ -301,9 +301,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: stun
-    AnimatorParamActionType: 6
-    AnimationClipName: stun
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
     MotionName: MotionStun
     LayerIndex: 0
     ClipLength: 0.18333334

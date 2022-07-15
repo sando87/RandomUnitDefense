@@ -11,8 +11,8 @@ public class UnitSniper : UnitBase
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField][Range(0, 1)] float _CriticalPercent = 0.2f;
     float CriticalPercent { get { return _CriticalPercent * mBaseObj.BuffProp.Percentage; } }
-    [SerializeField][Range(1, 10)] float _CriticalDamage = 3.0f;
-    float CriticalDamage { get { return _CriticalDamage; } }
+    [SerializeField][Range(1, 10)] float _CriticalDamageMultiplier = 3.0f;
+    float CriticalDamageMultiplier { get { return _CriticalDamageMultiplier; } }
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] LaserSprites = null;
@@ -27,12 +27,12 @@ public class UnitSniper : UnitBase
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mMotionAiming = GetComponent<MotionActionLoop>();
+        mMotionAiming = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mMotionAiming.EventStart = OnAttackBeamStart;
         mMotionAiming.EventUpdate = OnAttackBeamUpdate;
         mMotionAiming.EventEnd = OnAttackBeamEnd;
 
-        mMotionShoot = GetComponent<MotionActionSingle>();
+        mMotionShoot = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionShoot.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAiming, 1 / AttackSpeed, AttackRange));
     }
@@ -46,7 +46,11 @@ public class UnitSniper : UnitBase
         }
         mAimingEffect = SpritesAnimator.Play(target.Body.Center, AimingSprites, false);
         mAimingEffect.transform.SetParent(target.transform);
-        mAimingEffect.EventEnd = () => mBaseObj.MotionManager.SwitchMotion(mMotionShoot);
+        mAimingEffect.EventEnd = () => 
+        {
+            mMotionShoot.Target = target;
+            mBaseObj.MotionManager.SwitchMotion(mMotionShoot);
+        };
     }
     private void OnAttackBeamUpdate(BaseObject target)
     {
@@ -66,12 +70,11 @@ public class UnitSniper : UnitBase
             Destroy(mAimingEffect.gameObject);
             mAimingEffect = null;
         }
-        StopAllCoroutines();
     }
 
     private void OnAttack(int idx)
     {
-        BaseObject target = mMotionShoot.Target;
+        BaseObject target = mMotionAiming.Target;
         ShootProjectail(target);
     }
     private void ShootProjectail(BaseObject target)
@@ -88,7 +91,7 @@ public class UnitSniper : UnitBase
         int percent = (int)(CriticalPercent * 100.0f);
         if (UnityEngine.Random.Range(0, 100) < percent)
         {
-            damage *= CriticalDamage;
+            damage *= CriticalDamageMultiplier;
         }
 
         target.Health.GetDamaged(damage, mBaseObj);

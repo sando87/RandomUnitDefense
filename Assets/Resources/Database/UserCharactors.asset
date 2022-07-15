@@ -38,3 +38,46 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: bf754f57f9f0dac48b2aed72899bcf8a,
       type: 3}
     skillDescription: "\uB808\uC774\uC800 \uACF5\uACA9\uC73C\uB85C \uC801\uC744 \uB454\uD654"
+  - ID: 637935163811918918
+    name: brawler
+    image: {fileID: 21300000, guid: 72ba8a34499a0af47a80cb6dc6e658f6, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: eb72b86852efc88439d1e620170f4f4e,
+      type: 3}
+    skillDescription: "3\uD68C\uACF5\uACA9\uC2DC\uB9C8\uB2E4 \uC2A4\uD134"
+  - ID: 637935211592805138
+    name: Channeller
+    image: {fileID: 21300000, guid: 89b460503c3feb041a07864825bedca4, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 7166d572f84b3b64db819727fe32281d,
+      type: 3}
+    skillDescription: "\uB808\uC774\uC838 \uB204\uC801 \uACF5\uACA9"
+  - ID: 637935212104646793
+    name: Diplomat
+    image: {fileID: 21300000, guid: f9f6e98719f8c4646bef3913b96506ed, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: b14f0c5113673f3429029a05a314a13c,
+      type: 3}
+    skillDescription: "\uC0AC\uAC70\uB9AC \uC99D\uAC00 \uBC84\uD504"
+  - ID: 637935212420290702
+    name: Flamer
+    image: {fileID: 21300000, guid: 0357d0a899f6cad4eb5fbfccf35ab3a2, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: b24537ede5d823c489db3dbc61358ac5,
+      type: 3}
+    skillDescription: "\uBC14\uB2E5\uC5D0 \uBD88\uAE38\uC744 \uC0DD\uC131\uD558\uC5EC
+      \uC801\uC744 \uD0DC\uC6C0"
+  - ID: 637935212917407646
+    name: Guardian
+    image: {fileID: 21300000, guid: 9cc51fa2955666445bd033c2a666c0a1, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 8cf91c591c651b34990379eac2bd99ed,
+      type: 3}
+    skillDescription: "\uC2A4\uD0AC \uC9C0\uC18D\uC2DC\uAC04 \uC99D\uAC00 \uBC84\uD504"
+  - ID: 637935213520880970
+    name: Shellstorm
+    image: {fileID: 21300000, guid: a9992683d3bf74d4d86237c47428b79e, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: b578ab0c66f0e6e45be9f59d8b2aa69b,
+      type: 3}
+    skillDescription: "\uAC00\uC2A4\uBC30\uB7F4 \uACF5\uACA9"
+  - ID: 637935213643678583
+    name: Sniper
+    image: {fileID: 21300000, guid: 08a867f1150f2334683653c13f4210f5, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: bdd3c23c87e83c44bafbe8dcc6d66955,
+      type: 3}
+    skillDescription: "\uC77C\uC815\uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC"

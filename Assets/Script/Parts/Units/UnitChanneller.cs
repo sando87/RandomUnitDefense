@@ -28,10 +28,10 @@ public class UnitChanneller : UnitBase
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mAttackMotion = GetComponent<MotionActionSingle>();
+        mAttackMotion = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mAttackMotion.EventFired = OnAttack;
 
-        mLaserMotion = GetComponent<MotionActionLoop>();
+        mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
         StartCoroutine(CoMotionSwitcher(mAttackMotion, 1 / AttackSpeed, AttackRange));

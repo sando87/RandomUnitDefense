@@ -10,7 +10,7 @@ public class MagicGun : MonoBehaviour
     [SerializeField] private float MoveSpeed = 0;
     [SerializeField] private float SplashRange = 0;
 
-    public Vector3 Destination { get; set; }
+    public Transform Target { get; set; }
     public Action<Vector3> EventHit { get; set; }
 
     // Start is called before the first frame update
@@ -22,17 +22,21 @@ public class MagicGun : MonoBehaviour
 
     private IEnumerator MoveToDestination()
     {
-        Vector3 dir = Destination - transform.position;
+        Vector3 destination = Target.transform.position;
+        Vector3 dir = destination - transform.position;
         dir.z = 0;
         dir.Normalize();
         while (true)
         {
+            if(Target != null)
+                destination = Target.transform.position;
+                
             Vector3 nextPos = transform.position + (dir * MoveSpeed * Time.deltaTime);
-            Vector3 nextDir = Destination - nextPos;
+            Vector3 nextDir = destination - nextPos;
             nextDir.z = 0;
             if (Vector3.Dot(dir, nextDir) < 0) //목표지점을 지나친 경우
             {
-                transform.position = Destination;
+                transform.position = destination;
                 break;
             }
             else

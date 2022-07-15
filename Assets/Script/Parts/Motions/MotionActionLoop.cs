@@ -9,6 +9,8 @@ public class MotionActionLoop : MotionBase
 {
     [SerializeField] Transform[] _FirePositions = null;
 
+    private int VertAnimCount { get { return _FirePositions == null ? 0 : _FirePositions.Length; } }
+
     public Action<BaseObject> EventStart { get; set; }
     public Action<BaseObject> EventUpdate { get; set; }
     public Action EventEnd { get; set; }
@@ -16,9 +18,9 @@ public class MotionActionLoop : MotionBase
     public override void OnEnter()
     {
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, _FirePositions.Length);
+        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
         SetAnimParamVerticalDegreeIndex(vertIdx);
-        mBaseObject.FirePosition.MovePosition(_FirePositions[vertIdx]);
+        mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
 
         base.OnEnter();
 
@@ -29,9 +31,9 @@ public class MotionActionLoop : MotionBase
         base.OnUpdate();
 
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, _FirePositions.Length);
+        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
         SetAnimParamVerticalDegreeIndex(vertIdx);
-        mBaseObject.FirePosition.MovePosition(_FirePositions[vertIdx]);
+        mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
         
         EventUpdate?.Invoke(Target);
     }
@@ -40,6 +42,13 @@ public class MotionActionLoop : MotionBase
         base.OnLeave();
 
         EventEnd?.Invoke();
+    }
+    private Transform GetFirePositionTranform(int idx)
+    {
+        if(_FirePositions == null || idx < 0 || idx >= _FirePositions.Length)
+            return transform;
+        
+        return _FirePositions[idx];
     }
 }
 

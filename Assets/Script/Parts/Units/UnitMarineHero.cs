@@ -27,14 +27,6 @@ public class UnitMarineHero : UnitBase
         StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
     }
 
-    // public override string SkillDescription
-    // {
-    //     get
-    //     {
-    //         return "기본 공격시 20%확률로 미사일 발사\n(피격된 유닛 20% 이속감소)";
-    //     }
-    // }
-
     private void OnAttack(int idx)
     {
         BaseObject target = mMotionAttack.Target;
@@ -56,8 +48,8 @@ public class UnitMarineHero : UnitBase
     }
     private void ShootMagicGun(BaseObject target)
     {
-        MagicGun missile = Instantiate(MagicGunMissile, mBaseObj.Body.Center, Quaternion.identity);
-        missile.Destination = target.Body.Center;
+        MagicGun missile = Instantiate(MagicGunMissile, mBaseObj.FirePosition.transform.position, Quaternion.identity);
+        missile.Target = target.Body.transform;
         missile.EventHit = OnHitMissile;
         missile.Launch();
     }

@@ -31,8 +31,9 @@ public class UnitPowerGirl : UnitBase
 
     void OnAttack(int idx)
     {
+        Vector3 firePosition = mBaseObj.FirePosition.transform.parent.Find("@_" + idx).position;
         BaseObject target = NormalAttack.Target;
-        SimpleMissile missile = Instantiate(SimpleMissile, mBaseObj.Body.Center, Quaternion.identity);
+        SimpleMissile missile = Instantiate(SimpleMissile, firePosition, Quaternion.identity);
         missile.EventHit = OnHitMissile;
         missile.Launch(target);
     }

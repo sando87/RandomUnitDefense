@@ -157,6 +157,9 @@ public static class InGameUtils
     // 시작점에서 끝점으로가는 방향이 +y축 기준에 대한 각도를 n등분했을때 index 반환
     public static int GetVerticalIndex(Vector3 startPos, Vector3 endPos, int divideCount)
     {
+        if(divideCount <= 0)
+            return 0;
+            
         Vector3 dir = endPos - startPos;
         dir.z = 0;
         float deg = MyUtils.GetDegree(Vector3.up, dir.normalized);

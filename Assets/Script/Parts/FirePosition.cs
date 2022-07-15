@@ -5,5 +5,10 @@ using UnityEngine;
 
 public class FirePosition : MonoBehaviour
 {
+    public void MovePosition(Transform parent)
+    {
+        transform.SetParent(parent);
+        transform.localPosition = Vector3.zero;
+    }
 }
 

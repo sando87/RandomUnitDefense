@@ -6,15 +6,17 @@ using NaughtyAttributes;
 
 public class MotionActionSingle : MotionBase
 {
-    [SerializeField] int _AnimCount = 1;
-    [SerializeField][Range(0, 1)] float[] _FirePoints = null;
+    [SerializeField] Transform[] _FirePositions = null; //스킬이 발사되는 위치(무기나 손의 위치)
+    [SerializeField][Range(0, 1)] float[] _FireTimePoints = null; //실제 스킬이 발사되는 시간적 위치(전체 애니메이션을 1로 했을때)
 
     public Action<int> EventFired { get; set; }
 
     public override void OnEnter()
     {
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        SetAnimParamVerticalDegreeIndex(Target.transform.position, _AnimCount);
+        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, _FirePositions.Length);
+        SetAnimParamVerticalDegreeIndex(vertIdx);
+        mBaseObject.FirePosition.MovePosition(_FirePositions[vertIdx]);
 
         base.OnEnter();
 
@@ -22,9 +24,9 @@ public class MotionActionSingle : MotionBase
     }
     IEnumerator CoUpdate()
     {
-        for (int i = 0; i < _FirePoints.Length; ++i)
+        for (int i = 0; i < _FireTimePoints.Length; ++i)
         {
-            float firePoint = _FirePoints[i];
+            float firePoint = _FireTimePoints[i];
             yield return new WaitUntil(() => firePoint < NormalizedTime);
             EventFired?.Invoke(i);
         }

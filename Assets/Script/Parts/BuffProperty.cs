@@ -12,6 +12,7 @@ public class BuffProperty : MonoBehaviour
     public Percent AttackSpeed;
     public Percent AttackRange;
     public Percent Cooltime;
+    public Percent SkillDamage;
     public Percent SkillRange;
     public Percent SplshRange;
     public Percent SkillDuration;

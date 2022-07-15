@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MotionActionLoop : MotionBase
 {
-    [SerializeField] int _AnimCount = 1;
+    [SerializeField] Transform[] _FirePositions = null;
 
     public Action<BaseObject> EventStart { get; set; }
     public Action<BaseObject> EventUpdate { get; set; }
@@ -16,7 +16,9 @@ public class MotionActionLoop : MotionBase
     public override void OnEnter()
     {
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        SetAnimParamVerticalDegreeIndex(Target.transform.position, _AnimCount);
+        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, _FirePositions.Length);
+        SetAnimParamVerticalDegreeIndex(vertIdx);
+        mBaseObject.FirePosition.MovePosition(_FirePositions[vertIdx]);
 
         base.OnEnter();
 
@@ -27,7 +29,9 @@ public class MotionActionLoop : MotionBase
         base.OnUpdate();
 
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        SetAnimParamVerticalDegreeIndex(Target.transform.position, _AnimCount);
+        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, _FirePositions.Length);
+        SetAnimParamVerticalDegreeIndex(vertIdx);
+        mBaseObject.FirePosition.MovePosition(_FirePositions[vertIdx]);
         
         EventUpdate?.Invoke(Target);
     }

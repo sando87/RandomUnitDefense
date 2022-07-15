@@ -68,16 +68,17 @@ public class UnitChanneller : UnitBase
             mLaserEffectObject = null;
         }
         mLaserEffectObject = LaserAimming.Play(mBaseObj.Body.Center, target.gameObject);
-        StartCoroutine(CoAttackBeam(target));
+        StartCoroutine("CoAttackBeam");
     }
-    IEnumerator CoAttackBeam(BaseObject target)
+    IEnumerator CoAttackBeam()
     {
+        BaseObject target = mLaserMotion.Target;
         float damage = 1;
         while (!IsOutOfSkillRange(target))
         {
             if(target.Health != null)
             {
-                target.Health.GetDamaged(damage, mBaseObj);
+                target.Health.GetDamaged(damage * mBaseObj.BuffProp.SkillDamage, mBaseObj);
             }
             yield return newWaitForSeconds.Cache(0.1f);
             damage += _SkillDamageStep;
@@ -95,6 +96,6 @@ public class UnitChanneller : UnitBase
             Destroy(mLaserEffectObject.gameObject);
             mLaserEffectObject = null;
         }
-        StopAllCoroutines();
+        StopCoroutine("CoAttackBeam");
     }
 }

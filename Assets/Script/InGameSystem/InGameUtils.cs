@@ -154,4 +154,15 @@ public static class InGameUtils
         }
         return isFounded;
     }
+    // 시작점에서 끝점으로가는 방향이 +y축 기준에 대한 각도를 n등분했을때 index 반환
+    public static int GetVerticalIndex(Vector3 startPos, Vector3 endPos, int divideCount)
+    {
+        Vector3 dir = endPos - startPos;
+        dir.z = 0;
+        float deg = MyUtils.GetDegree(Vector3.up, dir.normalized);
+        deg = Mathf.Abs(deg);
+        int stepDegree = 180 / divideCount;
+        int animIndex = (int)deg / stepDegree;
+        return animIndex;
+    }
 }

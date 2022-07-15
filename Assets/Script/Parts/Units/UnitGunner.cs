@@ -14,6 +14,8 @@ public class UnitGunner : UnitBase
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
+    [SerializeField] float _SkillDamage = 1;
+    float SkillDamage { get { return _SkillDamage * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] float _SkillRange = 2;
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] float _SlowDuration = 1.0f;
@@ -43,13 +45,14 @@ public class UnitGunner : UnitBase
     }
     private void ShootProjectail(BaseObject target)
     {
-        Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        Vector3 dir = target.Body.Center - firePosition;
         dir.z = 0;
-        SpritesAnimator.Play(mBaseObj.Body.Center, IntroSprites);
+        SpritesAnimator.Play(firePosition, IntroSprites);
 
-        SpritesAnimator proj = SpritesAnimator.Play(mBaseObj.Body.Center, ProjSprites, true);
+        SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
         proj.transform.right = dir.normalized;
-        proj.transform.DOMove(target.Body.Center, 0.3f).OnComplete(() =>
+        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
@@ -66,20 +69,22 @@ public class UnitGunner : UnitBase
             Destroy(mLaserEffectObject.gameObject);
             mLaserEffectObject = null;
         }
-        mLaserEffectObject = LaserAimming.Play(mBaseObj.Body.Center, target.gameObject);
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        mLaserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject);
+        mLaserEffectObject.transform.SetParent(mBaseObj.FirePosition.transform);
         StartCoroutine("CoAttackBeam");
     }
     IEnumerator CoAttackBeam()
     {
         BaseObject target = mLaserMotion.Target;
-        while (true)
+        while (!IsOutOfSkillRange(target))
         {
-            ApplySlowDeBuff(target);
-            yield return new WaitForSeconds(SlowDuration);
-            if(IsOutOfSkillRange(target))
+            if(target.Health != null)
             {
-                break;
+                target.Health.GetDamaged(SkillDamage, mBaseObj);
             }
+            ApplySlowDeBuff(target);
+            yield return newWaitForSeconds.Cache(0.1f);
         }
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
     }

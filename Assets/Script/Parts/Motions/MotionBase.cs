@@ -114,16 +114,9 @@ public class MotionBase : MonoBehaviour
         mAnim.SetInteger(AnimParam.ActionType, (int)actionID);
         mAnim.SetTrigger(AnimParam.DoActionTrigger);
     }
-    protected void SetAnimParamVerticalDegreeIndex(Vector3 targetPos, int animCount)
+    protected void SetAnimParamVerticalDegreeIndex(int animVerticalIndex)
     {
-        //대상의 위치에 따라 재생되는 attack 애니메이션을 다르게 해줘야 한다.
-        Vector3 dir = targetPos - transform.position;
-        dir.z = 0;
-        float deg = MyUtils.GetDegree(Vector3.up, dir.normalized);
-        deg = Mathf.Abs(deg);
-        int stepDegree = 180 / animCount;
-        int animIndex = (int)deg / stepDegree;
-        mAnim.SetInteger(AnimParam.VerticalDegreeIndex, animIndex + 1);
+        mAnim.SetInteger(AnimParam.VerticalDegreeIndex, animVerticalIndex + 1);
     }
 
     protected bool IsCooltime()

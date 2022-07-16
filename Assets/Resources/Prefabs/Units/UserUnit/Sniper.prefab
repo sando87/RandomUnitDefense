@@ -635,7 +635,7 @@ MonoBehaviour:
   - {fileID: 125030292823022755}
   - {fileID: 4166278259221241757}
   _FireTimePoints:
-  - 0.1
+  - 0.05
 --- !u!114 &5673053828885404654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -927,14 +927,6 @@ MonoBehaviour:
   _AttackRange: 3
   _CriticalPercent: 0.2
   _CriticalDamageMultiplier: 3
-  IntroSprites: []
-  LaserSprites:
-  - {fileID: 21300000, guid: 2b07494f4c5a83d46a3da2982ae505a1, type: 3}
-  - {fileID: 21300000, guid: 580a11372195ce24bae5a478f3039c36, type: 3}
-  - {fileID: 21300000, guid: 4913a80c12801414dbd9f93de29db856, type: 3}
-  - {fileID: 21300000, guid: d8ea76f0d80f1544da539ade8cfbfe3e, type: 3}
-  - {fileID: 21300000, guid: 4ba1fca400a2a7b4c9caeaa6589733cf, type: 3}
-  - {fileID: 21300000, guid: 6afb0f94b59327d4a983b4e314b8e726, type: 3}
   OutroSprites:
   - {fileID: 21300000, guid: ef54498b2668e924d958c2fce51e7c3d, type: 3}
   - {fileID: 21300000, guid: a8dc2b0b527a15a4f86a06d2584756a9, type: 3}
@@ -952,6 +944,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cbfb7b5088f46694f85a37c6f5a50e0a, type: 3}
   - {fileID: 21300000, guid: 045089f148e09a642b60128797a2d811, type: 3}
   - {fileID: 21300000, guid: f91985bc5c7d1f146a3fd666d75f0020, type: 3}
+  - {fileID: 21300000, guid: 6684667c11f0f944d82fe22597bbb891, type: 3}
+  - {fileID: 21300000, guid: cf2103440a1b76c4884fbd46e1661a66, type: 3}
+  - {fileID: 21300000, guid: 6684667c11f0f944d82fe22597bbb891, type: 3}
+  - {fileID: 21300000, guid: cf2103440a1b76c4884fbd46e1661a66, type: 3}
+  - {fileID: 21300000, guid: 6684667c11f0f944d82fe22597bbb891, type: 3}
+  - {fileID: 21300000, guid: cf2103440a1b76c4884fbd46e1661a66, type: 3}
   - {fileID: 21300000, guid: 6684667c11f0f944d82fe22597bbb891, type: 3}
   - {fileID: 21300000, guid: cf2103440a1b76c4884fbd46e1661a66, type: 3}
 --- !u!1 &7557815058146913690

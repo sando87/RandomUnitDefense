@@ -70,7 +70,7 @@ public class UnitGunner : UnitBase
             mLaserEffectObject = null;
         }
         Vector3 firePosition = mBaseObj.FirePosition.transform.position;
-        mLaserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject);
+        mLaserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject, "GunnerLaser");
         mLaserEffectObject.transform.SetParent(mBaseObj.FirePosition.transform);
         StartCoroutine("CoAttackBeam");
     }

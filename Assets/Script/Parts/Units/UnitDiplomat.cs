@@ -15,7 +15,8 @@ public class UnitDiplomat : UnitBase
     [SerializeField] float _SkillRange = 3.0f;
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
-    [SerializeField] SimpleMissile SimpleMissile = null;
+    [SerializeField] private Sprite[] ProjSprites = null;
+    [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] GameObject BuffEffect = null;
 
     private MotionActionSingle mMotionAttack = null;
@@ -32,14 +33,24 @@ public class UnitDiplomat : UnitBase
 
     void OnAttack(int idx)
     {
-        BaseObject target = mMotionAttack.Target;
-        SimpleMissile missile = Instantiate(SimpleMissile, mBaseObj.Body.Center, Quaternion.identity);
-        missile.EventHit = OnHitMissile;
-        missile.Launch(target);
+        ShootProjectail(mMotionAttack.Target);
     }
-    void OnHitMissile(BaseObject target)
+    private void ShootProjectail(BaseObject target)
     {
-        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        Vector3 dir = target.Body.Center - firePosition;
+        dir.z = 0;
+
+        SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
+        proj.transform.right = dir.normalized;
+        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
+        {
+            SpritesAnimator.Play(proj.transform.position, OutroSprites);
+
+            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+
+            Destroy(proj.gameObject);
+        });
     }
 
     

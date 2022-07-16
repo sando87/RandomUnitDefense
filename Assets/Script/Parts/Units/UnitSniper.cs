@@ -14,8 +14,6 @@ public class UnitSniper : UnitBase
     [SerializeField][Range(1, 10)] float _CriticalDamageMultiplier = 3.0f;
     float CriticalDamageMultiplier { get { return _CriticalDamageMultiplier; } }
 
-    [SerializeField] private Sprite[] IntroSprites = null;
-    [SerializeField] private Sprite[] LaserSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] private Sprite[] AimingSprites = null;
 
@@ -79,11 +77,9 @@ public class UnitSniper : UnitBase
     }
     private void ShootProjectail(BaseObject target)
     {
-        Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
-        dir.z = 0;
-
-        SpritesAnimator trail = SpritesAnimator.Play(mBaseObj.Body.Center, LaserSprites);
-        trail.transform.right = dir.normalized;
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        LaserAimming laserObj = LaserAimming.Play(firePosition, target.Body.gameObject, "SniperLaser");
+        this.ExDelayedCoroutine(1, () => Destroy(laserObj.gameObject));
 
         SpritesAnimator.Play(target.Body.Center, OutroSprites);
 

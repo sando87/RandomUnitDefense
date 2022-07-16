@@ -11,9 +11,9 @@ public class LaserAimming : MonoBehaviour
 
     private Vector3 mDestPos = Vector3.zero;
 
-    public static LaserAimming Play(Vector3 startPos, GameObject target)
+    public static LaserAimming Play(Vector3 startPos, GameObject target, string vfxName)
     {
-        LaserAimming prefab = ResourcesCache.Load<LaserAimming>("Prefabs/Effects/GunnerLaser");
+        LaserAimming prefab = ResourcesCache.Load<LaserAimming>("Prefabs/Effects/" + vfxName);
         LaserAimming obj = Instantiate(prefab, startPos, Quaternion.identity);
         obj.Target = target;
         obj.UpdateTranform();

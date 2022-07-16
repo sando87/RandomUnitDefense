@@ -17,7 +17,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const float LineMobBurstIntervalSec = 1.5f;
     public const int KillPointCost = 5;
     public const int LineMobLimit = 80;
-    public const int StartKillPoint = 20;
+    public const int StartKillPoint = 200;
 
     [SerializeField] private GameObject StagePrefab = null;
     [SerializeField] private HUDFunctions HUDPrefab = null;

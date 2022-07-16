@@ -44,13 +44,14 @@ public class UnitChanneller : UnitBase
     }
     private void ShootProjectail(BaseObject target)
     {
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
         Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
         dir.z = 0;
-        SpritesAnimator.Play(mBaseObj.Body.Center, IntroSprites);
+        SpritesAnimator.Play(firePosition, IntroSprites);
 
-        SpritesAnimator proj = SpritesAnimator.Play(mBaseObj.Body.Center, ProjSprites, true);
+        SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
         proj.transform.right = dir.normalized;
-        proj.transform.DOMove(target.Body.Center, 0.3f).OnComplete(() =>
+        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
@@ -67,7 +68,9 @@ public class UnitChanneller : UnitBase
             Destroy(mLaserEffectObject.gameObject);
             mLaserEffectObject = null;
         }
-        mLaserEffectObject = LaserAimming.Play(mBaseObj.Body.Center, target.gameObject);
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        mLaserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject, "ChannellerLaser");
+        mLaserEffectObject.transform.SetParent(mBaseObj.FirePosition.transform);
         StartCoroutine("CoAttackBeam");
     }
     IEnumerator CoAttackBeam()

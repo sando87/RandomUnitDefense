@@ -59,6 +59,7 @@ public class AnimParam
     public static readonly int ActionType = Animator.StringToHash("ActionType");
     public static readonly int DoActionTrigger = Animator.StringToHash("DoActionTrigger");
     public static readonly int VerticalDegreeIndex = Animator.StringToHash("VerticalDegreeIndex");
+    public static readonly int VerticalIndexFloat = Animator.StringToHash("VerticalIndexFloat");
 }
 
 public enum AnimActionID

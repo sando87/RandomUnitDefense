@@ -19,7 +19,7 @@ public class MotionActionLoop : MotionBase
     {
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
         int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
-        SetAnimParamVerticalDegreeIndex(vertIdx);
+        SetAnimParamVerticalIndexFloat(vertIdx);
         mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
 
         base.OnEnter();
@@ -28,11 +28,17 @@ public class MotionActionLoop : MotionBase
     }
     public override void OnUpdate()
     {
+        if (Target == null || Target.Health.IsDead)
+        {
+            SwitchMotionToIdle();
+            return;
+        }
+
         base.OnUpdate();
 
         mBaseObject.Body.TurnHeadTo(Target.transform.position);
         int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
-        SetAnimParamVerticalDegreeIndex(vertIdx);
+        SetAnimParamVerticalIndexFloat(vertIdx);
         mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
         
         EventUpdate?.Invoke(Target);

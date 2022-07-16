@@ -118,6 +118,10 @@ public class MotionBase : MonoBehaviour
     {
         mAnim.SetInteger(AnimParam.VerticalDegreeIndex, animVerticalIndex + 1);
     }
+    protected void SetAnimParamVerticalIndexFloat(int animVerticalIndex)
+    {
+        mAnim.SetFloat(AnimParam.VerticalIndexFloat, (float)animVerticalIndex);
+    }
 
     protected bool IsCooltime()
     {

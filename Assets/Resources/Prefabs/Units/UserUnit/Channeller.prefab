@@ -108,6 +108,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7741290704238653336}
+  - {fileID: 342232234857561014}
   m_Father: {fileID: 6377826679273638807}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -240,13 +241,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: actionLoopEnter
+    StateName: ActionLoop
     AnimatorParamActionType: 5
-    AnimationClipName: idle
+    AnimationClipName: Blend Tree
     MotionName: MotionActionLoop
     LayerIndex: 0
-    ClipLength: 0.18333334
-  _FirePositions: []
+    ClipLength: 1.3333334
+  _FirePositions:
+  - {fileID: 342232234857561014}
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,6 +524,36 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f16cd926cd789c34f8b37157bbd917df, type: 3}
   _SkillRange: 2
   _SkillDamageStep: 0.2
+--- !u!1 &7123605376465838127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 342232234857561014}
+  m_Layer: 10
+  m_Name: FirePointLaser (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &342232234857561014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7123605376465838127}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.001, y: 0.762, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6377826677833743762}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7557815058146913690
 GameObject:
   m_ObjectHideFlags: 0

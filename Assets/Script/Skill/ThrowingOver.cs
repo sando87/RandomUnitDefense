@@ -9,7 +9,7 @@ public class ThrowingOver : MonoBehaviour
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
-    public Action EventHit { get; set; }
+    public Action<Vector3> EventHit { get; set; }
 
     // Start is called before the first frame update
     public void Launch(Vector3 dest)
@@ -22,7 +22,7 @@ public class ThrowingOver : MonoBehaviour
             transform.DOMoveY(dest.y, 1).SetEase(Ease.InQuad).OnComplete(() =>
             {
                 SpritesAnimator.Play(transform.position, OutroSprites);
-                EventHit?.Invoke();
+                EventHit?.Invoke(dest);
                 Destroy(gameObject);
             });
         });

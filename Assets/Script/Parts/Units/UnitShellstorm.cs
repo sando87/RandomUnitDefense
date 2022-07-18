@@ -19,7 +19,9 @@ public class UnitShellstorm : UnitBase
     [SerializeField] float _SplshRange = 1;
     float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
 
-    [SerializeField] SimpleMissile SimpleMissilePrefab = null;
+    [SerializeField] MissileTracing MissilePrefab = null;
+    [SerializeField] ThrowingOver BarrelPrefab = null;
+    [SerializeField] GameObject GasBarrelDecalPrefab = null;
 
     void Start()
     {
@@ -33,27 +35,33 @@ public class UnitShellstorm : UnitBase
 
     private void OnAttack(int idx)
     {
+        Vector3 firePosition = mBaseObj.FirePosition.transform.parent.Find("@_" + idx).position;
         BaseObject target = _MotionMissileAttack.Target;
-        SimpleMissile missile = Instantiate(SimpleMissilePrefab, mBaseObj.Body.Center, Quaternion.identity);
+        MissileTracing missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
+        missile.Target = target;
         missile.EventHit = OnHitMissile;
-        missile.Launch(target);
     }
     void OnHitMissile(BaseObject target)
     {
-        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        if(target != null)
+            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
     }
 
     private void OnSkill(int idx)
     {
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
         BaseObject target = _SkillAttack.Target;
-        SimpleMissile barrel = Instantiate(SimpleMissilePrefab, mBaseObj.Body.Center, Quaternion.identity);
+        ThrowingOver barrel = Instantiate(BarrelPrefab, firePosition, Quaternion.identity);
         barrel.EventHit = OnHitGasBarrel;
-        barrel.Launch(target);
+        barrel.Launch(target.transform.position);
     }
 
-    void OnHitGasBarrel(BaseObject target)
+    void OnHitGasBarrel(Vector3 dest)
     {
-        Collider[] cols = Physics.OverlapSphere(target.transform.position, SplshRange, 1 << LayerID.Enemies);
+        GameObject decal = Instantiate(GasBarrelDecalPrefab, dest, Quaternion.identity);
+        this.ExDelayedCoroutine(3, () => Destroy(decal));
+        
+        Collider[] cols = Physics.OverlapSphere(dest, SplshRange, 1 << LayerID.Enemies);
         foreach (Collider col in cols)
         {
             Health hp = col.GetComponentInBaseObject<Health>();

@@ -122,6 +122,10 @@ public static class InGameUtils
         return (posA - posB).sqrMagnitude <= (distance * distance);
     }
 
+    public static Collider[] DetectAround(this GameObject obj, float range, int layerMask)
+    {
+        return DetectAround(obj.transform.position, range, layerMask);
+    }
     public static Collider[] DetectAround(this BaseObject obj, float range, int layerMask)
     {
         return DetectAround(obj.transform.position, range, layerMask);

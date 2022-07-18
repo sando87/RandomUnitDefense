@@ -38,6 +38,7 @@ public class UnitShellstorm : UnitBase
         Vector3 firePosition = mBaseObj.FirePosition.transform.parent.Find("@_" + idx).position;
         BaseObject target = _MotionMissileAttack.Target;
         MissileTracing missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
+        missile.transform.right = new Vector3(mBaseObj.transform.right.x, 0.5f, 0);
         missile.Target = target;
         missile.EventHit = OnHitMissile;
     }

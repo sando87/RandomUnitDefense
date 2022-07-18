@@ -20,19 +20,24 @@ public class MissileTracing : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.right * 3 * Time.deltaTime;
+        transform.position += transform.right * 5 * Time.deltaTime;
     }
 
     private IEnumerator CoStartMoving()
     {
         SpritesAnimator.Play(transform.position, IntroSprites);
 
-        yield return new WaitForSeconds(2);
+        StartCoroutine(MyUtils.CoRotateTowards2DLerp(0.5f, transform, Target.transform, 3.14f * 2));
 
-        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.transform, 1000));
+        Vector3 lastDest = Target.transform.position;
 
+        while(Vector2.Distance(transform.position, lastDest) > 0.1f)
+        {
+            if(Target != null)
+                lastDest = Target.transform.position;
 
-        yield return new WaitUntil(() => Vector2.Distance(transform.position, Target.transform.position) < 0.1f);
+            yield return null;
+        }
 
         SpritesAnimator.Play(transform.position, OutroSprites);
         EventHit?.Invoke(Target);

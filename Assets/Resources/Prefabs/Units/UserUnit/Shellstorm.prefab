@@ -67,7 +67,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693235439840732144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.292, y: 0.082, z: 0}
+  m_LocalPosition: {x: 0.265, y: 0.109, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7741290704238653336}
@@ -97,7 +97,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4287283715782347247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.165, y: 0.706, z: 0}
+  m_LocalPosition: {x: 0.05, y: 0.897, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6377826677833743762}
@@ -290,7 +290,7 @@ MonoBehaviour:
   - {fileID: 7741290704238653336}
   _FireTimePoints:
   - 0.1
-  - 0.6
+  - 0.5
 --- !u!114 &6577991469760676028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
   _FirePositions:
   - {fileID: 7210394915957649869}
   _FireTimePoints:
-  - 0.6
+  - 0.58
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +573,11 @@ MonoBehaviour:
   _Cooltime: 5
   _SkillRange: 5
   _SplshRange: 1
-  SimpleMissilePrefab: {fileID: 1240864785425162540, guid: 603ae2d72cefe3941accf2f971083a9d,
+  MissilePrefab: {fileID: 2382948227277557631, guid: 128845c5bb61bb3438dee537d1c087aa,
+    type: 3}
+  BarrelPrefab: {fileID: 1945621386255130330, guid: 9746c4278000e6c4e84ba2d385f0d8aa,
+    type: 3}
+  GasBarrelDecalPrefab: {fileID: 4149092143720216171, guid: 594a112c2b707e645a90373fb644dd52,
     type: 3}
 --- !u!1 &6600746517447893748
 GameObject:
@@ -599,7 +603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6600746517447893748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.483, y: -0.064, z: 0}
+  m_LocalPosition: {x: -0.499, y: 0.018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7741290704238653336}

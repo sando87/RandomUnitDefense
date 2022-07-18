@@ -91,7 +91,7 @@ public class UnitFlamer : UnitBase
             buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 중복 불가...
         else
         {
-            GameObject buffEffectObj = Instantiate(BuffEffect, target.Renderer.transform);
+            GameObject buffEffectObj = Instantiate(BuffEffect, target.Body.transform);
             target.BuffCtrl.AddBuff(new DeBuffFireDamaged(buffEffectObj, target, mBaseObj));
         }
     }

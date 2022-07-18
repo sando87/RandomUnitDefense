@@ -9,9 +9,8 @@ public class MissileTracing : MonoBehaviour
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
-    [SerializeField]
-    public BaseObject Target = null;
-    public Action<BaseObject> EventHit { get; set; }
+    public BaseObject Target { get; set; } = null;
+    public Action<BaseObject> EventHit { get; set; } = null;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +36,7 @@ public class MissileTracing : MonoBehaviour
 
         SpritesAnimator.Play(transform.position, OutroSprites);
         EventHit?.Invoke(Target);
+            
         Destroy(gameObject);
     }
 

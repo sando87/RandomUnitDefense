@@ -9,23 +9,20 @@ public class ThrowingOver : MonoBehaviour
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
-    public BaseObject Target { get; private set; }
-    public Action<BaseObject> EventHit { get; set; }
+    public Action EventHit { get; set; }
 
     // Start is called before the first frame update
-    public void Launch(BaseObject target)
+    public void Launch(Vector3 dest)
     {
-        Target = target;
-
         SpritesAnimator.Play(transform.position, IntroSprites);
-        transform.DOMoveX(Target.transform.position.x, 2);
+        transform.DOMoveX(dest.x, 2).SetEase(Ease.Linear);
         transform.DORotate(new Vector3(0, 0, 1000), 2, RotateMode.FastBeyond360);
         transform.DOMoveY(transform.position.y + 3, 1).SetEase(Ease.OutQuad).OnComplete(() =>
         {
-            transform.DOMoveY(Target.transform.position.y, 1).SetEase(Ease.InQuad).OnComplete(() =>
+            transform.DOMoveY(dest.y, 1).SetEase(Ease.InQuad).OnComplete(() =>
             {
                 SpritesAnimator.Play(transform.position, OutroSprites);
-                EventHit?.Invoke(Target);
+                EventHit?.Invoke();
                 Destroy(gameObject);
             });
         });

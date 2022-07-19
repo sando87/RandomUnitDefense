@@ -37,13 +37,14 @@ public class HUDFunctions : MonoBehaviour
         MergeLevelUP_OFF.SetActive(DetectedUnits.Count < MergeCountForLevelUP);
         MergeChange_ON.SetActive(DetectedUnits.Count >= MergeCountForChange);
         MergeChange_OFF.SetActive(DetectedUnits.Count < MergeCountForChange);
+
+        transform.rotation = Quaternion.identity;
     }
 
     public void Show(BaseObject unit)
     {
         TargetUnit = unit;
         Vector3 pos = TargetUnit.Body.Center;
-        pos.z = -1;
         transform.position = pos;
         transform.SetParent(TargetUnit.transform);
         gameObject.SetActive(true);

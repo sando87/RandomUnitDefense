@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7741290704238653336}
   - component: {fileID: 4327512350833184843}
-  m_Layer: 10
+  m_Layer: 16
   m_Name: FirePointShoot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5579172670357923669}
   - component: {fileID: 7691319711251651081}
-  m_Layer: 10
+  m_Layer: 16
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -77,10 +77,9 @@ public class LayerID
 {
     public static readonly int Player = LayerMask.NameToLayer("Player");
     public static readonly int Enemies = LayerMask.NameToLayer("Enemies");
-    public static readonly int Projectiles = LayerMask.NameToLayer("Projectiles");
-    public static readonly int IngameParticles = LayerMask.NameToLayer("IngameParticles");
     public static readonly int ThemeBackground = LayerMask.NameToLayer("BackgroundMap");
-    public static readonly int Undetectable = LayerMask.NameToLayer("Undetectable");
+    public static readonly int Ignorable = LayerMask.NameToLayer("Ignorable");
+    public static readonly int WorldUI = LayerMask.NameToLayer("WorldUI");
 }
 
 public class SortingLayerID

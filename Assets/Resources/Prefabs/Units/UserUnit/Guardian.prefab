@@ -521,7 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3635041028232987616}
   - component: {fileID: 5685784293536984249}
-  m_Layer: 10
+  m_Layer: 16
   m_Name: DetectArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}

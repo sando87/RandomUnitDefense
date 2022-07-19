@@ -28,7 +28,11 @@ public class HealthBar : MonoBehaviour
 
     private void OnDamaged(float validDamage, BaseObject attacker)
     {
-        if(validDamage > 0)
+        if(mHP.IsDead)
+        {
+            HideBar();
+        }
+        else if(validDamage > 0)
         {
             UpdateHealthBar(mHP.CurrentHealthRate);
         }

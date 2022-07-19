@@ -27,8 +27,8 @@ public class InGameInput : MonoBehaviour
             return;
 
         mDownObject = null;
-        Ray ray = Camera.main.ScreenPointToRay(InputWrapper.Instance.MousePosition());
-        RaycastHit[] hits = Physics.RaycastAll(ray, 1 << LayerID.Player);
+        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
+        RaycastHit[] hits = Physics.RaycastAll(ray, 20, 1 << LayerID.Player);
         foreach(RaycastHit hit in hits)
         {
             UserInput userInput = hit.collider.GetComponentInBaseObject<UserInput>();
@@ -39,20 +39,20 @@ public class InGameInput : MonoBehaviour
             }
         }
 
-        if(Physics.Raycast(ray, out RaycastHit hitOnBackground, 1 << LayerID.ThemeBackground))
+        if(Physics.Raycast(ray, out RaycastHit hitOnBackground, 20, 1 << LayerID.ThemeBackground))
         {
             mDownPosition = hitOnBackground.point;
         }
     }
     private void OnUpTriggered(InputType obj)
     {
-        Ray ray = Camera.main.ScreenPointToRay(InputWrapper.Instance.MousePosition());
-        Physics.Raycast(ray, out RaycastHit hitOnBackground, 1 << LayerID.ThemeBackground);
+        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
+        Physics.Raycast(ray, out RaycastHit hitOnBackground, 20, 1 << LayerID.ThemeBackground);
         Vector3 worldPt = hitOnBackground.point;
         Vector3 diff = (worldPt - mDownPosition).ZeroZ();
         if (diff.magnitude < 0.1f)
         {
-            SelecteObject(mDownObject);
+            Click();
         }
         else
         {
@@ -67,6 +67,37 @@ public class InGameInput : MonoBehaviour
         mDownPosition = Vector3.zero;
     }
 
+    private void Click()
+    {
+        // 클릭시 먼저 WorldUI버튼을 클릭했는지 확인
+        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
+        RaycastHit[] hits = Physics.RaycastAll(ray, 20, 1 << LayerID.WorldUI);
+        foreach (RaycastHit hit in hits)
+        {
+            InGameButton worldUIBtn = hit.collider.GetComponent<InGameButton>();
+            if (worldUIBtn != null)
+            {
+                worldUIBtn.EventClick?.Invoke();
+                SelecteObject(null);
+                return;
+            }
+        }
+
+        // 그다음 캐릭터 클릭했는지 확인
+        hits = Physics.RaycastAll(ray, 20, 1 << LayerID.Player);
+        foreach (RaycastHit hit in hits)
+        {
+            UserInput unit = hit.collider.GetComponentInBaseObject<UserInput>();
+            if (unit != null)
+            {
+                SelecteObject(unit);
+                return;
+            }
+        }
+
+        // 마지막으로 지면 클릭시 모두 해제
+        SelecteObject(null);
+    }
     private void SelecteObject(UserInput obj)
     {
         if (mSelectedObject != null)

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5238935382415812428}
   - component: {fileID: 6937288979490757463}
   - component: {fileID: 8572161841456548958}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: refund_disable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 44933511823523372}
   - component: {fileID: 1581426350927430290}
   - component: {fileID: 4534131139850647190}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: reunit-disable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 8086248998168992278}
   - component: {fileID: 7213285617519894005}
   - component: {fileID: 2393661744867740954}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Upgrade-disable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 6762178182300598862}
   - component: {fileID: 2103878895748520130}
   - component: {fileID: 7996201676203606504}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: HUDFunctions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 6762178182773345527}
   - component: {fileID: 3373086336841559792}
   - component: {fileID: 2788675989688776632}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: refund_enable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 6762178183163700418}
   - component: {fileID: 1211530722754907291}
   - component: {fileID: 2973912146208116232}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Upgrade-enable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 6762178183605833645}
   - component: {fileID: 1699693344437912905}
   - component: {fileID: 1707813276953825359}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: reunit-enable
   m_TagString: Untagged
   m_Icon: {fileID: 0}

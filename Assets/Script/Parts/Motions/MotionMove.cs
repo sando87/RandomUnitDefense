@@ -33,7 +33,7 @@ public class MotionMove : MotionBase
 
         float dist = (Destination - mBaseObject.transform.position).ZeroZ().magnitude;
         float duration = dist / mBaseObject.SpecProp.MoveSpeed;
-        mMoveTween = mBaseObject.transform.DOMove(Destination, duration).OnComplete(() =>
+        mMoveTween = mBaseObject.transform.DOMove(Destination, duration).SetEase(Ease.Linear).OnComplete(() =>
         {
             mMoveTween = null;
             SwitchMotionToIdle();

@@ -9,9 +9,9 @@ AnimatorOverrideController:
   m_Name: grimcrusher
   m_Controller: {fileID: 9100000, guid: a03174bff5416af40946cf3994d0fd44, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 189a550c2ae164848afc6b20146f7808, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 001c827043e17574cb299415bbbbeab2, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 96e7c7620f587094ca797e6951eb31f3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 70eb8e18d8cda7243bb0d0fb70690acd, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: e404751e4805d064ba385d8183eb009c, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 9a5564109e0c67145ac2f326b96ea3aa, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: b29dcc6582563fd47b5793a35ee72737, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4130e996f54b46d43911cb0eb3d432ab, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 001c827043e17574cb299415bbbbeab2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 71ae49f7f8730824d86555d83782f673, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3d56c196a52f76f4daee42e1c0da2e60, type: 2}

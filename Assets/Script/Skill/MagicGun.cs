@@ -17,7 +17,14 @@ public class MagicGun : MonoBehaviour
     public void Launch()
     {
         FireEffect.gameObject.SetActive(true);
-        StartCoroutine(MoveToDestination());
+        transform.CoMoveToSpeed(Target, MoveSpeed, () =>
+        {
+            EventHit?.Invoke(transform.position);
+            HitEffect.gameObject.SetActive(true);
+            Destroy(gameObject, 1.0f);
+        });
+        
+        //StartCoroutine(MoveToDestination());
     }
 
     private IEnumerator MoveToDestination()

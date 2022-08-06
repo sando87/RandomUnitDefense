@@ -43,13 +43,13 @@ public class UnitMarineHero : UnitBase
     {
         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
         Vector3 pos = MyUtils.Random(target.Body.Center, 0.1f);
-        GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
+        GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity, target.transform);
         Destroy(obj, 1.0f);
     }
     private void ShootMagicGun(BaseObject target)
     {
         MagicGun missile = Instantiate(MagicGunMissile, mBaseObj.FirePosition.transform.position, Quaternion.identity);
-        missile.Target = target.Body.transform;
+        missile.Target = target.transform;
         missile.EventHit = OnHitMissile;
         missile.Launch();
     }

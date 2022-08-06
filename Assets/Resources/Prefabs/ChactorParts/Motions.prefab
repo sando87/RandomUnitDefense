@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4414586506002351786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4414586506002351781}
+  - component: {fileID: 4414586506002351776}
+  - component: {fileID: 4655986233325795997}
+  - component: {fileID: 9032202033693982563}
+  - component: {fileID: 8552774515936888085}
+  - component: {fileID: 5942133883183923084}
+  m_Layer: 11
+  m_Name: Motions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4414586506002351781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4414586506002351776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cd3dce050b64f9dae1cd58d35b3a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartMotion: {fileID: 8552774515936888085}
+--- !u!114 &4655986233325795997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7562c6a6ce62be47b515a6cc5ab11d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: death
+    AnimatorParamActionType: 2
+    AnimationClipName: death
+    MotionName: MotionDeathMob
+    LayerIndex: 0
+    ClipLength: 1.0833334
+--- !u!114 &9032202033693982563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c4599d619c06543bd4234ecb175659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: move
+    AnimatorParamActionType: 1
+    AnimationClipName: move
+    MotionName: MotionMove
+    LayerIndex: 0
+    ClipLength: 0.75
+--- !u!114 &8552774515936888085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35709f2abfe525a44ab516e70888c85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionIdle
+    LayerIndex: 0
+    ClipLength: 0.18333334
+--- !u!114 &5942133883183923084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cbd45989efe644a836ec861b43127d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionStun
+    LayerIndex: 0
+    ClipLength: 0.18333334

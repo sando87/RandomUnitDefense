@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitEnemy : UnitBase
 {
+    [SerializeField] Sprite[] HitEffect = null;
+
     private Vector3[] mWayPoints = null;
     private int mWayPointIndex = 0;
     private MotionMove mMotionMove = null;
@@ -13,8 +16,20 @@ public class UnitEnemy : UnitBase
         mWayPoints = InGameSystem.Instance.GetWayPoints();
         mWayPointIndex = 0;
         mMotionMove = mBaseObj.MotionManager.FindMotion<MotionMove>();
+        if(HitEffect != null)
+            mBaseObj.Health.EventDamaged += OnDamaged;
 
         StartCoroutine(MoveAround());
+    }
+
+    private void OnDamaged(float valideDamage, BaseObject attacker)
+    {
+        // if(!mBaseObj.Health.IsDead && valideDamage > 0)
+        // {
+        //     Vector3 pos = MyUtils.Random(mBaseObj.Body.Center, 0.1f);
+        //     SpritesAnimator effect = SpritesAnimator.Play(pos, HitEffect);
+        //     effect.transform.SetParent(mBaseObj.transform);
+        // }
     }
 
     IEnumerator MoveAround()
@@ -35,4 +50,6 @@ public class UnitEnemy : UnitBase
             yield return null;
         }
     }
+
+
 }

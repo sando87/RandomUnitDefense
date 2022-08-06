@@ -9,9 +9,9 @@ AnimatorOverrideController:
   m_Name: spitterbug
   m_Controller: {fileID: 9100000, guid: a03174bff5416af40946cf3994d0fd44, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 189a550c2ae164848afc6b20146f7808, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4130e996f54b46d43911cb0eb3d432ab, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 02c7b30540550a54eabd29792a9017d6, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 96e7c7620f587094ca797e6951eb31f3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 70eb8e18d8cda7243bb0d0fb70690acd, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: c2cbd0c4548a7064c961df67229727f5, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 9a5564109e0c67145ac2f326b96ea3aa, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 71ae49f7f8730824d86555d83782f673, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: d93b73bac9478554d8a90d379450e489, type: 2}

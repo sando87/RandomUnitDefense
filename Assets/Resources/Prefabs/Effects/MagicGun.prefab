@@ -4957,7 +4957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FireEffect: {fileID: 1500810277133647816}
   HitEffect: {fileID: 5513985909186421309}
-  MoveSpeed: 35
+  MoveSpeed: 10
   SplashRange: 1
 --- !u!1 &8444295428382494057
 GameObject:

@@ -13,7 +13,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
 {
     public const float MineralIntervalSec = 1.0f;
     public const float WaveIntervalSec = 10.0f;
-    public const int MobCountPerWave = 60;
+    public const int MobCountPerWave = 5;
     public const float LineMobBurstIntervalSec = 1.5f;
     public const int KillPointCost = 5;
     public const int LineMobLimit = 80;

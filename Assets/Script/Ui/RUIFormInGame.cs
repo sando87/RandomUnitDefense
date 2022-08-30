@@ -38,6 +38,10 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Text DamageText = null;
     [SerializeField] private Text DescriptionText = null;
 
+    [SerializeField] private Button BtnLevelUp = null;
+    [SerializeField] private Button BtnReUnit = null;
+    [SerializeField] private Button BtnRefund = null;
+
     private InGameSystem GameMgr = null;
 
     public override void Init()
@@ -87,6 +91,14 @@ public class RUIFormInGame : RUiForm
         WeaponC.text = GameMgr.GetUpgradeCount(UpgradeType.TypeC).ToString();
         WeaponD.text = GameMgr.GetUpgradeCount(UpgradeType.TypeD).ToString();
         WeaponE.text = GameMgr.GetUpgradeCount(UpgradeType.TypeE).ToString();
+
+        UnitBase[] sameUnit = GameMgr.GetAroundSameUnit();
+        if(sameUnit != null && sameUnit.Length > 0)
+        {
+            BtnLevelUp.gameObject.SetActive(sameUnit.Length >= 3);
+            BtnReUnit.gameObject.SetActive(sameUnit.Length >= 2);
+            BtnRefund.gameObject.SetActive(true);
+        }
 
         UpdateUnitDetail();
     }
@@ -143,6 +155,20 @@ public class RUIFormInGame : RUiForm
 
         if (!ret)
             RUiMessageBox.PopUp("Not enough minerals.", null);
+    }
+
+
+    public void OnClickLevelUp()
+    {
+        GameMgr.MergeForLevelup();
+    }
+    public void OnClickChange()
+    {
+        GameMgr.MergeForReunit();
+    }
+    public void OnClickRefund()
+    {
+        GameMgr.MergeForRefund();
     }
 
 }

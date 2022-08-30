@@ -219,4 +219,21 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public Vector3[] GetWayPoints() { return WayPoints; }
 
+    public UnitBase[] GetAroundSameUnit()
+    {
+        return null;
+    }
+
+    public void MergeForLevelup()
+    {
+
+    }
+    public void MergeForReunit()
+    {
+
+    }
+    public void MergeForRefund()
+    {
+
+    }
 }

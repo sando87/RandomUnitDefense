@@ -4,21 +4,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// 유닛 선택
+// 유닛 이동
+// 같은 유닛 모두 선택
+// 영역 안의 모든 유닛 선택
+// 선택 모두 취소
+
 public class InGameInput : MonoBehaviour
 {
+    [SerializeField] float _LongPressDurtaion = 1.0f;
+
     private Camera mWorldCam = null;
+    private bool mIsDownNow = false;
+    private bool mIsDragging = false;
     private UserInput mDownObject = null;
-    private Vector3 mDownPosition = Vector3.zero;
+    private Vector3 mWorldDownPosition = Vector3.zero;
     private UserInput mSelectedObject = null;
 
     public bool Lock { get; set; } = false;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         mWorldCam = Camera.main;
+    }
+    void Start()
+    {
         InputWrapper.Instance.EventDownTriggered += OnDownTriggered;
         InputWrapper.Instance.EventUpTriggered += OnUpTriggered;
+    }
+
+    void ResetAllState()
+    {
+        StopAllCoroutines();
+        mIsDownNow = false;
+        mIsDragging = false;
+        mDownObject = null;
+        mWorldDownPosition = Vector3.zero;
     }
 
     private void OnDownTriggered(InputType obj)
@@ -26,91 +47,158 @@ public class InGameInput : MonoBehaviour
         if(Lock || IsOverUI())
             return;
 
-        mDownObject = null;
-        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
-        RaycastHit[] hits = Physics.RaycastAll(ray, 20, 1 << LayerID.Player);
-        foreach(RaycastHit hit in hits)
+        mIsDownNow = true;
+        if(MyUtils.RaycastScreenToWorld(
+            mWorldCam, 
+            InputWrapper.Instance.MousePosition(), 
+            1 << LayerID.Player | 1 << LayerID.ThemeBackground, 
+            out RaycastHit hit))
         {
-            UserInput userInput = hit.collider.GetComponentInBaseObject<UserInput>();
-            if(userInput != null)
+            if(hit.collider.gameObject.layer == LayerID.Player)
             {
-                mDownObject = userInput;
-                break;
-            }
-        }
+                DeSelecteAll();
+                mDownObject = hit.collider.GetComponentInBaseObject<UserInput>();
+                mWorldDownPosition = hit.point;
+                SelecteObject(mDownObject);
 
-        if(Physics.Raycast(ray, out RaycastHit hitOnBackground, 20, 1 << LayerID.ThemeBackground))
-        {
-            mDownPosition = hitOnBackground.point;
+                StopAllCoroutines();
+                StartCoroutine(CoDragging());
+                StartCoroutine(CheckLongPress());
+            }
+            else
+            {
+                DeSelecteAll();
+                mDownObject = null;
+                mWorldDownPosition = hit.point;
+                StopAllCoroutines();
+                StartCoroutine(CoDragging());
+            }
         }
     }
     private void OnUpTriggered(InputType obj)
     {
-        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
-        Physics.Raycast(ray, out RaycastHit hitOnBackground, 20, 1 << LayerID.ThemeBackground);
-        Vector3 worldPt = hitOnBackground.point;
-        Vector3 diff = (worldPt - mDownPosition).ZeroZ();
-        if (diff.magnitude < 0.1f)
+        if(mIsDragging)
         {
-            Click();
-        }
-        else
-        {
+            MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
+            Vector3 worldUpPosition = hit.point;
+
             if(mDownObject != null)
             {
-                SelecteObject(null);
-                mDownObject.OnMove(worldPt.ZeroZ());
+                MoveUnit(mDownObject, worldUpPosition);
+            }
+            else
+            {
+                Vector2 center = (mWorldDownPosition + worldUpPosition) * 0.5f;
+                Vector2 size = mWorldDownPosition - worldUpPosition;
+                size.x = Mathf.Abs(size.x);
+                size.y = Mathf.Abs(size.y);
+                Rect worldArea = new Rect();
+                worldArea.size = size;
+                worldArea.center = center;
+                SelectAllUnitsInArea(worldArea);
             }
         }
 
-        mDownObject = null;
-        mDownPosition = Vector3.zero;
+        ResetAllState();
     }
 
-    private void Click()
+
+    IEnumerator CoDragging()
     {
-        // 클릭시 먼저 WorldUI버튼을 클릭했는지 확인
-        Ray ray = mWorldCam.ScreenPointToRay(InputWrapper.Instance.MousePosition());
-        RaycastHit[] hits = Physics.RaycastAll(ray, 20, 1 << LayerID.WorldUI);
-        foreach (RaycastHit hit in hits)
+        mIsDragging = false;
+        Vector2 pressedPos = InputWrapper.Instance.MousePosition();
+        yield return new WaitUntil(() => IsMovedFromPosition(pressedPos));
+
+        while (mIsDownNow)
         {
-            InGameButton worldUIBtn = hit.collider.GetComponent<InGameButton>();
-            if (worldUIBtn != null)
+            mIsDragging = true;
+            if(mDownObject != null)
             {
-                worldUIBtn.EventClick?.Invoke();
-                SelecteObject(null);
-                return;
+                MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
+                DrawDestination(mDownObject, hit.point);
             }
+            else
+            {
+                Vector2 curScreenPos = InputWrapper.Instance.MousePosition();
+                DrawSelectArea(pressedPos, curScreenPos);
+            }
+        
+            yield return null;
+        }
+        mIsDragging = false;
+    }
+    IEnumerator CheckLongPress()
+    {
+        float time = 0;
+
+        Vector2 pressedPos = InputWrapper.Instance.MousePosition();
+        while (time < _LongPressDurtaion)
+        {
+            yield return null;
+
+            if (!mIsDownNow || IsMovedFromPosition(pressedPos))
+            {
+                yield break;
+            }
+
+            time += Time.deltaTime;
         }
 
-        // 그다음 캐릭터 클릭했는지 확인
-        hits = Physics.RaycastAll(ray, 20, 1 << LayerID.Player);
-        foreach (RaycastHit hit in hits)
-        {
-            UserInput unit = hit.collider.GetComponentInBaseObject<UserInput>();
-            if (unit != null)
-            {
-                SelecteObject(unit);
-                return;
-            }
-        }
+        OnLongPress();
+        ResetAllState();
+    }
+    private void OnLongPress()
+    {
+        SelectAllSameUnit(mDownObject);
+    }
 
-        // 마지막으로 지면 클릭시 모두 해제
-        SelecteObject(null);
+    bool IsMovedFromPosition(Vector2 downScreenPos)
+    {
+        Vector2 delta = InputWrapper.Instance.MousePosition() - downScreenPos;
+        if (Mathf.Abs(delta.x) > Screen.width * 0.01f
+            || Mathf.Abs(delta.y) > Screen.height * 0.01f)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private void SelectAllUnitsInArea(Rect worldArea)
+    {
+        LOG.trace(worldArea);
     }
     private void SelecteObject(UserInput obj)
     {
+        LOG.trace(obj.GetBaseObject().gameObject.name);
+        mSelectedObject = obj;
+        mSelectedObject.OnSelect();
+    }
+    private void SelectAllSameUnit(UserInput obj)
+    {
+        LOG.trace(obj.GetBaseObject().gameObject.name);
+    }
+    private void MoveUnit(UserInput obj, Vector3 dest)
+    {
+        LOG.trace(dest);
+        mSelectedObject.OnMove(dest);
+    }
+    private void DeSelecteAll()
+    {
+        LOG.trace();
         if (mSelectedObject != null)
         {
             mSelectedObject.OnDeSelect();
             mSelectedObject = null;
         }
-
-        mSelectedObject = obj;
-        if(mSelectedObject != null)
-        {
-            mSelectedObject.OnSelect();
-        }
+    }
+    private void DrawDestination(UserInput obj, Vector3 worldDest)
+    {
+        LOG.trace();
+    }
+    private void DrawSelectArea(Vector2 startScreenPos, Vector2 endScreenPos)
+    {
+        LOG.trace();
     }
     private bool IsOverUI()
     {

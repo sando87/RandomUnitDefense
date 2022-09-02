@@ -5,7 +5,7 @@ using UnityEngine;
 
 // 레이저로 누적데미지를 입힌다.
 
-public class UnitChanneller : UnitBase
+public class UnitChanneller : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }

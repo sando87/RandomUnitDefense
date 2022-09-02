@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class UnitGuardian : UnitBase
+public class UnitGuardian : UnitPlayer
 {
     [SerializeField] BoxCollider DetectArea = null;
     [SerializeField] private GameObject BuffEffectPrefab = null;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 // 바닥에 불길을 생성하여 적을 불태운다.
 
-public class UnitFlamer : UnitBase
+public class UnitFlamer : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }

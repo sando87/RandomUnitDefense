@@ -5,7 +5,7 @@ using UnityEngine;
 
 // 스킬 사거리 20%증가
 
-public class UnitDiplomat : UnitBase
+public class UnitDiplomat : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }

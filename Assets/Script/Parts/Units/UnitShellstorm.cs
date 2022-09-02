@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class UnitShellstorm : UnitBase
+public class UnitShellstorm : UnitPlayer
 {
     [SerializeField] MotionActionSingle _MotionMissileAttack = null;
     [SerializeField] float _AttackSpeed = 0.5f;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitPowerGirl : UnitBase
+public class UnitPowerGirl : UnitPlayer
 {
     [SerializeField] MotionActionSingle NormalAttack = null;
     [SerializeField] float _AttackSpeed = 0.5f;

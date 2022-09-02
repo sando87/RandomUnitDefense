@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class UnitGunner : UnitBase
+public class UnitGunner : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }

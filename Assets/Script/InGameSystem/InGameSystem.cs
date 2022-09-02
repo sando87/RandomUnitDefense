@@ -270,6 +270,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         SelectedUnits.Clear();
         SelectedUnits.AddRange(units);
+        foreach(UserInput unit in units)
+        {
+            unit.OnSelect();
+        }
     }
     private void OnDeselectUnits()
     {
@@ -277,6 +281,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void DeselectAll()
     {
+        foreach (UserInput unit in SelectedUnits)
+        {
+            unit.OnDeSelect();
+        }
         SelectedUnits.Clear();
     }
 

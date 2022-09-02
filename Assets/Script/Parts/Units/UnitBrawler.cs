@@ -5,7 +5,7 @@ using UnityEngine;
 
 // return "3회공격시마다 (0.1/0.2/0.3)범위의 (1/1.5/2)초 스턴";
 
-public class UnitBrawler : UnitBase
+public class UnitBrawler : UnitPlayer
 {
     [SerializeField] BoxCollider DetectArea = null;
     [SerializeField] BoxCollider AttackArea = null;

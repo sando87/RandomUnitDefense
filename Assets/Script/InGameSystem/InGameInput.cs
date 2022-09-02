@@ -27,8 +27,9 @@ public class InGameInput : SingletonMono<InGameInput>
     public event System.Action<UserInput, Vector3> EventDrawDest;
     public event System.Action<Vector2, Vector2> EventDrawSelectArea;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         mWorldCam = Camera.main;
     }
     void Start()

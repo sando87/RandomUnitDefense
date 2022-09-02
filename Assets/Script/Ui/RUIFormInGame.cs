@@ -176,14 +176,17 @@ public class RUIFormInGame : RUiForm
 
     public void OnClickLevelUp()
     {
+        UnitDetailPanel.gameObject.SetActive(false);
         GameMgr.MergeForLevelup();
     }
     public void OnClickChange()
     {
+        UnitDetailPanel.gameObject.SetActive(false);
         GameMgr.MergeForReunit();
     }
     public void OnClickRefund()
     {
+        UnitDetailPanel.gameObject.SetActive(false);
         GameMgr.MergeForRefund();
     }
 

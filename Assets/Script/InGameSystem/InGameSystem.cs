@@ -20,7 +20,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const int StartKillPoint = 200;
 
     [SerializeField] private GameObject StagePrefab = null;
-    [SerializeField] private HUDFunctions HUDPrefab = null;
 
     public int WaveNumber { get; private set; }
     public int Mineral { get; private set; }
@@ -29,17 +28,23 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int LineMobCount { get; private set; }
     public float RemainSecond { get; private set; }
     public bool UserInputLocked { get; set; }
-    public HUDFunctions HUDObject { get; set; }
+    public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits[0].GetBaseObject() : null; } }
 
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
     private List<long> LineMobIDs = new List<long>();
+    private List<UserInput> SelectedUnits = new List<UserInput>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
 
     protected override void Awake()
     {
         base.Awake();
         CleanUpGame();
+    }
+    void Start()
+    {
+        InGameInput.Instance.EventSelectUnits += OnSelectUnits;
+        InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
     }
 
     public void StartGame()
@@ -48,7 +53,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         KillPoint = StartKillPoint;
         StageRoot = Instantiate(StagePrefab);
-        HUDObject = Instantiate(HUDPrefab, transform);
         WayPoints[0] = StageRoot.transform.Find("WayPoint_LB").position;
         WayPoints[1] = StageRoot.transform.Find("WayPoint_RB").position;
         WayPoints[2] = StageRoot.transform.Find("WayPoint_RT").position;
@@ -80,12 +84,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
         {
             Destroy(StageRoot);
             StageRoot = null;
-        }
-
-        if (HUDObject != null)
-        {
-            Destroy(HUDObject);
-            HUDObject = null;
         }
 
         LineMobIDs.Clear();
@@ -217,23 +215,96 @@ public class InGameSystem : SingletonMono<InGameSystem>
         return true;
     }
 
-    public Vector3[] GetWayPoints() { return WayPoints; }
-
-    public UnitBase[] GetAroundSameUnit()
+    public Vector3[] GetWayPoints() 
     {
-        return null;
+        return WayPoints;
     }
 
     public void MergeForLevelup()
     {
+        if(SelectedUnit == null)
+            return;
 
+        List<BaseObject> sameUnits = new List<BaseObject>();
+        DetectSameUnit(SelectedUnit, sameUnits);
+        if(sameUnits.Count < 3)
+            return;
+
+        SortByDistance(SelectedUnit.Body.Center, sameUnits);
+
+        sameUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
+        sameUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
+        sameUnits[2].MotionManager.SwitchMotion<MotionDisappear>();
+        BaseObject newUnit = CreateRandomUnit();
+        newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
+        DeselectAll();
     }
     public void MergeForReunit()
     {
+        if (SelectedUnit == null)
+            return;
 
+        List<BaseObject> sameUnits = new List<BaseObject>();
+        DetectSameUnit(SelectedUnit, sameUnits);
+        if (sameUnits.Count < 2)
+            return;
+
+        SortByDistance(SelectedUnit.Body.Center, sameUnits);
+
+        sameUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
+        sameUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
+        BaseObject newUnit = CreateRandomUnit();
+        newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level;
+        DeselectAll();
     }
     public void MergeForRefund()
     {
+        if (SelectedUnit == null)
+            return;
 
+        SelectedUnit.MotionManager.SwitchMotion<MotionDisappear>();
+        AddMinerals(100 * SelectedUnit.SpecProp.Level * SelectedUnit.SpecProp.Level);
+        DeselectAll();
+    }
+    private void OnSelectUnits(UserInput[] units)
+    {
+        SelectedUnits.Clear();
+        SelectedUnits.AddRange(units);
+    }
+    private void OnDeselectUnits()
+    {
+        DeselectAll();
+    }
+    private void DeselectAll()
+    {
+        SelectedUnits.Clear();
+    }
+
+    // 같은 종류의 같은 레벨의 맵의 모든 유닛
+    public void DetectSameUnit(BaseObject targetUnit, List<BaseObject> rets)
+    {
+        rets.Clear();
+        Collider[] cols = InGameUtils.DetectAround(targetUnit.transform.position, 20, 1 << targetUnit.gameObject.layer);
+        foreach (Transform child in StageRoot.transform)
+        {
+            if(child.gameObject.layer == targetUnit.gameObject.layer)
+            {
+                BaseObject obj = child.gameObject.GetBaseObject();
+                if (obj.Unit.ResourceID == targetUnit.Unit.ResourceID && obj.SpecProp.Level == targetUnit.SpecProp.Level)
+                    rets.Add(obj);
+            }
+        }
+    }
+
+    private void SortByDistance(Vector3 center, List<BaseObject> rets)
+    {
+        if(rets.Count <= 0) return;
+
+        rets.Sort((unitA, unitB) =>
+        {
+            float distA = (center - unitA.transform.position).sqrMagnitude;
+            float distB = (center - unitB.transform.position).sqrMagnitude;
+            return distA > distB ? 1 : -1;
+        });
     }
 }

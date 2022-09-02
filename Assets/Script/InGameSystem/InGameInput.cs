@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 // 영역 안의 모든 유닛 선택
 // 선택 모두 취소
 
-public class InGameInput : MonoBehaviour
+public class InGameInput : SingletonMono<InGameInput>
 {
     [SerializeField] float _LongPressDurtaion = 1.0f;
 
@@ -19,9 +19,13 @@ public class InGameInput : MonoBehaviour
     private bool mIsDragging = false;
     private UserInput mDownObject = null;
     private Vector3 mWorldDownPosition = Vector3.zero;
-    private UserInput mSelectedObject = null;
 
     public bool Lock { get; set; } = false;
+    public event System.Action<UserInput[]> EventSelectUnits;
+    public event System.Action EventDeSelectUnits;
+    public event System.Action<UserInput, Vector3> EventMoveUnit;
+    public event System.Action<UserInput, Vector3> EventDrawDest;
+    public event System.Action<Vector2, Vector2> EventDrawSelectArea;
 
     void Awake()
     {
@@ -162,46 +166,38 @@ public class InGameInput : MonoBehaviour
         }
         return false;
     }
+    private bool IsOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 
 
     private void SelectAllUnitsInArea(Rect worldArea)
     {
-        LOG.trace(worldArea);
+        EventSelectUnits?.Invoke(new UserInput[] { null });
     }
     private void SelecteObject(UserInput obj)
     {
-        LOG.trace(obj.GetBaseObject().gameObject.name);
-        mSelectedObject = obj;
-        mSelectedObject.OnSelect();
+        EventSelectUnits?.Invoke(new UserInput[] { obj });
     }
     private void SelectAllSameUnit(UserInput obj)
     {
-        LOG.trace(obj.GetBaseObject().gameObject.name);
+        EventSelectUnits?.Invoke(new UserInput[] { obj });
     }
     private void MoveUnit(UserInput obj, Vector3 dest)
     {
-        LOG.trace(dest);
-        mSelectedObject.OnMove(dest);
+        EventMoveUnit?.Invoke(obj, dest);
     }
     private void DeSelecteAll()
     {
-        LOG.trace();
-        if (mSelectedObject != null)
-        {
-            mSelectedObject.OnDeSelect();
-            mSelectedObject = null;
-        }
+        EventDeSelectUnits?.Invoke();
     }
     private void DrawDestination(UserInput obj, Vector3 worldDest)
     {
-        LOG.trace();
+        EventDrawDest?.Invoke(obj, worldDest);
     }
     private void DrawSelectArea(Vector2 startScreenPos, Vector2 endScreenPos)
     {
-        LOG.trace();
-    }
-    private bool IsOverUI()
-    {
-        return EventSystem.current.IsPointerOverGameObject();
+        EventDrawSelectArea?.Invoke(startScreenPos, endScreenPos);
     }
 }

@@ -43,6 +43,7 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Button BtnRefund = null;
 
     private InGameSystem GameMgr = null;
+    private List<BaseObject> mSameUnits = new List<BaseObject>();
 
     public override void Init()
     {
@@ -50,12 +51,18 @@ public class RUIFormInGame : RUiForm
         GameMgr = InGameSystem.Instance;
     }
 
+    void Start()
+    {
+        InGameInput.Instance.EventSelectUnits += OnSelectUnits;
+        InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
+    }
+
     public override void BindEvent()
     {
         base.BindEvent();
         CreateUnit.onClick.AddListener(OnClickCreateUnit);
         RaiseMineral.onClick.AddListener(OnClickRaiseMineral);
-        OpenUpgradePanel.onClick.AddListener(OnClickOpenUpgradePanel);
+        OpenUpgradePanel.onClick.AddListener(OnClickToggleUpgradePanel);
         CloseUpgradePanel.onClick.AddListener(OnClickCloseUpgradePanel);
 
         UpgradeWeaponA.onClick.AddListener(OnClickUpgradeWeapon);
@@ -92,31 +99,37 @@ public class RUIFormInGame : RUiForm
         WeaponD.text = GameMgr.GetUpgradeCount(UpgradeType.TypeD).ToString();
         WeaponE.text = GameMgr.GetUpgradeCount(UpgradeType.TypeE).ToString();
 
-        UnitBase[] sameUnit = GameMgr.GetAroundSameUnit();
-        if(sameUnit != null && sameUnit.Length > 0)
-        {
-            BtnLevelUp.gameObject.SetActive(sameUnit.Length >= 3);
-            BtnReUnit.gameObject.SetActive(sameUnit.Length >= 2);
-            BtnRefund.gameObject.SetActive(true);
-        }
-
         UpdateUnitDetail();
     }
 
     private void UpdateUnitDetail()
     {
-        BaseObject selectedUnit = GameMgr.HUDObject.TargetUnit;
-        if (selectedUnit == null || UpgradePanel.gameObject.activeSelf)
-        {
-            UnitDetailPanel.gameObject.SetActive(false);
+        if (!UnitDetailPanel.gameObject.activeSelf)
             return;
-        }
 
-        UnitDetailPanel.gameObject.SetActive(true);
+        BaseObject selectedUnit = GameMgr.SelectedUnit;
         string damage = selectedUnit.SpecProp.Damage.ToString();
         DamageText.text = damage;
         DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
         UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
+
+        mSameUnits.Clear();
+        GameMgr.DetectSameUnit(selectedUnit, mSameUnits);
+        if (mSameUnits.Count > 0)
+        {
+            BtnLevelUp.gameObject.SetActive(mSameUnits.Count >= 3);
+            BtnReUnit.gameObject.SetActive(mSameUnits.Count >= 2);
+            BtnRefund.gameObject.SetActive(true);
+        }
+    }
+    private void OnSelectUnits(UserInput[] units)
+    {
+        UpgradePanel.gameObject.SetActive(false);
+        UnitDetailPanel.gameObject.SetActive(true);
+    }
+    private void OnDeselectUnits()
+    {
+        UnitDetailPanel.gameObject.SetActive(false);
     }
 
 
@@ -130,13 +143,16 @@ public class RUIFormInGame : RUiForm
         if (!GameMgr.RaiseMineralStep())
             RUiMessageBox.PopUp("Need 5 kill point.", null);
     }
-    private void OnClickOpenUpgradePanel()
+    private void OnClickToggleUpgradePanel()
     {
-        UpgradePanel.gameObject.SetActive(true);
+        bool toState = !UpgradePanel.gameObject.activeSelf;
+        UpgradePanel.gameObject.SetActive(toState);
+        UnitDetailPanel.gameObject.SetActive(!toState && GameMgr.SelectedUnit != null);
     }
     private void OnClickCloseUpgradePanel()
     {
         UpgradePanel.gameObject.SetActive(false);
+        UnitDetailPanel.gameObject.SetActive(GameMgr.SelectedUnit != null);
     }
     private void OnClickUpgradeWeapon()
     {

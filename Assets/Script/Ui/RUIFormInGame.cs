@@ -42,6 +42,8 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Button BtnReUnit = null;
     [SerializeField] private Button BtnRefund = null;
 
+    [SerializeField] private RectTransform SelectArea = null;
+
     private InGameSystem GameMgr = null;
     private List<BaseObject> mSameUnits = new List<BaseObject>();
 
@@ -55,6 +57,7 @@ public class RUIFormInGame : RUiForm
     {
         InGameInput.Instance.EventSelectUnits += OnSelectUnits;
         InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
+        InGameInput.Instance.EventDrawSelectArea += OnDrawSelectArea;
     }
 
     public override void BindEvent()
@@ -126,10 +129,18 @@ public class RUIFormInGame : RUiForm
     {
         UpgradePanel.gameObject.SetActive(false);
         UnitDetailPanel.gameObject.SetActive(true);
+        SelectArea.gameObject.SetActive(false);
     }
     private void OnDeselectUnits()
     {
         UnitDetailPanel.gameObject.SetActive(false);
+        SelectArea.gameObject.SetActive(false);
+    }
+    private void OnDrawSelectArea(Rect worldArea)
+    {
+        SelectArea.gameObject.SetActive(true);
+        SelectArea.sizeDelta = worldArea.size * 100;
+        SelectArea.transform.position = worldArea.center;
     }
 
 

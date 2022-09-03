@@ -292,7 +292,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public void DetectSameUnit(BaseObject targetUnit, List<BaseObject> rets)
     {
         rets.Clear();
-        Collider[] cols = InGameUtils.DetectAround(targetUnit.transform.position, 20, 1 << targetUnit.gameObject.layer);
         foreach (Transform child in StageRoot.transform)
         {
             if(child.gameObject.layer == targetUnit.gameObject.layer)

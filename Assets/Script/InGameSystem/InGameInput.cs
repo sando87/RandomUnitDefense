@@ -23,9 +23,8 @@ public class InGameInput : SingletonMono<InGameInput>
     public bool Lock { get; set; } = false;
     public event System.Action<UserInput[]> EventSelectUnits;
     public event System.Action EventDeSelectUnits;
-    public event System.Action<UserInput, Vector3> EventMoveUnit;
     public event System.Action<UserInput, Vector3> EventDrawDest;
-    public event System.Action<Vector2, Vector2> EventDrawSelectArea;
+    public event System.Action<Rect> EventDrawSelectArea;
 
     protected override void Awake()
     {
@@ -124,8 +123,17 @@ public class InGameInput : SingletonMono<InGameInput>
             }
             else
             {
-                Vector2 curScreenPos = InputWrapper.Instance.MousePosition();
-                DrawSelectArea(pressedPos, curScreenPos);
+                MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
+                Vector3 worldUpPosition = hit.point;
+                Vector2 center = (mWorldDownPosition + worldUpPosition) * 0.5f;
+                Vector2 size = mWorldDownPosition - worldUpPosition;
+                size.x = Mathf.Abs(size.x);
+                size.y = Mathf.Abs(size.y);
+                Rect worldArea = new Rect();
+                worldArea.size = size;
+                worldArea.center = center;
+
+                DrawSelectArea(worldArea);
             }
         
             yield return null;
@@ -175,7 +183,21 @@ public class InGameInput : SingletonMono<InGameInput>
 
     private void SelectAllUnitsInArea(Rect worldArea)
     {
-        EventSelectUnits?.Invoke(new UserInput[] { null });
+        List<UserInput> selectedUnits = new List<UserInput>();
+        Collider[] cols = Physics.OverlapBox(worldArea.center, worldArea.size * 0.5f, Quaternion.identity, 1 << LayerID.Player);
+        foreach(Collider col in cols)
+        {
+            selectedUnits.Add(col.GetComponentInBaseObject<UserInput>());
+        }
+
+        if(selectedUnits.Count > 0)
+        {
+            EventSelectUnits?.Invoke(selectedUnits.ToArray());
+        }
+        else
+        {
+            DeSelecteAll();
+        }
     }
     private void SelecteObject(UserInput obj)
     {
@@ -183,11 +205,13 @@ public class InGameInput : SingletonMono<InGameInput>
     }
     private void SelectAllSameUnit(UserInput obj)
     {
+        // List<BaseObject> sameUnits = new List<BaseObject>();
+        // InGameSystem.Instance.DetectSameUnit(obj.GetBaseObject(), sameUnits);
         EventSelectUnits?.Invoke(new UserInput[] { obj });
     }
     private void MoveUnit(UserInput obj, Vector3 dest)
     {
-        EventMoveUnit?.Invoke(obj, dest);
+        obj.OnMove(dest);
     }
     private void DeSelecteAll()
     {
@@ -197,8 +221,8 @@ public class InGameInput : SingletonMono<InGameInput>
     {
         EventDrawDest?.Invoke(obj, worldDest);
     }
-    private void DrawSelectArea(Vector2 startScreenPos, Vector2 endScreenPos)
+    private void DrawSelectArea(Rect worldArea)
     {
-        EventDrawSelectArea?.Invoke(startScreenPos, endScreenPos);
+        EventDrawSelectArea?.Invoke(worldArea);
     }
 }

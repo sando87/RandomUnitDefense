@@ -45,7 +45,6 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private RectTransform SelectArea = null;
 
     private InGameSystem GameMgr = null;
-    private List<BaseObject> mSameUnits = new List<BaseObject>();
 
     public override void Init()
     {
@@ -115,21 +114,22 @@ public class RUIFormInGame : RUiForm
         DamageText.text = damage;
         DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
         UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
-
-        mSameUnits.Clear();
-        GameMgr.DetectSameUnit(selectedUnit, mSameUnits);
-        if (mSameUnits.Count > 0)
-        {
-            BtnLevelUp.gameObject.SetActive(mSameUnits.Count >= 3);
-            BtnReUnit.gameObject.SetActive(mSameUnits.Count >= 2);
-            BtnRefund.gameObject.SetActive(true);
-        }
     }
-    private void OnSelectUnits(UserInput[] units)
+    private void UpdateMergeButtonState()
+    {
+        bool mergableForLevelup = GameMgr.DetectMergeableUnits(InGameSystem.MergeCountLevelup) != null;
+        BtnLevelUp.gameObject.SetActive(mergableForLevelup);
+        bool mergableForReunit = GameMgr.DetectMergeableUnits(InGameSystem.MergeCountReunit) != null;
+        BtnReUnit.gameObject.SetActive(mergableForReunit);
+        BtnRefund.gameObject.SetActive(true);
+
+    }
+    private void OnSelectUnits(BaseObject[] units)
     {
         UpgradePanel.gameObject.SetActive(false);
         UnitDetailPanel.gameObject.SetActive(true);
         SelectArea.gameObject.SetActive(false);
+        UpdateMergeButtonState();
     }
     private void OnDeselectUnits()
     {
@@ -188,17 +188,17 @@ public class RUIFormInGame : RUiForm
     public void OnClickLevelUp()
     {
         UnitDetailPanel.gameObject.SetActive(false);
-        GameMgr.MergeForLevelup();
+        GameMgr.OnMergeForLevelup();
     }
     public void OnClickChange()
     {
         UnitDetailPanel.gameObject.SetActive(false);
-        GameMgr.MergeForReunit();
+        GameMgr.OnMergeForReunit();
     }
     public void OnClickRefund()
     {
         UnitDetailPanel.gameObject.SetActive(false);
-        GameMgr.MergeForRefund();
+        GameMgr.RefundUnit();
     }
 
 }

@@ -59,4 +59,8 @@ public class BaseObject : MonoBehaviour
 
         return 0;
     }
+    public bool IsMergable(BaseObject target)
+    {
+        return Unit.ResourceID == target.Unit.ResourceID && SpecProp.Level == target.SpecProp.Level;
+    }
 }

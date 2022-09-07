@@ -618,6 +618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b650a48e46704c45ae2a159248bc65c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveIndicatorPrefab: {fileID: 1208403739892040641, guid: baa4c0801721a1341ba43ba36f935343,
+    type: 3}
 --- !u!114 &1808239757324361669
 MonoBehaviour:
   m_ObjectHideFlags: 0

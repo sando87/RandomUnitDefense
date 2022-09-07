@@ -18,6 +18,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const int KillPointCost = 5;
     public const int LineMobLimit = 80;
     public const int StartKillPoint = 200;
+    public const int MergeCountLevelup = 3;
+    public const int MergeCountReunit = 2;
 
     [SerializeField] private GameObject StagePrefab = null;
 
@@ -28,12 +30,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int LineMobCount { get; private set; }
     public float RemainSecond { get; private set; }
     public bool UserInputLocked { get; set; }
-    public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits[0].GetBaseObject() : null; } }
+    public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits[0] : null; } }
 
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
     private List<long> LineMobIDs = new List<long>();
-    private List<UserInput> SelectedUnits = new List<UserInput>();
+    private List<BaseObject> SelectedUnits = new List<BaseObject>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
 
     protected override void Awake()
@@ -45,6 +47,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         InGameInput.Instance.EventSelectUnits += OnSelectUnits;
         InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
+        InGameInput.Instance.EventMove += OnMoveUnits;
     }
 
     public void StartGame()
@@ -220,59 +223,65 @@ public class InGameSystem : SingletonMono<InGameSystem>
         return WayPoints;
     }
 
-    public void MergeForLevelup()
+    public void OnMergeForLevelup()
     {
-        if(SelectedUnit == null)
-            return;
+        List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountLevelup);
+        if (mergeUnitSet != null && mergeUnitSet.Count > 0)
+        {
+            foreach (BaseObject[] objs in mergeUnitSet)
+            {
+                LOG.warn(objs.Length != MergeCountLevelup);
+                MergeForLevelup(objs[0], objs[1], objs[2]);
+            }
+        }
 
-        List<BaseObject> sameUnits = new List<BaseObject>();
-        DetectSameUnit(SelectedUnit, sameUnits);
-        if(sameUnits.Count < 3)
-            return;
-
-        SortByDistance(SelectedUnit.Body.Center, sameUnits);
-
-        sameUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
-        sameUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
-        sameUnits[2].MotionManager.SwitchMotion<MotionDisappear>();
+        DeselectAll();
+    }
+    private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
+    {
+        unitA.MotionManager.SwitchMotion<MotionDisappear>();
+        unitB.MotionManager.SwitchMotion<MotionDisappear>();
+        unitC.MotionManager.SwitchMotion<MotionDisappear>();
         BaseObject newUnit = CreateRandomUnit();
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
+    }
+    public void OnMergeForReunit()
+    {
+        List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountReunit);
+        if (mergeUnitSet != null && mergeUnitSet.Count > 0)
+        {
+            foreach (BaseObject[] objs in mergeUnitSet)
+            {
+                LOG.warn(objs.Length != MergeCountReunit);
+                MergeForReunit(objs[0], objs[1]);
+            }
+        }
+
         DeselectAll();
     }
-    public void MergeForReunit()
+    private void MergeForReunit(BaseObject unitA, BaseObject unitB)
     {
-        if (SelectedUnit == null)
-            return;
-
-        List<BaseObject> sameUnits = new List<BaseObject>();
-        DetectSameUnit(SelectedUnit, sameUnits);
-        if (sameUnits.Count < 2)
-            return;
-
-        SortByDistance(SelectedUnit.Body.Center, sameUnits);
-
-        sameUnits[0].MotionManager.SwitchMotion<MotionDisappear>();
-        sameUnits[1].MotionManager.SwitchMotion<MotionDisappear>();
+        unitA.MotionManager.SwitchMotion<MotionDisappear>();
+        unitB.MotionManager.SwitchMotion<MotionDisappear>();
         BaseObject newUnit = CreateRandomUnit();
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level;
-        DeselectAll();
     }
-    public void MergeForRefund()
+    public void RefundUnit()
     {
-        if (SelectedUnit == null)
-            return;
-
-        SelectedUnit.MotionManager.SwitchMotion<MotionDisappear>();
-        AddMinerals(100 * SelectedUnit.SpecProp.Level * SelectedUnit.SpecProp.Level);
+        foreach(BaseObject unit in SelectedUnits)
+        {
+            unit.MotionManager.SwitchMotion<MotionDisappear>();
+            AddMinerals(100 * unit.SpecProp.Level * unit.SpecProp.Level);
+        }
         DeselectAll();
     }
-    private void OnSelectUnits(UserInput[] units)
+    private void OnSelectUnits(BaseObject[] units)
     {
         SelectedUnits.Clear();
         SelectedUnits.AddRange(units);
-        foreach(UserInput unit in units)
+        foreach(BaseObject unit in units)
         {
-            unit.OnSelect();
+            unit.GetComponentInChildren<UserInput>().OnSelect();
         }
     }
     private void OnDeselectUnits()
@@ -281,26 +290,107 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void DeselectAll()
     {
-        foreach (UserInput unit in SelectedUnits)
+        foreach (BaseObject unit in SelectedUnits)
         {
-            unit.OnDeSelect();
+            unit.GetComponentInChildren<UserInput>().OnDeSelect();
         }
         SelectedUnits.Clear();
     }
+    private void OnMoveUnits(BaseObject obj, Vector3 dest)
+    {
+        bool isSelectedUnit = false;
+        foreach(BaseObject unit in SelectedUnits)
+        {
+            if(obj == unit)
+            {
+                isSelectedUnit = true;
+                break;
+            }
+        }
+
+        if(isSelectedUnit)
+        {
+            foreach (BaseObject unit in SelectedUnits)
+            {
+                Vector3 destination = MyUtils.Random(dest, 0.5f);
+                unit.GetComponentInChildren<UserInput>().OnMove(destination);
+            }
+        }
+        else
+        {
+            obj.GetComponentInChildren<UserInput>().OnMove(dest);
+        }
+    }
 
     // 같은 종류의 같은 레벨의 맵의 모든 유닛
-    public void DetectSameUnit(BaseObject targetUnit, List<BaseObject> rets)
+    private List<BaseObject> DetectSameUnit(BaseObject targetUnit)
     {
-        rets.Clear();
+        List<BaseObject> rets = new List<BaseObject>();
         foreach (Transform child in StageRoot.transform)
         {
             if(child.gameObject.layer == targetUnit.gameObject.layer)
             {
                 BaseObject obj = child.gameObject.GetBaseObject();
-                if (obj.Unit.ResourceID == targetUnit.Unit.ResourceID && obj.SpecProp.Level == targetUnit.SpecProp.Level)
+                if (obj.IsMergable(targetUnit))
                     rets.Add(obj);
             }
         }
+        return rets;
+    }
+    // 현재 선택된 유닛기준으로 Merge가능한 유닛별로 리스팅해서 반환
+    public List<BaseObject[]> DetectMergeableUnits(int unitMergeCount)
+    {
+        // 선택된 유닛이 한마리일 경우 전체 유닛을 모두 대상
+        if(SelectedUnits.Count == 1)
+        {
+            List<BaseObject> sameAllUnits = DetectSameUnit(SelectedUnits[0]);
+            if (sameAllUnits.Count < unitMergeCount)
+                return null;
+
+            SortByDistance(SelectedUnits[0].Body.Center, sameAllUnits);
+            List<BaseObject> mergeSet = sameAllUnits.GetRange(0, unitMergeCount);
+            return new List<BaseObject[]>() { mergeSet.ToArray() };
+        }
+        // 선택된 유닛이 다수일 경우 선택된 유닛들만 대상
+        else if(SelectedUnits.Count > 1)
+        {
+            List<BaseObject[]> rets = new List<BaseObject[]>();
+
+            BaseObject[] units = SelectedUnits.ToArray();
+            for (int i = 0; i < units.Length; ++i)
+            {
+                if (units[i] == null) continue;
+
+                List<int> sameUnitIndex = new List<int>();
+                sameUnitIndex.Add(i);
+                int j = i + 1;
+                for (; j < units.Length; ++j)
+                {
+                    if (units[j] == null) continue;
+
+                    BaseObject bo = units[j];
+                    if (bo.IsMergable(units[i]))
+                    {
+                        sameUnitIndex.Add(j);
+                        if(sameUnitIndex.Count >= unitMergeCount)
+                        {
+                            List<BaseObject> subset = new List<BaseObject>();
+                            foreach (int subIdx in sameUnitIndex)
+                            {
+                                subset.Add(units[subIdx]);
+                                units[subIdx] = null;
+                            }
+                            rets.Add(subset.ToArray());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(rets.Count > 0)
+                return rets;
+        }
+        return null;
     }
 
     private void SortByDistance(Vector3 center, List<BaseObject> rets)

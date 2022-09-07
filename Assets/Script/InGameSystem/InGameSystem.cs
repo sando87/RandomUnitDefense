@@ -326,7 +326,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
 
     // 같은 종류의 같은 레벨의 맵의 모든 유닛
-    private List<BaseObject> DetectSameUnit(BaseObject targetUnit)
+    public List<BaseObject> DetectSameUnit(BaseObject targetUnit)
     {
         List<BaseObject> rets = new List<BaseObject>();
         foreach (Transform child in StageRoot.transform)

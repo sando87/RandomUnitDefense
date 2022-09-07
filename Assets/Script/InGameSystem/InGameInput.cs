@@ -172,12 +172,19 @@ public class InGameInput : SingletonMono<InGameInput>
             time += Time.deltaTime;
         }
 
-        OnLongPress();
+        if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player, out RaycastHit hit))
+        {
+            if(hit.collider.GetBaseObject() == mDownObject)
+            {
+                OnLongPress(mDownObject);
+            }
+        }
+
         ResetAllState();
     }
-    private void OnLongPress()
+    private void OnLongPress(BaseObject target)
     {
-        SelectAllSameUnit(mDownObject);
+        SelectAllSameUnit(target);
     }
 
     bool IsMovedFromPosition(Vector2 downScreenPos)
@@ -220,9 +227,9 @@ public class InGameInput : SingletonMono<InGameInput>
     }
     private void SelectAllSameUnit(BaseObject obj)
     {
-        // List<BaseObject> sameUnits = new List<BaseObject>();
-        // InGameSystem.Instance.DetectSameUnit(obj.GetBaseObject(), sameUnits);
-        EventSelectUnits?.Invoke(new BaseObject[] { obj });
+        DeSelecteAll();
+        List<BaseObject> units = InGameSystem.Instance.DetectSameUnit(obj);
+        EventSelectUnits?.Invoke(units.ToArray());
     }
     private void MoveUnit(BaseObject obj, Vector3 dest)
     {

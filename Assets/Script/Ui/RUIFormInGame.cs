@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class RUIFormInGame : RUiForm
 
     [SerializeField] private Text KillPoint = null;
     [SerializeField] private Text Mineral = null;
+    [SerializeField] private Text MineralPerSec = null;
     [SerializeField] private Text WaveNumber = null;
     [SerializeField] private Text RemainTimer = null;
     [SerializeField] private Text LineMobCount = null;
@@ -36,6 +38,7 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Image UnitDetailPanel = null;
     [SerializeField] private Image UnitPhoto = null;
     [SerializeField] private Text DamageText = null;
+    [SerializeField] private Text UpgradeText = null;
     [SerializeField] private Text DescriptionText = null;
 
     [SerializeField] private Button BtnLevelUp = null;
@@ -81,6 +84,14 @@ public class RUIFormInGame : RUiForm
 
     private void Update()
     {
+
+#if UNITY_EDITOR
+        if (InputWrapper.Instance.IsKeyDownTrigger_F1() && Application.isPlaying)
+        {
+            UnityEditor.EditorWindow.focusedWindow.maximized = !UnityEditor.EditorWindow.focusedWindow.maximized;
+        }
+#endif
+
         UpdateForm(default);
     }
 
@@ -104,6 +115,14 @@ public class RUIFormInGame : RUiForm
         UpdateUnitDetail();
     }
 
+    public void ShowMineralRasingEffect(int mineral)
+    {
+        MineralPerSec.transform.DOKill();
+        MineralPerSec.text = "+" + mineral;
+        MineralPerSec.transform.DOLocalMoveY(-50, 1).From(-20);
+        MineralPerSec.DOFade(0, 1).From(1).SetEase(Ease.InQuad);
+    }
+
     private void UpdateUnitDetail()
     {
         if (!UnitDetailPanel.gameObject.activeSelf)
@@ -111,7 +130,8 @@ public class RUIFormInGame : RUiForm
 
         BaseObject selectedUnit = GameMgr.SelectedUnit;
         string damage = selectedUnit.SpecProp.Damage.ToString();
-        DamageText.text = damage;
+        DamageText.text = damage + " (" + selectedUnit.SpecProp.DamageInfo + ")";
+        UpgradeText.text = selectedUnit.SpecProp.DamageType.ToString();
         DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
         UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
     }

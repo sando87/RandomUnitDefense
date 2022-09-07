@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class LevelDisplay : MonoBehaviour
 {
-    [SerializeField] Sprite[] LevelImages = null;
-    
     void Start()
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        sr.sprite = LevelImages[this.GetBaseObject().SpecProp.Level - 1];
+        int curLevel = this.GetBaseObject().SpecProp.Level;
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            int starLevel = i + 2;
+            transform.GetChild(i).gameObject.SetActive(starLevel <= curLevel);
+        }
     }
 }

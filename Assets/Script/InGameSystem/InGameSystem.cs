@@ -11,7 +11,7 @@ public enum UpgradeType
 
 public class InGameSystem : SingletonMono<InGameSystem>
 {
-    public const float MineralIntervalSec = 1.0f;
+    public const float MineralIntervalSec = 3.0f;
     public const float WaveIntervalSec = 10.0f;
     public const int MobCountPerWave = 5;
     public const float LineMobBurstIntervalSec = 1.5f;
@@ -201,10 +201,13 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private IEnumerator MineralMining()
     {
+        yield return null;
+        RUIFormInGame inGameUI = FindObjectOfType<RUIFormInGame>();
         while(true)
         {
             yield return newWaitForSeconds.Cache(MineralIntervalSec);
             Mineral += MineralStep;
+            inGameUI.ShowMineralRasingEffect(MineralStep);
             RemainSecond -= MineralIntervalSec;
             RemainSecond = Mathf.Max(0, RemainSecond);
         }

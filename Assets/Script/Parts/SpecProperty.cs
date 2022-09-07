@@ -30,6 +30,8 @@ public class SpecProperty : MonoBehaviour
     public float TotalHP { get { return _Spec.totalHP * Buff.TotalHP; } }
     public float Armor { get { return _Spec.armor * Buff.Armor; } }
     public float MoveSpeed { get { return _Spec.moveSpeed * Buff.MoveSpeed; } }
+    public string DamageInfo { get { return _Spec.DamageInfo; } }
+    public UpgradeType DamageType { get { return _Spec.attackType; } }
 }
 
 
@@ -42,4 +44,5 @@ public class BasicSpec
     public UpgradeType attackType = UpgradeType.TypeA;
     public float damage = 10;
     public float[] damagesPerUp = new float[5] { 1, 2, 3, 4, 5 };
+    public string DamageInfo { get { return damage + "+" + String.Join("/", damagesPerUp); } }
 }

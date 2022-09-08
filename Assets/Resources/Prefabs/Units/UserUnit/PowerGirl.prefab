@@ -213,8 +213,8 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
-    damage: 10
+    attackType: 5
+    damage: 5
     damagesPerUp:
     - 1
     - 2
@@ -253,11 +253,14 @@ MonoBehaviour:
   SimpleMissile: {fileID: 1240864785425162540, guid: 603ae2d72cefe3941accf2f971083a9d,
     type: 3}
   SkillAttack: {fileID: 1913461482294829942}
-  _Cooltime: 5
-  _SkillRange: 3
+  _SkillSpeed: 0.3
+  _SkillRange: 2
   HitFloorPrefab: {fileID: 9086029617494144678, guid: 7e675bb887289864695d0501cf9331df,
     type: 3}
-  Accuracy: 0.25
+  Accuracy: 0.05
+  DotDamageRate: 0.1
+  BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
+    type: 3}
 --- !u!114 &-1267487083274052054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,15 +753,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0

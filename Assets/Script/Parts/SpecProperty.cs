@@ -41,7 +41,7 @@ public class BasicSpec
     public float totalHP = 100;
     public float armor = 0;
     public float moveSpeed = 3;
-    public UpgradeType attackType = UpgradeType.TypeA;
+    public UpgradeType attackType = UpgradeType.Melee;
     public float damage = 10;
     public float[] damagesPerUp = new float[5] { 1, 2, 3, 4, 5 };
     public string DamageInfo { get { return damage + "+" + String.Join("/", damagesPerUp); } }

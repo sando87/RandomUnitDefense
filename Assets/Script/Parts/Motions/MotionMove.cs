@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class MotionMove : MotionBase
 {
-    private Tween mMoveTween = null;
-
     public override void OnInit()
     {
         base.OnInit();
@@ -30,23 +28,22 @@ public class MotionMove : MotionBase
         base.OnEnter();
 
         mBaseObject.Body.TurnHeadTo(Destination);
+    }
+    public override void OnUpdate()
+    {
+        base.OnUpdate();
 
-        float dist = (Destination - mBaseObject.transform.position).ZeroZ().magnitude;
-        float duration = dist / mBaseObject.SpecProp.MoveSpeed;
-        mMoveTween = mBaseObject.transform.DOMove(Destination, duration).SetEase(Ease.Linear).OnComplete(() =>
+        mBaseObject.Body.TurnHeadTo(Destination);
+
+        Vector3 diff = (Destination - mBaseObject.transform.position).ZeroZ();
+        mBaseObject.transform.position += (diff.normalized * mBaseObject.SpecProp.MoveSpeed * Time.deltaTime);
+        if(diff.magnitude < 0.1f)
         {
-            mMoveTween = null;
             SwitchMotionToIdle();
-        });
+        }
     }
     public override void OnLeave()
     {
-        if (mMoveTween != null)
-        {
-            mMoveTween.Kill();
-            mMoveTween = null;
-        }
-
         base.OnLeave();
     }
 }

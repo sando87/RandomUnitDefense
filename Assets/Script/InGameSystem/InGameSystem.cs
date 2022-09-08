@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public enum UpgradeType
 {
-    None, TypeA, TypeB, TypeC, TypeD, TypeE
+    None, Melee, Gun, Magic, TypeD, Missile
 }
 
 public class InGameSystem : SingletonMono<InGameSystem>

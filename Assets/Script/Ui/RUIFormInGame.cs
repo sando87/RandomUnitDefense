@@ -106,11 +106,11 @@ public class RUIFormInGame : RUiForm
         LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + InGameSystem.LineMobLimit;
         RemainGauge.fillAmount = (float)GameMgr.LineMobCount / InGameSystem.LineMobLimit;
 
-        WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.TypeA).ToString();
-        WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.TypeB).ToString();
-        WeaponC.text = GameMgr.GetUpgradeCount(UpgradeType.TypeC).ToString();
+        WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.Melee).ToString();
+        WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.Gun).ToString();
+        WeaponC.text = GameMgr.GetUpgradeCount(UpgradeType.Magic).ToString();
         WeaponD.text = GameMgr.GetUpgradeCount(UpgradeType.TypeD).ToString();
-        WeaponE.text = GameMgr.GetUpgradeCount(UpgradeType.TypeE).ToString();
+        WeaponE.text = GameMgr.GetUpgradeCount(UpgradeType.Missile).ToString();
 
         UpdateUnitDetail();
     }
@@ -190,15 +190,15 @@ public class RUIFormInGame : RUiForm
         bool ret = true;
         Button selBtn = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         if (selBtn == UpgradeWeaponA)
-            ret = GameMgr.UpgradeWeapon(UpgradeType.TypeA);
+            ret = GameMgr.UpgradeWeapon(UpgradeType.Melee);
         else if (selBtn == UpgradeWeaponB)
-            ret = GameMgr.UpgradeWeapon(UpgradeType.TypeB);
+            ret = GameMgr.UpgradeWeapon(UpgradeType.Gun);
         else if (selBtn == UpgradeWeaponC)
-            ret = GameMgr.UpgradeWeapon(UpgradeType.TypeC);
+            ret = GameMgr.UpgradeWeapon(UpgradeType.Magic);
         else if (selBtn == UpgradeWeaponD)
             ret = GameMgr.UpgradeWeapon(UpgradeType.TypeD);
         else if (selBtn == UpgradeWeaponE)
-            ret = GameMgr.UpgradeWeapon(UpgradeType.TypeE);
+            ret = GameMgr.UpgradeWeapon(UpgradeType.Missile);
 
         if (!ret)
             RUiMessageBox.PopUp("Not enough minerals.", null);

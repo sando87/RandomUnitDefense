@@ -87,7 +87,7 @@ public class UnitGuardian : UnitPlayer
             yield return newWaitForSeconds.Cache(0.5f);
             Collider[] cols = mBaseObj.DetectAround(SkillRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
-                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffectPrefab);
+                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffectPrefab, 1);
         }
     }
 

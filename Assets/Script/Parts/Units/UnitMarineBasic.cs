@@ -7,12 +7,15 @@ public class UnitMarineBasic : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
     [SerializeField] float _BuffRange = 3.0f;
+    [SerializeField] float _SkillDuration = 1.0f;
     [SerializeField] private GameObject HitParticle = null;
-    [SerializeField] private BuffBase BuffEffect = null;
+    [SerializeField] private BuffBase PassiveBuff = null;
+    [SerializeField] private BuffBase AttackDeBuff = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
+    float SkillDuration { get { return _SkillDuration * mBaseObj.BuffProp.SkillDuration; } }
 
     private MotionActionSingle mMotionAttack = null;
 
@@ -29,6 +32,7 @@ public class UnitMarineBasic : UnitPlayer
     {   
         BaseObject target = mMotionAttack.Target;
         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        target.BuffCtrl.ApplyBuff(AttackDeBuff, SkillDuration, true);
 
         Vector3 pos = MyUtils.Random(target.Body.Center, 0.1f);
         GameObject obj = Instantiate(HitParticle, pos, Quaternion.identity);
@@ -42,7 +46,7 @@ public class UnitMarineBasic : UnitPlayer
             yield return newWaitForSeconds.Cache(0.5f);
             Collider[] cols = mBaseObj.DetectAround(BuffRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
-                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffect);
+                col.GetBaseObject().BuffCtrl.ApplyBuff(PassiveBuff, 1);
         }
     }
 

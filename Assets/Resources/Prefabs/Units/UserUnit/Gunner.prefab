@@ -330,7 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BuffID: 637982470694887521
-  Duration: 1
   BuffProp: {fileID: 8382853931674930665}
 --- !u!114 &8382853931674930665
 MonoBehaviour:
@@ -356,15 +355,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -576,12 +575,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: actionLoopEnter
+    StateName: ActionLoop
     AnimatorParamActionType: 5
-    AnimationClipName: idle
+    AnimationClipName: Blend Tree
     MotionName: MotionActionLoop
     LayerIndex: 0
-    ClipLength: 0.18333334
+    ClipLength: 1.3333334
   _FirePositions:
   - {fileID: 6346304695276101469}
   - {fileID: 8874085120316937448}
@@ -654,15 +653,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -821,7 +820,7 @@ MonoBehaviour:
     armor: 0
     moveSpeed: 1
     attackType: 1
-    damage: 10
+    damage: 5
     damagesPerUp:
     - 1
     - 2
@@ -856,6 +855,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _AttackSpeed: 0.5
   _AttackRange: 4
+  _SkillRange: 1
+  _SlowDuration: 1
+  DotDamageRate: 0.1
   IntroSprites:
   - {fileID: 21300000, guid: 75859ed2dc50109409737b4ce8cf88e8, type: 3}
   - {fileID: 21300000, guid: 3ee55dad11958ed43b0f211d345cf298, type: 3}
@@ -878,9 +880,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c9932f4b4a0e6cc49aa85415a440902b, type: 3}
   - {fileID: 21300000, guid: 12c65697ee96ab745807d37b0aaa43f0, type: 3}
   - {fileID: 21300000, guid: 549ba1e6b8d4fd94087d562b250966bd, type: 3}
-  _SkillDamage: 1
-  _SkillRange: 1
-  _SlowDuration: 1
   BuffPrefab: {fileID: 3180714640886753350}
 --- !u!114 &-468716282462732064
 MonoBehaviour:

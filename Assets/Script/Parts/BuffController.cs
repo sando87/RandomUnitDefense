@@ -12,13 +12,14 @@ public class BuffController : MonoBehaviour
         mBaseObj = this.GetBaseObject();
     }
 
-    public void ApplyBuff(BuffBase buffPrefab, bool isOverlappable = false)
+    public void ApplyBuff(BuffBase buffPrefab, float duration, bool isOverlappable = false)
     {
         if(!isOverlappable)
         {
             BuffBase sameBuff = FindBuff(buffPrefab.BuffID);
             if (sameBuff != null)
             {
+                sameBuff.Duration = duration;
                 sameBuff.ResetDuration(); //동일한 버프가 있을 경우에는 지속지간 갱신만. => 중복 불가...
                 return;
             }    
@@ -26,6 +27,7 @@ public class BuffController : MonoBehaviour
 
         BuffBase buff = Instantiate(buffPrefab, transform);
         buff.gameObject.SetActive(true);
+        buff.Duration = duration;
         buff.transform.localPosition = Vector3.zero;
     }
 

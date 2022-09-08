@@ -17,7 +17,7 @@ public class UnitBase : MonoBehaviour
     {
         while (true)
         {
-            float cooltime = 1 / speed();
+            float cooltime = speed() == 0 ? 0 : 1 / speed();
             if (cooltime > 0)
                 yield return new WaitForSeconds(cooltime);
 

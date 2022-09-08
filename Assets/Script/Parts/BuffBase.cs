@@ -6,10 +6,10 @@ using UnityEngine;
 public class BuffBase : MonoBehaviour
 {
     [SerializeField][Identifier] long _BuffID = 0;
-    [SerializeField] float Duration = 1;
     [SerializeField] BuffProperty BuffProp;
 
     public long BuffID { get { return _BuffID; } }
+    public float Duration { get; set; } = 1;
 
     private BaseObject mBaseObject = null;
     private BuffProperty mUnitBuffProp = null;

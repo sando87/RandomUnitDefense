@@ -7,9 +7,9 @@ public class UnitGunner : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 2;
-    [SerializeField] float _SkillDamage = 1;
     [SerializeField] float _SkillRange = 2;
     [SerializeField] float _SlowDuration = 1.0f;
+    [SerializeField][Range(0, 1)] float DotDamageRate = 0.1f;
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
@@ -18,7 +18,6 @@ public class UnitGunner : UnitPlayer
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
-    float SkillDamage { get { return _SkillDamage * mBaseObj.BuffProp.SkillRange; } }
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
     float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
 
@@ -82,9 +81,10 @@ public class UnitGunner : UnitPlayer
         {
             if(target.Health != null)
             {
-                target.Health.GetDamaged(SkillDamage, mBaseObj);
+                float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
+                target.Health.GetDamaged(damage, mBaseObj);
             }
-            target.BuffCtrl.ApplyBuff(BuffPrefab);
+            target.BuffCtrl.ApplyBuff(BuffPrefab, 1);
             yield return newWaitForSeconds.Cache(0.1f);
         }
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();

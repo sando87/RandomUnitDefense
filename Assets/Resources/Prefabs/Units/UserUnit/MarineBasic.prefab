@@ -43,6 +43,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7feaa9245b125fd4b9ba559cf7821ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1044593680274448944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444025635255158460}
+  - component: {fileID: 4413279295320478944}
+  - component: {fileID: 4982495571168349100}
+  m_Layer: 0
+  m_Name: AttackDebuff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1444025635255158460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044593680274448944}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6377826679273638807}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4413279295320478944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044593680274448944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a803129a7facf534bb1ead24b5c73987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BuffID: 637982681006964925
+  BuffProp: {fileID: 4982495571168349100}
+--- !u!114 &4982495571168349100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044593680274448944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502df12f5b8af45328ec488e1479d896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalHP:
+    value: 0
+  Armor:
+    value: 0
+  MoveSpeed:
+    value: -20
+  AttackDamage:
+    value: 0
+  AttackSpeed:
+    value: 0
+  AttackRange:
+    value: 0
+  SkillSpeed:
+    value: 0
+  SkillDamage:
+    value: 0
+  SkillRange:
+    value: 0
+  SkillDuration:
+    value: 0
+  SplshRange:
+    value: 0
+  Percentage:
+    value: 0
 --- !u!1 &1485949026814563962
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +382,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BuffID: 637982470985885014
-  Duration: 1
   BuffProp: {fileID: 7335656403299880263}
 --- !u!114 &7335656403299880263
 MonoBehaviour:
@@ -326,15 +407,15 @@ MonoBehaviour:
     value: 50
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -593,15 +674,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -704,6 +785,7 @@ Transform:
   - {fileID: 5874461322470515728}
   - {fileID: 3556982779600036631}
   - {fileID: 2582139123933583669}
+  - {fileID: 1444025635255158460}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -734,9 +816,11 @@ MonoBehaviour:
   _AttackSpeed: 1
   _AttackRange: 2
   _BuffRange: 1
+  _SkillDuration: 1
   HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}
-  BuffEffect: {fileID: 7610135905271046776}
+  PassiveBuff: {fileID: 7610135905271046776}
+  AttackDeBuff: {fileID: 4413279295320478944}
 --- !u!114 &6377826679273638800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,7 +861,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
+    attackType: 2
     damage: 10
     damagesPerUp:
     - 1

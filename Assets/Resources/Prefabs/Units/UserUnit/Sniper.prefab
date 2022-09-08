@@ -820,15 +820,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -985,14 +985,14 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
-    damage: 10
+    attackType: 2
+    damage: 15
     damagesPerUp:
     - 1
-    - 2
     - 3
-    - 4
     - 5
+    - 7
+    - 9
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0

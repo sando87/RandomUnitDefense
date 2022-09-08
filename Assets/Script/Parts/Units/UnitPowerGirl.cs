@@ -13,7 +13,9 @@ public class UnitPowerGirl : UnitPlayer
     [SerializeField] float _SkillSpeed = 0.3f;
     [SerializeField] float _SkillRange = 1;
     [SerializeField] GameObject HitFloorPrefab = null;
-    [SerializeField][Range(0, 1)] float Accuracy = 0.25f;
+    [SerializeField][Range(0, 1)] float Accuracy = 0.1f;
+    [SerializeField][Range(0, 1)] float DotDamageRate = 0.1f;
+    [SerializeField] private GameObject BulletSparkPrefab = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -54,14 +56,20 @@ public class UnitPowerGirl : UnitPlayer
         Collider[] targets = mBaseObj.DetectAround(SkillRange, 1 << LayerID.Enemies);
         while(true)
         {
-            if(SkillAttack.NormalizedTime < 0.8f)
+            if(SkillAttack.NormalizedTime < 0.65f)
             {
                 foreach (Collider col in targets)
                 {
                     int percent = (int)(Accuracy * 100.0f);
-                    if (UnityEngine.Random.Range(0, 100) < percent)
+                    int ranVal = UnityEngine.Random.Range(0, 100);
+                    if (ranVal < percent)
                     {
-                        col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+                        float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
+                        col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
+
+                        Vector3 pos = MyUtils.Random(col.GetBaseObject().Body.Center, 0.1f);
+                        GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
+                        Destroy(obj, 1.0f);
                     }
                 }
             }

@@ -17,5 +17,36 @@ public class BuffProperty : MonoBehaviour
     public Percent SplshRange;
     public Percent SkillDuration;
     public Percent Percentage;
+
+    public void AddBuffProp(BuffProperty prop)
+    {
+        TotalHP += prop.TotalHP;
+        Armor += prop.Armor;
+        MoveSpeed += prop.MoveSpeed;
+        AttackDamage += prop.AttackDamage;
+        AttackSpeed += prop.AttackSpeed;
+        AttackRange += prop.AttackRange;
+        Cooltime += prop.Cooltime;
+        SkillDamage += prop.SkillDamage;
+        SkillRange += prop.SkillRange;
+        SplshRange += prop.SplshRange;
+        SkillDuration += prop.SkillDuration;
+        Percentage += prop.Percentage;
+    }
+    public void RemoveBuffProp(BuffProperty prop)
+    {
+        TotalHP -= prop.TotalHP;
+        Armor -= prop.Armor;
+        MoveSpeed -= prop.MoveSpeed;
+        AttackDamage -= prop.AttackDamage;
+        AttackSpeed -= prop.AttackSpeed;
+        AttackRange -= prop.AttackRange;
+        Cooltime -= prop.Cooltime;
+        SkillDamage -= prop.SkillDamage;
+        SkillRange -= prop.SkillRange;
+        SplshRange -= prop.SplshRange;
+        SkillDuration -= prop.SkillDuration;
+        Percentage -= prop.Percentage;
+    }
 }
 

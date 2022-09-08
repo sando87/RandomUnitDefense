@@ -12,7 +12,7 @@ public class UnitMarineBasic : UnitPlayer
     float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
 
     [SerializeField] private GameObject HitParticle = null;
-    [SerializeField] private GameObject BuffEffect = null;
+    [SerializeField] private BuffBase BuffEffect = null;
 
     private MotionActionSingle mMotionAttack = null;
 
@@ -42,37 +42,10 @@ public class UnitMarineBasic : UnitPlayer
             yield return newWaitForSeconds.Cache(0.5f);
             Collider[] cols = mBaseObj.DetectAround(BuffRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
-                ApplyAttackSpeedUpBuff(col.GetBaseObject());
+                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffect);
         }
     }
 
-    private void ApplyAttackSpeedUpBuff(BaseObject target)
-    {
-        BuffAttackSpeedUP buff = target.BuffCtrl.FindBuff<BuffAttackSpeedUP>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 중복 불가...
-        else
-        {
-            GameObject buffEffectObj = Instantiate(BuffEffect, target.Renderer.transform);
-            target.BuffCtrl.AddBuff(new BuffAttackSpeedUP(buffEffectObj));
-        }
-    }
 
-    class BuffAttackSpeedUP : BuffBase
-    {
-        //1초간 아군 공속 20% 증소
-        private GameObject BuffEffect;
-        public BuffAttackSpeedUP(GameObject buffEffect) { Duration = 1; BuffEffect = buffEffect; }
-        public override void StartBuff(BaseObject target)
-        {
-            BuffEffect.SetActive(true);
-            target.BuffProp.AttackSpeed += 20;
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            target.BuffProp.AttackSpeed -= 20;
-            Destroy(BuffEffect);
-        }
-    }
 
 }

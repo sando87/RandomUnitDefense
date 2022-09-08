@@ -56,6 +56,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502df12f5b8af45328ec488e1479d896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TotalHP:
+    value: 0
+  Armor:
+    value: 0
+  MoveSpeed:
+    value: 0
+  AttackDamage:
+    value: 0
+  AttackSpeed:
+    value: 0
+  AttackRange:
+    value: 0
+  Cooltime:
+    value: 0
+  SkillDamage:
+    value: 0
+  SkillRange:
+    value: 0
+  SplshRange:
+    value: 0
+  SkillDuration:
+    value: 0
+  Percentage:
+    value: 0
 --- !u!1 &1305606860730891868
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,8 +448,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.39736933, y: 0.631338, z: 1}
-  m_Center: {x: -0.00031226873, y: 0.32188576, z: 0}
+  m_Size: {x: 0.75898224, y: 0.7324356, z: 1}
+  m_Center: {x: -0.00031226873, y: 0.37243456, z: 0}
 --- !u!1 &2401174533735352818
 GameObject:
   m_ObjectHideFlags: 0

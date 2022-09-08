@@ -77,52 +77,12 @@ public class UnitFlamer : UnitPlayer
         {
             yield return newWaitForSeconds.Cache(0.5f);
             time += 0.5f;
-            Collider[] cols = decal.DetectAround(SplshRange, mBaseObj.GetLayerMaskAttackable());
-            foreach (Collider col in cols)
-                ApplyAttackSpeedUpBuff(col.GetBaseObject());
+            // Collider[] cols = decal.DetectAround(SplshRange, mBaseObj.GetLayerMaskAttackable());
+            // foreach (Collider col in cols)
+            //     ApplyAttackSpeedUpBuff(col.GetBaseObject());
         }
         Destroy(decal);
     }
 
-    private void ApplyAttackSpeedUpBuff(BaseObject target)
-    {
-        DeBuffFireDamaged buff = target.BuffCtrl.FindBuff<DeBuffFireDamaged>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 중복 불가...
-        else
-        {
-            GameObject buffEffectObj = Instantiate(BuffEffect, target.Body.transform);
-            target.BuffCtrl.AddBuff(new DeBuffFireDamaged(buffEffectObj, target, mBaseObj));
-        }
-    }
 
-    class DeBuffFireDamaged : BuffBase
-    {
-        private GameObject BuffEffect;
-        private BaseObject mTarget = null;
-        private BaseObject mAttacker = null;
-        private Health mHP = null;
-        public DeBuffFireDamaged(GameObject buffEffect, BaseObject target, BaseObject attacker) { Duration = 1; BuffEffect = buffEffect; mTarget = target; mAttacker = attacker; }
-        public override void StartBuff(BaseObject target)
-        {
-            mHP = mTarget.Health;
-        }
-        public override void UpdateBuff(BaseObject target)
-        {
-            base.UpdateBuff(target);
-            if(mHP.IsDead)
-            {
-                BuffEffect.SetActive(false);
-            }
-            else
-            {
-                BuffEffect.SetActive(true);
-                mHP.GetDamaged(1, mAttacker);
-            }
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            Destroy(BuffEffect);
-        }
-    }
 }

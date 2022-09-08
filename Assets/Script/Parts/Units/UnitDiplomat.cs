@@ -17,7 +17,7 @@ public class UnitDiplomat : UnitPlayer
 
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
-    [SerializeField] GameObject BuffEffect = null;
+    [SerializeField] BuffBase BuffEffect = null;
 
     private MotionActionSingle mMotionAttack = null;
     
@@ -62,37 +62,7 @@ public class UnitDiplomat : UnitPlayer
             yield return newWaitForSeconds.Cache(0.5f);
             Collider[] cols = mBaseObj.DetectAround(SkillRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
-                ApplyBuff(col.GetBaseObject());
+                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffect);
         }
     }
-
-    private void ApplyBuff(BaseObject target)
-    {
-        BuffSkillRangeUp buff = target.BuffCtrl.FindBuff<BuffSkillRangeUp>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 중복 불가...
-        else
-        {
-            GameObject buffEffectObj = Instantiate(BuffEffect, target.Renderer.transform);
-            target.BuffCtrl.AddBuff(new BuffSkillRangeUp(buffEffectObj));
-        }
-    }
-
-    class BuffSkillRangeUp : BuffBase
-    {
-        //1초간 아군 공속 20% 증소
-        private GameObject BuffEffect;
-        public BuffSkillRangeUp(GameObject buffEffect) { Duration = 1; BuffEffect = buffEffect; }
-        public override void StartBuff(BaseObject target)
-        {
-            BuffEffect.SetActive(true);
-            target.BuffProp.SkillRange += 20;
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            target.BuffProp.SkillRange -= 20;
-            Destroy(BuffEffect);
-        }
-    }
-
 }

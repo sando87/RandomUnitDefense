@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitGuardian : UnitPlayer
 {
     [SerializeField] BoxCollider DetectArea = null;
-    [SerializeField] private GameObject BuffEffectPrefab = null;
+    [SerializeField] BuffBase BuffEffectPrefab = null;
     
     [SerializeField] float _AttackSpeed = 0.5f;
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
@@ -85,36 +85,8 @@ public class UnitGuardian : UnitPlayer
             yield return newWaitForSeconds.Cache(0.5f);
             Collider[] cols = mBaseObj.DetectAround(SkillRange, 1 << mBaseObj.gameObject.layer);
             foreach (Collider col in cols)
-                ApplyAttackSpeedUpBuff(col.GetBaseObject());
+                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffectPrefab);
         }
     }
 
-    private void ApplyAttackSpeedUpBuff(BaseObject target)
-    {
-        BuffAttackDurationUP buff = target.BuffCtrl.FindBuff<BuffAttackDurationUP>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 중복 불가...
-        else
-        {
-            GameObject buffEffectObj = Instantiate(BuffEffectPrefab, target.Renderer.transform);
-            target.BuffCtrl.AddBuff(new BuffAttackDurationUP(buffEffectObj));
-        }
-    }
-
-    class BuffAttackDurationUP : BuffBase
-    {
-        //1초간 아군 공속 20% 증소
-        private GameObject BuffEffect;
-        public BuffAttackDurationUP(GameObject buffEffect) { Duration = 1; BuffEffect = buffEffect; }
-        public override void StartBuff(BaseObject target)
-        {
-            BuffEffect.SetActive(true);
-            target.BuffProp.SkillDuration += 20;
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            target.BuffProp.SkillDuration -= 20;
-            Destroy(BuffEffect);
-        }
-    }
 }

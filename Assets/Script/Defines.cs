@@ -95,16 +95,19 @@ public class SortingLayerID
     public static readonly int UI = SortingLayer.NameToID("UI");
 }
 
+[System.Serializable]
 public struct Percent //단위 [%]
 {
-    private int value; // ~ -100 ~ 0 ~ 100% ~
+    [SerializeField] private int value; // ~ -100 ~ 0 ~ 100% ~
     public Percent(int val) { value = val; }
     public int Value { get => value; }
-    private float Factor { get => (1 + Mathf.Abs(value) * 0.01f); }  // return 1.0 ~ 2.0 ~
+    private float Factor { get => (1 + (Mathf.Abs(value) * 0.01f)); }  // return 1.0 ~ 2.0 ~
     private float Multiplier { get => value > 0 ? Factor : (1 / Factor); } // 100% => x2, -100% => x0.5
     public void SetZero() { value = 0; }
     public static float operator *(float val, Percent per) { return val * per.Multiplier; }
     public static float operator *(int val, Percent per) { return val * per.Multiplier; }
     public static Percent operator +(Percent a, int b) { return new Percent(a.value + b); }
     public static Percent operator -(Percent a, int b) { return new Percent(a.value - b); }
+    public static Percent operator +(Percent a, Percent b) { return new Percent(a.value + b.value); }
+    public static Percent operator -(Percent a, Percent b) { return new Percent(a.value - b.value); }
 }

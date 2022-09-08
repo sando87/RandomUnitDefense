@@ -21,6 +21,8 @@ public class UnitGunner : UnitPlayer
     [SerializeField] float _SlowDuration = 1.0f;
     float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
 
+    [SerializeField] BuffBase BuffPrefab = null;
+
     private LaserAimming mLaserEffectObject = null;
     private MotionActionSingle mAttackMotion = null;
     private MotionActionLoop mLaserMotion = null;
@@ -83,7 +85,7 @@ public class UnitGunner : UnitPlayer
             {
                 target.Health.GetDamaged(SkillDamage, mBaseObj);
             }
-            ApplySlowDeBuff(target);
+            target.BuffCtrl.ApplyBuff(BuffPrefab);
             yield return newWaitForSeconds.Cache(0.1f);
         }
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
@@ -100,29 +102,5 @@ public class UnitGunner : UnitPlayer
             mLaserEffectObject = null;
         }
         StopCoroutine("CoAttackBeam");
-    }
-    private void ApplySlowDeBuff(BaseObject target)
-    {
-        DeBuffSlow buff = target.BuffCtrl.FindBuff<DeBuffSlow>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
-        else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(SlowDuration - 0.1f));
-    }
-
-    class DeBuffSlow : BuffBase
-    {
-        //적 이동속도 20% 감소 디버프(duration시간만큼 지속)
-        public DeBuffSlow(float duration) { Duration = duration; }
-        public override void StartBuff(BaseObject target)
-        {
-            target.Renderer.SetColor(Color.green);
-            target.BuffProp.MoveSpeed -= 20;
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            target.Renderer.SetColor(Color.white);
-            target.BuffProp.MoveSpeed += 20;
-        }
     }
 }

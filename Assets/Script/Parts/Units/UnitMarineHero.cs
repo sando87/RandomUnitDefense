@@ -59,32 +59,6 @@ public class UnitMarineHero : UnitPlayer
         foreach(Collider col in cols)
         {
             col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
-            ApplySlowDeBuff(col.GetBaseObject());
-        }
-    }
-    private void ApplySlowDeBuff(BaseObject target)
-    {
-        DeBuffSlow buff = target.BuffCtrl.FindBuff<DeBuffSlow>();
-        if (buff != null)
-            buff.RenewBuff(); //동일한 버프가 있을 경우에는 갱신만. => 결국 마린 여러마리가 공격해도 slow효과는 중복되지 않는 개념...
-        else
-            target.BuffCtrl.AddBuff(new DeBuffSlow(SlowDuration, _MoveSlowness));
-    }
-
-    class DeBuffSlow : BuffBase
-    {
-        //적 이동속도 20% 감소 디버프(duration시간만큼 지속)
-        private int slowness = 0;
-        public DeBuffSlow(float duration, int _slowness) { Duration = duration; slowness = _slowness; }
-        public override void StartBuff(BaseObject target)
-        {
-            target.Renderer.SetColor(Color.blue);
-            target.BuffProp.MoveSpeed -= slowness;
-        }
-        public override void EndBuff(BaseObject target)
-        {
-            target.Renderer.SetColor(Color.white);
-            target.BuffProp.MoveSpeed += slowness;
         }
     }
 

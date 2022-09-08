@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 3393111536044945592}
   - component: {fileID: 4642133873994698210}
   m_Layer: 11
-  m_Name: vilerunner
+  m_Name: Vilerunner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Spec:
-    totalHP: 120
+    totalHP: 20
     armor: 0
     moveSpeed: 1.2
     attackType: 1

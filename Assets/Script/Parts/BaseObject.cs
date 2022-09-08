@@ -11,7 +11,7 @@ public class BaseObject : MonoBehaviour
     public Health Health { get { return GetComponentInChildren<Health>(); } }
     public CharacterInput CharacterInput { get { return GetComponentInChildren<CharacterInput>(); } }
     public MotionManager MotionManager { get { return GetComponentInChildren<MotionManager>(); } }
-    public BuffProperty BuffProp { get { return GetComponentInChildren<BuffProperty>(); } }
+    public BuffProperty BuffProp { get { return BuffCtrl.GetComponent<BuffProperty>(); } }
     public SpecProperty SpecProp { get { return GetComponentInChildren<SpecProperty>(); } }
     public BuffController BuffCtrl { get { return GetComponentInChildren<BuffController>(); } }
     public UnitBase Unit { get { return GetComponentInChildren<UnitBase>(); } }

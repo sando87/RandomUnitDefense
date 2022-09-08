@@ -5,14 +5,14 @@ using UnityEngine;
 public class UnitMarineBasic : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 0.5f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField] float _BuffRange = 3.0f;
-    float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
-
     [SerializeField] private GameObject HitParticle = null;
     [SerializeField] private BuffBase BuffEffect = null;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float BuffRange { get { return _BuffRange * mBaseObj.BuffProp.SkillRange; } }
 
     private MotionActionSingle mMotionAttack = null;
 
@@ -21,7 +21,7 @@ public class UnitMarineBasic : UnitPlayer
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-        StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
         StartCoroutine(RepeatBuff());
     }
 

@@ -8,17 +8,17 @@ using UnityEngine;
 public class UnitChanneller : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 2;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    [SerializeField] float _SkillRange = 2;
+    [SerializeField] float _SkillDamageStep = 0.2f;
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
 
-    [SerializeField] float _SkillRange = 2;
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
-    [SerializeField] float _SkillDamageStep = 0.2f;
 
     private LaserAimming mLaserEffectObject = null;
     private MotionActionSingle mAttackMotion = null;
@@ -34,8 +34,8 @@ public class UnitChanneller : UnitPlayer
         mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
-        StartCoroutine(CoMotionSwitcher(mAttackMotion, 1 / AttackSpeed, AttackRange));
-        StartCoroutine(CoMotionSwitcher(mLaserMotion, 0, SkillRange));
+        StartCoroutine(CoMotionSwitcher(mAttackMotion, () => AttackSpeed, () => AttackRange));
+        StartCoroutine(CoMotionSwitcher(mLaserMotion, () => 0, () => SkillRange));
     }
 
     private void OnAttack(int idx)

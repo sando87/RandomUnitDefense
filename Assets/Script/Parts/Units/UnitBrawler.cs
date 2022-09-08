@@ -12,8 +12,9 @@ public class UnitBrawler : UnitPlayer
     [SerializeField] Sprite[] HitSprites = null;
 
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _StunDuration = 1;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float StunDuration { get { return _StunDuration * mBaseObj.BuffProp.SkillDuration; } }
     
     private int mStunableCounter = 0;
@@ -25,13 +26,14 @@ public class UnitBrawler : UnitPlayer
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-        StartCoroutine(CoMotionAttack(mMotionAttack, 1 / AttackSpeed));
+        StartCoroutine(CoMotionSwitcherMelee(mMotionAttack));
     }
 
-    protected IEnumerator CoMotionAttack(MotionBase motion, float motionCooltime)
+    protected IEnumerator CoMotionSwitcherMelee(MotionBase motion)
     {
         while (true)
         {
+            float motionCooltime = 1 / AttackSpeed;
             if (motionCooltime > 0)
                 yield return new WaitForSeconds(motionCooltime);
 

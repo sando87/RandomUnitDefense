@@ -8,12 +8,13 @@ using UnityEngine;
 public class UnitFlamer : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 0.5f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField][Range(0, 1)] float _SplshRange = 0.2f;
-    float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
     [SerializeField] float _SkillDuration = 3.0f;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
     float SkillDuration { get { return _SkillDuration * mBaseObj.BuffProp.SkillDuration; } }
 
     private MotionActionSingle mMotionAttack = null;
@@ -28,7 +29,7 @@ public class UnitFlamer : UnitPlayer
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-        StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
     }
 
     private void OnAttack(int idx)

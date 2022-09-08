@@ -13,12 +13,13 @@ public class UnitBase : MonoBehaviour
         mBaseObj = this.GetBaseObject();
     }
 
-    protected IEnumerator CoMotionSwitcher(MotionBase motion, float motionCooltime, float detectRange)
+    protected IEnumerator CoMotionSwitcher(MotionBase motion, System.Func<float> speed, System.Func<float> range)
     {
         while (true)
         {
-            if (motionCooltime > 0)
-                yield return new WaitForSeconds(motionCooltime);
+            float cooltime = 1 / speed();
+            if (cooltime > 0)
+                yield return new WaitForSeconds(cooltime);
 
             while (true)
             {
@@ -26,6 +27,7 @@ public class UnitBase : MonoBehaviour
                 if (!mBaseObj.MotionManager.IsCurrentMotion<MotionIdle>())
                     continue;
 
+                float detectRange = range();
                 BaseObject target = null;
                 if (detectRange > 0)
                 {

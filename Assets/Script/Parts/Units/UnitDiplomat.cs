@@ -8,16 +8,16 @@ using UnityEngine;
 public class UnitDiplomat : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 0.5f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
-
     [SerializeField] float _SkillRange = 3.0f;
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
-
+    
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] BuffBase BuffEffect = null;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
     private MotionActionSingle mMotionAttack = null;
     
@@ -27,7 +27,7 @@ public class UnitDiplomat : UnitPlayer
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-        StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
         StartCoroutine(RepeatBuff());
     }
 

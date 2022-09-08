@@ -6,18 +6,19 @@ public class UnitPowerGirl : UnitPlayer
 {
     [SerializeField] MotionActionSingle NormalAttack = null;
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 2;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField] SimpleMissile SimpleMissile = null;
 
     [SerializeField] MotionActionSingle SkillAttack = null;
-    [SerializeField] float _Cooltime = 3;
-    float Cooltime { get { return _Cooltime * mBaseObj.BuffProp.Cooltime; } }
+    [SerializeField] float _SkillSpeed = 0.3f;
     [SerializeField] float _SkillRange = 1;
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
     [SerializeField] GameObject HitFloorPrefab = null;
     [SerializeField][Range(0, 1)] float Accuracy = 0.25f;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SkillSpeed { get { return _SkillSpeed * mBaseObj.BuffProp.SkillSpeed; } }
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
     void Start()
     {
@@ -25,8 +26,8 @@ public class UnitPowerGirl : UnitPlayer
 
         NormalAttack.EventFired = OnAttack;
         SkillAttack.EventFired = OnSkill;
-        StartCoroutine(CoMotionSwitcher(NormalAttack, 1 / AttackSpeed, AttackRange));
-        StartCoroutine(CoMotionSwitcher(SkillAttack, Cooltime, SkillRange));
+        StartCoroutine(CoMotionSwitcher(NormalAttack, () => AttackSpeed, () => AttackRange));
+        StartCoroutine(CoMotionSwitcher(SkillAttack, () => SkillSpeed, () => SkillRange));
     }
 
     void OnAttack(int idx)

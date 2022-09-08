@@ -6,16 +6,16 @@ using UnityEngine;
 public class UnitSniper : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 3;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField][Range(0, 1)] float _CriticalPercent = 0.2f;
-    float CriticalPercent { get { return _CriticalPercent * mBaseObj.BuffProp.Percentage; } }
     [SerializeField][Range(1, 10)] float _CriticalDamageMultiplier = 3.0f;
-    float CriticalDamageMultiplier { get { return _CriticalDamageMultiplier; } }
-
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] private Sprite[] AimingSprites = null;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float CriticalPercent { get { return _CriticalPercent * mBaseObj.BuffProp.Percentage; } }
+    float CriticalDamageMultiplier { get { return _CriticalDamageMultiplier; } }
 
     private SpritesAnimator mAimingEffect = null;
     private MotionActionLoop mMotionAiming = null;
@@ -32,7 +32,7 @@ public class UnitSniper : UnitPlayer
 
         mMotionShoot = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionShoot.EventFired = OnAttack;
-        StartCoroutine(CoMotionSwitcher(mMotionAiming, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mMotionAiming, () => AttackSpeed, () => AttackRange));
     }
 
     private void OnAttackBeamStart(BaseObject target)

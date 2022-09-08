@@ -9,14 +9,15 @@ public class UnitGuardian : UnitPlayer
     [SerializeField] BuffBase BuffEffectPrefab = null;
     
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 0.5f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField] float _SkillRange = 3.0f;
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
-    
+
     [SerializeField] MotionActionSingle MotionAttackA = null;
     [SerializeField] MotionActionSingle MotionAttackB = null;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
     private BaseObject mTarget = null;
 
@@ -27,14 +28,15 @@ public class UnitGuardian : UnitPlayer
         MotionAttackA.EventFired = OnAttack;
         MotionAttackB.EventFired = OnAttack;
 
-        StartCoroutine(CoMotionSwitcherMelee(new MotionBase[] { MotionAttackA, MotionAttackB }, 1 / AttackSpeed, DetectArea));
+        StartCoroutine(CoMotionSwitcherMelee(new MotionBase[] { MotionAttackA, MotionAttackB }, DetectArea));
         StartCoroutine(RepeatBuff());
     }
     
-    protected IEnumerator CoMotionSwitcherMelee(MotionBase[] motions, float motionCooltime, BoxCollider detectArea)
+    protected IEnumerator CoMotionSwitcherMelee(MotionBase[] motions, BoxCollider detectArea)
     {
         while (true)
         {
+            float motionCooltime = 1 / AttackSpeed;
             if (motionCooltime > 0)
                 yield return new WaitForSeconds(motionCooltime);
 

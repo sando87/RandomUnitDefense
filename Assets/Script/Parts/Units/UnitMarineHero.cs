@@ -5,17 +5,15 @@ using UnityEngine;
 public class UnitMarineHero : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     [SerializeField] float _AttackRange = 0.5f;
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     [SerializeField][Range(0, 1)] float _SkillCastRate = 0.2f;
-    float SkillCastRate { get { return _SkillCastRate * mBaseObj.BuffProp.Percentage; } }
-    [SerializeField] float _SlowDuration = 3.0f;
-    float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
-    [SerializeField][Range(0, 100)] int _MoveSlowness = 20;
 
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
+
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SkillCastRate { get { return _SkillCastRate * mBaseObj.BuffProp.Percentage; } }
 
     private MotionActionSingle mMotionAttack = null;
 
@@ -24,7 +22,7 @@ public class UnitMarineHero : UnitPlayer
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
-        StartCoroutine(CoMotionSwitcher(mMotionAttack, 1 / AttackSpeed, AttackRange));
+        StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
     }
 
     private void OnAttack(int idx)

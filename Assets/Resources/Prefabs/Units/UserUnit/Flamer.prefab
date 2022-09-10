@@ -422,15 +422,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -587,14 +587,14 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
+    attackType: 3
     damage: 10
     damagesPerUp:
-    - 1
     - 2
-    - 3
     - 4
-    - 5
+    - 6
+    - 8
+    - 10
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,6 +625,7 @@ MonoBehaviour:
   _AttackRange: 1
   _SplshRange: 0.2
   _SkillDuration: 3
+  _DotDamageRate: 0.1
   FireBlastPrefab: {fileID: 7148568338040661346, guid: af5c5df92bdcd7d4ea3a0e9b17f78656,
     type: 3}
   FireDecalPrefab: {fileID: 4149092143720216171, guid: ca222274f5ff44d42a2691c322ffc541,

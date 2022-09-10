@@ -463,15 +463,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -628,14 +628,14 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
-    damage: 10
+    attackType: 5
+    damage: 6
     damagesPerUp:
     - 1
-    - 2
     - 3
-    - 4
     - 5
+    - 7
+    - 9
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +666,7 @@ MonoBehaviour:
   _AttackSpeed: 0.5
   _AttackRange: 3
   _SkillAttack: {fileID: 6577991469760676028}
-  _Cooltime: 5
+  _SkillSpeed: 0.3
   _SkillRange: 5
   _SplshRange: 1
   MissilePrefab: {fileID: 2382948227277557631, guid: 128845c5bb61bb3438dee537d1c087aa,

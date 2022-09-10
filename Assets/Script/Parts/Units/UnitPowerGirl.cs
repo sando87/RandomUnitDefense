@@ -82,7 +82,7 @@ public class UnitPowerGirl : UnitPlayer
                 }
             }
 
-            yield return null;
+            yield return newWaitForSeconds.Cache(0.1f);
 
             if(mBaseObj.MotionManager.CurrentMotion != SkillAttack)
                 break;

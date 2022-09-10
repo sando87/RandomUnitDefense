@@ -7,6 +7,7 @@ public class UnitMarineHero : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
     [SerializeField][Range(0, 1)] float _SkillCastRate = 0.2f;
+    [SerializeField][Range(0, 10)] float _SkillDamageRate = 2.0f;
 
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
@@ -56,7 +57,7 @@ public class UnitMarineHero : UnitPlayer
         Collider[] cols = InGameUtils.DetectAround(dest, 0.1f, 1 << LayerID.Enemies);
         foreach(Collider col in cols)
         {
-            col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+            col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage * _SkillDamageRate, mBaseObj);
         }
     }
 

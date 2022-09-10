@@ -13,6 +13,7 @@ public class UnitShellstorm : UnitPlayer
     [SerializeField] float _SkillSpeed = 0.3f;
     [SerializeField] float _SkillRange = 1;
     [SerializeField] float _SplshRange = 1;
+    [SerializeField] [Range(0, 10)] float _SkillDamageRate = 3.0f;
 
     [SerializeField] MissileTracing MissilePrefab = null;
     [SerializeField] ThrowingOver BarrelPrefab = null;
@@ -60,8 +61,8 @@ public class UnitShellstorm : UnitPlayer
 
     void OnHitGasBarrel(Vector3 dest)
     {
-        GameObject decal = Instantiate(GasBarrelDecalPrefab, dest, Quaternion.identity);
-        this.ExDelayedCoroutine(3, () => Destroy(decal));
+        // GameObject decal = Instantiate(GasBarrelDecalPrefab, dest, Quaternion.identity);
+        // this.ExDelayedCoroutine(3, () => Destroy(decal));
         
         Collider[] cols = Physics.OverlapSphere(dest, SplshRange, 1 << LayerID.Enemies);
         foreach (Collider col in cols)
@@ -69,7 +70,7 @@ public class UnitShellstorm : UnitPlayer
             Health hp = col.GetComponentInBaseObject<Health>();
             if (hp != null)
             {
-                hp.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+                hp.GetDamaged(mBaseObj.SpecProp.Damage * _SkillDamageRate, mBaseObj);
             }
         }
     }

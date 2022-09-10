@@ -9,8 +9,9 @@ public class UnitFlamer : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
-    [SerializeField][Range(0, 1)] float _SplshRange = 0.2f;
+    [SerializeField] float _SplshRange = 0.2f;
     [SerializeField] float _SkillDuration = 3.0f;
+    [SerializeField][Range(0, 1)] float _DotDamageRate = 0.1f;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -57,11 +58,11 @@ public class UnitFlamer : UnitPlayer
                 Health hp = col.GetComponentInBaseObject<Health>();
                 if (hp != null)
                 {
-                    hp.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+                    hp.GetDamaged(mBaseObj.SpecProp.Damage * _DotDamageRate, mBaseObj);
                 }
             }
 
-            yield return null;
+            yield return newWaitForSeconds.Cache(0.1f);
 
             if(!mBaseObj.MotionManager.IsCurrentMotion(mMotionAttack))
                 break;

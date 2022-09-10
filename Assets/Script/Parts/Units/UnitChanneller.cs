@@ -10,7 +10,8 @@ public class UnitChanneller : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 2;
     [SerializeField] float _SkillRange = 2;
-    [SerializeField] float _SkillDamageStep = 0.2f;
+    [SerializeField] float _AccDamageStep = 0.2f;
+    [SerializeField] [Range(0, 1)] float _DotDamageRate = 0.1f;
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
@@ -76,15 +77,16 @@ public class UnitChanneller : UnitPlayer
     IEnumerator CoAttackBeam()
     {
         BaseObject target = mLaserMotion.Target;
-        float damage = 1;
+        float accDamage = 0;
         while (!IsOutOfSkillRange(target))
         {
             if(target.Health != null)
             {
-                target.Health.GetDamaged(damage * mBaseObj.BuffProp.SkillDamage, mBaseObj);
+                float damage = (mBaseObj.SpecProp.Damage + accDamage) * _DotDamageRate;
+                target.Health.GetDamaged(damage, mBaseObj);
             }
             yield return newWaitForSeconds.Cache(0.1f);
-            damage += _SkillDamageStep;
+            accDamage += _AccDamageStep;
         }
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
     }

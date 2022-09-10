@@ -398,15 +398,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -563,7 +563,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
+    attackType: 3
     damage: 10
     damagesPerUp:
     - 1
@@ -599,6 +599,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _AttackSpeed: 0.5
   _AttackRange: 2
+  _SkillRange: 2
+  _AccDamageStep: 0.2
+  _DotDamageRate: 0.1
   IntroSprites: []
   ProjSprites:
   - {fileID: 21300000, guid: 7f2d9c1ae35e4824dbb683384c1c3d39, type: 3}
@@ -618,8 +621,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 811490d829b28934c85fa62987c8430a, type: 3}
   - {fileID: 21300000, guid: 297f52c31f7c0454599b4039e1ce5fb9, type: 3}
   - {fileID: 21300000, guid: f16cd926cd789c34f8b37157bbd917df, type: 3}
-  _SkillRange: 2
-  _SkillDamageStep: 0.2
 --- !u!114 &-1995408449328477273
 MonoBehaviour:
   m_ObjectHideFlags: 0

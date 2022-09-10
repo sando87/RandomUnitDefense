@@ -159,7 +159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BuffID: 637982470322775780
-  Duration: 1
   BuffProp: {fileID: 6565664231628118216}
 --- !u!114 &6565664231628118216
 MonoBehaviour:
@@ -185,16 +184,16 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
     value: 50
+  SplshRange:
+    value: 0
   Percentage:
     value: 0
 --- !u!1 &4422498364822478731
@@ -472,15 +471,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -640,13 +639,13 @@ MonoBehaviour:
     armor: 0
     moveSpeed: 1
     attackType: 1
-    damage: 10
+    damage: 5
     damagesPerUp:
     - 1
-    - 2
     - 3
-    - 4
     - 5
+    - 7
+    - 9
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0

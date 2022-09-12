@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Spec:
-    totalHP: 15
+    totalHP: 700
     armor: 0
     moveSpeed: 1
     attackType: 1

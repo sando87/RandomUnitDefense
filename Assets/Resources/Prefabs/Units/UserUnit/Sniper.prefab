@@ -986,7 +986,7 @@ MonoBehaviour:
     armor: 0
     moveSpeed: 1
     attackType: 2
-    damage: 15
+    damage: 30
     damagesPerUp:
     - 1
     - 3
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _AttackSpeed: 0.5
-  _AttackRange: 3
+  _AttackRange: 5
   _CriticalPercent: 0.2
   _CriticalDamageMultiplier: 3
   OutroSprites:

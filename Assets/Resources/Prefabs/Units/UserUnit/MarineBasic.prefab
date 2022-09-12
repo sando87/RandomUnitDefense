@@ -862,13 +862,13 @@ MonoBehaviour:
     armor: 0
     moveSpeed: 1
     attackType: 2
-    damage: 10
+    damage: 15
     damagesPerUp:
+    - 0.5
     - 1
+    - 1.5
     - 2
-    - 3
-    - 4
-    - 5
+    - 2.5
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0

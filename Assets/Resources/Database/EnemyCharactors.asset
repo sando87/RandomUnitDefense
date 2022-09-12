@@ -13,16 +13,6 @@ MonoBehaviour:
   m_Name: EnemyCharactors
   m_EditorClassIdentifier: 
   DataList:
-  - ID: 637953951469432276
-    name: fenrir
-    image: {fileID: 21300000, guid: 54cffca366e46b84fbde12c0c6123ab8, type: 3}
-    prefab: {fileID: 6377826679273638812, guid: 579e8e0269415c34f88d1bd49d06f19a,
-      type: 3}
-  - ID: 637953951469483940
-    name: vilerunner
-    image: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: 6f12893c35e456949ac6b3ac9d026ced,
-      type: 3}
   - ID: 637953952532181738
     name: AlphaFenrir
     image: {fileID: 21300000, guid: 351c629cc09e08f41aad3e71f71063cc, type: 3}
@@ -63,6 +53,11 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 64831387258b4b04e9246c4815dc3f7a, type: 3}
     prefab: {fileID: 3393111536044945593, guid: e8a3bdc661f86704a8de6efba3272d65,
       type: 3}
+  - ID: 637953951469432276
+    name: fenrir
+    image: {fileID: 21300000, guid: 54cffca366e46b84fbde12c0c6123ab8, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 579e8e0269415c34f88d1bd49d06f19a,
+      type: 3}
   - ID: 637954152082564952
     name: floater1
     image: {fileID: 21300000, guid: 262b0f524d5c5e64080ad4e86ddcf4eb, type: 3}
@@ -97,4 +92,9 @@ MonoBehaviour:
     name: spitterbug
     image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
+      type: 3}
+  - ID: 637953951469483940
+    name: vilerunner
+    image: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 6f12893c35e456949ac6b3ac9d026ced,
       type: 3}

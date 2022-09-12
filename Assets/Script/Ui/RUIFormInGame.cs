@@ -16,7 +16,7 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Text WaveNumber = null;
     [SerializeField] private Text RemainTimer = null;
     [SerializeField] private Text LineMobCount = null;
-    [SerializeField] private Image RemainGauge = null;
+    [SerializeField] private RectTransform RemainGauge = null;
     [SerializeField] private Image UpgradePanel = null;
     [SerializeField] private Text WeaponA = null;
     [SerializeField] private Text WeaponB = null;
@@ -47,12 +47,17 @@ public class RUIFormInGame : RUiForm
 
     [SerializeField] private RectTransform SelectArea = null;
 
+    [SerializeField] private Text KillPointCostForNewUnit = null;
+    [SerializeField] private Text KillPointCostForMineralUp = null;
+
     private InGameSystem GameMgr = null;
 
     public override void Init()
     {
         base.Init();
         GameMgr = InGameSystem.Instance;
+        KillPointCostForNewUnit.text = InGameSystem.KillPointForNewUnit.ToString();
+        KillPointCostForMineralUp.text = InGameSystem.KillPointForMineralUp.ToString();
     }
 
     void Start()
@@ -102,9 +107,9 @@ public class RUIFormInGame : RUiForm
         KillPoint.text = GameMgr.KillPoint.ToString();
         Mineral.text = GameMgr.Mineral.ToString();
         WaveNumber.text = "Wave " + GameMgr.WaveNumber.ToString();
-        RemainTimer.text = TimeSpan.FromSeconds(GameMgr.RemainSecond).ToString(@"mm\:ss");
+        RemainTimer.text = (GameMgr.WaveEndTick < DateTime.Now.Ticks) ? "" : TimeSpan.FromTicks(DateTime.Now.Ticks - GameMgr.WaveEndTick).ToString(@"mm\:ss");
         LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + InGameSystem.LineMobLimit;
-        RemainGauge.fillAmount = (float)GameMgr.LineMobCount / InGameSystem.LineMobLimit;
+        RemainGauge.sizeDelta = new Vector2(350.0f * (float)GameMgr.LineMobCount / InGameSystem.LineMobLimit, 50);
 
         WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.Melee).ToString();
         WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.Gun).ToString();
@@ -167,12 +172,12 @@ public class RUIFormInGame : RUiForm
     private void OnClickCreateUnit()
     {
         if (!GameMgr.TryCreateRandomUnit())
-            RUiMessageBox.PopUp("Need 5 kill point.", null);
+            RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForNewUnit + " kill point.", null);
     }
     private void OnClickRaiseMineral()
     {
         if (!GameMgr.RaiseMineralStep())
-            RUiMessageBox.PopUp("Need 5 kill point.", null);
+            RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForMineralUp + " kill point.", null);
     }
     private void OnClickToggleUpgradePanel()
     {

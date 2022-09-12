@@ -68,15 +68,15 @@ MonoBehaviour:
     value: 0
   AttackRange:
     value: 0
-  Cooltime:
+  SkillSpeed:
     value: 0
   SkillDamage:
     value: 0
   SkillRange:
     value: 0
-  SplshRange:
-    value: 0
   SkillDuration:
+    value: 0
+  SplshRange:
     value: 0
   Percentage:
     value: 0
@@ -339,13 +339,13 @@ MonoBehaviour:
     armor: 0
     moveSpeed: 1
     attackType: 2
-    damage: 4
+    damage: 5
     damagesPerUp:
+    - 0.5
     - 1
+    - 1.5
     - 2
-    - 3
-    - 4
-    - 5
+    - 2.5
 --- !u!114 &3923854091734861397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,8 +375,7 @@ MonoBehaviour:
   _AttackSpeed: 2
   _AttackRange: 3
   _SkillCastRate: 0.2
-  _SlowDuration: 3
-  _MoveSlowness: 20
+  _SkillDamageRate: 2
   BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
     type: 3}
   MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,

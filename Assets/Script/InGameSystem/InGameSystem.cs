@@ -12,12 +12,13 @@ public enum UpgradeType
 public class InGameSystem : SingletonMono<InGameSystem>
 {
     public const float MineralIntervalSec = 3.0f;
-    public const float WaveIntervalSec = 10.0f;
-    public const int MobCountPerWave = 5;
+    public const float WaveIntervalSec = 3.0f;
+    public const int MobCountPerWave = 30;
     public const float LineMobBurstIntervalSec = 1.5f;
-    public const int KillPointCost = 5;
+    public const int KillPointForNewUnit = 10;
+    public const int KillPointForMineralUp = 5;
     public const int LineMobLimit = 80;
-    public const int StartKillPoint = 200;
+    public const int StartKillPoint = 20;
     public const int MergeCountLevelup = 3;
     public const int MergeCountReunit = 2;
 
@@ -28,7 +29,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int MineralStep { get; private set; }
     public int KillPoint { get; private set; }
     public int LineMobCount { get; private set; }
-    public float RemainSecond { get; private set; }
+    public long WaveEndTick { get; private set; }
     public bool UserInputLocked { get; set; }
     public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits[0] : null; } }
 
@@ -76,7 +77,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         MineralStep = 1;
         KillPoint = 0;
         LineMobCount = 0;
-        RemainSecond = 0;
+        WaveEndTick = 0;
         UserInputLocked = false;
 
         UpgradePower.Clear();
@@ -96,10 +97,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public bool TryCreateRandomUnit()
     {
-        if (KillPoint < KillPointCost)
+        if (KillPoint < KillPointForNewUnit)
             return false;
 
-        KillPoint -= KillPointCost;
+        KillPoint -= KillPointForNewUnit;
         CreateRandomUnit();
         return true;
     }
@@ -122,10 +123,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public bool RaiseMineralStep()
     {
-        if (KillPoint < KillPointCost)
+        if (KillPoint < KillPointForMineralUp)
             return false;
 
-        KillPoint -= KillPointCost;
+        KillPoint -= KillPointForMineralUp;
         MineralStep++;
         return true;
     }
@@ -169,26 +170,26 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     private IEnumerator LineMobGenerator()
     {
-        RemainSecond = WaveIntervalSec;
+        WaveEndTick = 0;
         yield return newWaitForSeconds.Cache(WaveIntervalSec);
         WaveNumber = 1;
         while(true)
         {
             //웨이브시작 라인몹 출몰하는 루프 진입
             int mobBurstCount = 0;
-            RemainSecond = MobCountPerWave * LineMobBurstIntervalSec;
+            WaveEndTick = System.DateTime.Now.Ticks + System.TimeSpan.FromSeconds(MobCountPerWave * LineMobBurstIntervalSec).Ticks;
             while (mobBurstCount < MobCountPerWave)
             {
                 CreateLineMob();
                 mobBurstCount++;
                 yield return newWaitForSeconds.Cache(LineMobBurstIntervalSec);
 
-                if (LineMobCount > LineMobLimit)
+                if (LineMobCount >= LineMobLimit)
                     FinishGame(false);
             }
 
             //한 웨이브 끝나고 대기시간 후 다음 웨이브 시작
-            RemainSecond = WaveIntervalSec;
+            WaveEndTick = 0;
             yield return newWaitForSeconds.Cache(WaveIntervalSec);
             WaveNumber++;
 
@@ -208,8 +209,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
             yield return newWaitForSeconds.Cache(MineralIntervalSec);
             Mineral += MineralStep;
             inGameUI.ShowMineralRasingEffect(MineralStep);
-            RemainSecond -= MineralIntervalSec;
-            RemainSecond = Mathf.Max(0, RemainSecond);
         }
     }
     private bool CreateLineMob()

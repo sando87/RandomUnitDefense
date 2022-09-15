@@ -341,11 +341,11 @@ MonoBehaviour:
     attackType: 2
     damage: 5
     damagesPerUp:
-    - 0.5
     - 1
-    - 1.5
-    - 2
-    - 2.5
+    - 4
+    - 8
+    - 12
+    - 16
 --- !u!114 &3923854091734861397
 MonoBehaviour:
   m_ObjectHideFlags: 0

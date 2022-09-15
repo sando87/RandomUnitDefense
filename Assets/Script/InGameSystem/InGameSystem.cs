@@ -15,11 +15,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const float WaveIntervalSec = 3.0f;
     public const int MobCountPerWave = 30;
     public const float LineMobBurstIntervalSec = 1.5f;
-    public const int KillPointForNewUnit = 10;
+    public const int KillPointForNewUnit = 5;
     public const int KillPointForMineralUp = 5;
     public const int LineMobLimit = 80;
     public const int StartKillPoint = 20;
-    public const int MergeCountLevelup = 3;
+    public const int MergeCountLevelup = 2;
+    public const int KillPointForLevelup = 5;
     public const int MergeCountReunit = 2;
 
     [SerializeField] private GameObject StagePrefab = null;
@@ -216,7 +217,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
         LineMobCount++;
         long id = LineMobIDs[WaveNumber - 1];
         EnemyCharactor mobData = EnemyCharactors.Inst.GetDataOfId(id);
-        Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
+        GameObject enemy = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
+        enemy.GetComponentInChildren<UnitEnemy>().WaveIndex = WaveNumber - 1;
         return true;
     }
 
@@ -232,18 +234,22 @@ public class InGameSystem : SingletonMono<InGameSystem>
         {
             foreach (BaseObject[] objs in mergeUnitSet)
             {
-                LOG.warn(objs.Length != MergeCountLevelup);
-                MergeForLevelup(objs[0], objs[1], objs[2]);
+                if(KillPoint >= KillPointForLevelup)
+                {
+                    KillPoint -= KillPointForLevelup;
+                    LOG.warn(objs.Length != MergeCountLevelup);
+                    MergeForLevelup(objs[0], objs[1]);
+                }
             }
         }
 
         DeselectAll();
     }
-    private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
+    private void MergeForLevelup(BaseObject unitA, BaseObject unitB)
     {
         unitA.MotionManager.SwitchMotion<MotionDisappear>();
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
-        unitC.MotionManager.SwitchMotion<MotionDisappear>();
+        //unitC.MotionManager.SwitchMotion<MotionDisappear>();
         BaseObject newUnit = CreateRandomUnit();
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
     }

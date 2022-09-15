@@ -567,10 +567,10 @@ MonoBehaviour:
     damage: 10
     damagesPerUp:
     - 1
-    - 2
-    - 3
-    - 4
     - 5
+    - 10
+    - 15
+    - 20
 --- !u!114 &9000639117217138068
 MonoBehaviour:
   m_ObjectHideFlags: 0

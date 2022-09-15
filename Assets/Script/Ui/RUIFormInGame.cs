@@ -143,7 +143,7 @@ public class RUIFormInGame : RUiForm
     private void UpdateMergeButtonState()
     {
         bool mergableForLevelup = GameMgr.DetectMergeableUnits(InGameSystem.MergeCountLevelup) != null;
-        BtnLevelUp.gameObject.SetActive(mergableForLevelup);
+        BtnLevelUp.gameObject.SetActive(mergableForLevelup && GameMgr.KillPoint >= InGameSystem.KillPointForLevelup);
         bool mergableForReunit = GameMgr.DetectMergeableUnits(InGameSystem.MergeCountReunit) != null;
         BtnReUnit.gameObject.SetActive(mergableForReunit);
         BtnRefund.gameObject.SetActive(true);

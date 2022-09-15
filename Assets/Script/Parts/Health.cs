@@ -21,7 +21,8 @@ public class Health : MonoBehaviour
     void Start()
     {
         mBaseObject = this.GetBaseObject();
-        CurrentHealth = MaxHP;
+        if(CurrentHealth == 0)
+            CurrentHealth = MaxHP;
     }
 
     public void GetDamaged(float damage, BaseObject attacker)
@@ -36,5 +37,10 @@ public class Health : MonoBehaviour
         CurrentHealth = Mathf.Max(CurrentHealth, 0);
 
         EventDamaged?.Invoke(damage, attacker);
+    }
+
+    public void InitHP(float hp)
+    {
+        CurrentHealth = hp;
     }
 }

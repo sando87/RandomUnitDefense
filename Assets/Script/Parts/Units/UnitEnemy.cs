@@ -7,6 +7,8 @@ public class UnitEnemy : UnitBase
 {
     [SerializeField] Sprite[] HitEffect = null;
 
+    public int WaveIndex { get; set; } = 0;
+
     private Vector3[] mWayPoints = null;
     private int mWayPointIndex = 0;
     private MotionMove mMotionMove = null;
@@ -19,6 +21,7 @@ public class UnitEnemy : UnitBase
         if(HitEffect != null)
             mBaseObj.Health.EventDamaged += OnDamaged;
 
+        mBaseObj.Health.InitHP(15 + (WaveIndex * WaveIndex * 30));
         StartCoroutine(MoveAround());
     }
 

@@ -37,12 +37,13 @@ public class UnitPowerGirl : UnitPlayer
         Vector3 firePosition = mBaseObj.FirePosition.transform.parent.Find("@_" + idx).position;
         BaseObject target = NormalAttack.Target;
         SimpleMissile missile = Instantiate(SimpleMissile, firePosition, Quaternion.identity);
-        missile.EventHit = OnHitMissile;
         missile.Launch(target);
-    }
-    void OnHitMissile(BaseObject target)
-    {
-        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        float damage = mBaseObj.SpecProp.Damage;
+        missile.EventHit = (t) => 
+        {
+            if(target != null)
+                target.Health.GetDamaged(damage, mBaseObj);
+        };
     }
 
     private void OnSkill(int idx)

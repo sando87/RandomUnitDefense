@@ -49,16 +49,15 @@ public class UnitMarineHero : UnitPlayer
     {
         MagicGun missile = Instantiate(MagicGunMissile, mBaseObj.FirePosition.transform.position, Quaternion.identity);
         missile.Target = target.transform;
-        missile.EventHit = OnHitMissile;
         missile.Launch();
-    }
-    private void OnHitMissile(Vector3 dest)
-    {
-        Collider[] cols = InGameUtils.DetectAround(dest, 0.1f, 1 << LayerID.Enemies);
-        foreach(Collider col in cols)
+        float damage = mBaseObj.SpecProp.Damage * _SkillDamageRate;
+        missile.EventHit = (dest) =>
         {
-            col.GetBaseObject().Health.GetDamaged(mBaseObj.SpecProp.Damage * _SkillDamageRate, mBaseObj);
-        }
+            Collider[] cols = InGameUtils.DetectAround(dest, 0.1f, 1 << LayerID.Enemies);
+            foreach (Collider col in cols)
+            {
+                col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
+            }
+        };
     }
-
 }

@@ -52,11 +52,12 @@ public class UnitGunner : UnitPlayer
 
         SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
         proj.transform.right = dir.normalized;
+        float damage = mBaseObj.SpecProp.Damage;
         proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
-            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+            target.Health.GetDamaged(damage, mBaseObj);
 
             Destroy(proj.gameObject);
         });

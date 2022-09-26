@@ -41,8 +41,8 @@ public class UnitPowerGirl : UnitPlayer
         float damage = mBaseObj.SpecProp.Damage;
         missile.EventHit = (t) => 
         {
-            if(target != null)
-                target.Health.GetDamaged(damage, mBaseObj);
+            if(t != null)
+                t.Health.GetDamaged(damage, mBaseObj);
         };
     }
 

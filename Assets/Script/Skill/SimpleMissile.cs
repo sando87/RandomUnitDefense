@@ -48,7 +48,9 @@ public class SimpleMissile : MonoBehaviour
         if (Target != null)
             EventHit?.Invoke(Target);
 
-        Explosion.SetActive(true);
+        if(Explosion != null)
+            Explosion.SetActive(true);
+            
         GetComponent<SpriteRenderer>().enabled = false;
         Destroy(gameObject, 1.0f);
     }

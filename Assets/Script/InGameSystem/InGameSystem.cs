@@ -19,8 +19,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const int KillPointForMineralUp = 5;
     public const int LineMobLimit = 80;
     public const int StartKillPoint = 20;
-    public const int MergeCountLevelup = 2;
-    public const int KillPointForLevelup = 5;
+    public const int MergeCountLevelup = 3;
+    public const int KillPointForLevelup = 0;
     public const int MergeCountReunit = 2;
 
     [SerializeField] private GameObject StagePrefab = null;
@@ -238,19 +238,19 @@ public class InGameSystem : SingletonMono<InGameSystem>
                 {
                     KillPoint -= KillPointForLevelup;
                     LOG.warn(objs.Length != MergeCountLevelup);
-                    MergeForLevelup(objs[0], objs[1]);
+                    MergeForLevelup(objs[0], objs[1], objs[2]);
                 }
             }
         }
 
         DeselectAll();
     }
-    private void MergeForLevelup(BaseObject unitA, BaseObject unitB)
+    private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
     {
         unitA.MotionManager.SwitchMotion<MotionDisappear>();
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
-        //unitC.MotionManager.SwitchMotion<MotionDisappear>();
-        BaseObject newUnit = CreateRandomUnit();
+        unitC.MotionManager.SwitchMotion<MotionDisappear>();
+        BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
     }
     public void OnMergeForReunit()

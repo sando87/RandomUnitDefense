@@ -42,12 +42,12 @@ public class UnitShellstorm : UnitPlayer
         MissileTracing missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
         missile.transform.right = new Vector3(mBaseObj.transform.right.x, 0.5f, 0);
         missile.Target = target;
-        missile.EventHit = OnHitMissile;
-    }
-    void OnHitMissile(BaseObject target)
-    {
-        if(target != null)
-            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        float damage = mBaseObj.SpecProp.Damage;
+        missile.EventHit = (t) => 
+        {
+            if (t != null)
+                t.Health.GetDamaged(damage, mBaseObj);
+        };
     }
 
     private void OnSkill(int idx)
@@ -55,23 +55,23 @@ public class UnitShellstorm : UnitPlayer
         Vector3 firePosition = mBaseObj.FirePosition.transform.position;
         BaseObject target = _SkillAttack.Target;
         ThrowingOver barrel = Instantiate(BarrelPrefab, firePosition, Quaternion.identity);
-        barrel.EventHit = OnHitGasBarrel;
         barrel.Launch(target.transform.position);
-    }
-
-    void OnHitGasBarrel(Vector3 dest)
-    {
-        // GameObject decal = Instantiate(GasBarrelDecalPrefab, dest, Quaternion.identity);
-        // this.ExDelayedCoroutine(3, () => Destroy(decal));
-        
-        Collider[] cols = Physics.OverlapSphere(dest, SplshRange, 1 << LayerID.Enemies);
-        foreach (Collider col in cols)
+        float damage = mBaseObj.SpecProp.Damage * _SkillDamageRate;
+        float range = SplshRange;
+        barrel.EventHit = (dest) =>
         {
-            Health hp = col.GetComponentInBaseObject<Health>();
-            if (hp != null)
+            // GameObject decal = Instantiate(GasBarrelDecalPrefab, dest, Quaternion.identity);
+            // this.ExDelayedCoroutine(3, () => Destroy(decal));
+
+            Collider[] cols = Physics.OverlapSphere(dest, range, 1 << LayerID.Enemies);
+            foreach (Collider col in cols)
             {
-                hp.GetDamaged(mBaseObj.SpecProp.Damage * _SkillDamageRate, mBaseObj);
+                Health hp = col.GetComponentInBaseObject<Health>();
+                if (hp != null)
+                {
+                    hp.GetDamaged(damage, mBaseObj);
+                }
             }
-        }
+        };
     }
 }

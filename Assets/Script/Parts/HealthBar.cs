@@ -8,6 +8,12 @@ public enum HealthBarSize { Small, Medium, Big }
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] GameObject HealthInnerBar;
+    [SerializeField] Transform HealthBarLeftPivot;
+    [SerializeField] GameObject SplitBarSmallPrefab;
+    [SerializeField] GameObject SplitBarBigPrefab;
+    [SerializeField] float HealthStepForSplit = 20.0f;
+    [SerializeField] int SmallBarCountForBig = 10;
+    [SerializeField] float HpTotalWorldWidth = 1;
 
     private Health mHP = null;
 
@@ -15,6 +21,8 @@ public class HealthBar : MonoBehaviour
     {
         mHP = this.GetBaseObject().Health;
         mHP.EventDamaged += OnDamaged;
+
+        InitSplitBars();
         
         transform.forward = Vector3.forward;
         
@@ -50,5 +58,33 @@ public class HealthBar : MonoBehaviour
     public void HideBar()
     {
         gameObject.SetActive(false);
+    }
+
+    void InitSplitBars()
+    {
+        foreach(Transform child in HealthBarLeftPivot)
+            Destroy(child.gameObject);
+
+        int count = 0;
+        float curHP = 0;
+        while(curHP <= mHP.MaxHP)
+        {
+            count++;
+            curHP += HealthStepForSplit;
+            float rate = curHP / mHP.MaxHP;
+            float localPosX = rate * HpTotalWorldWidth;
+
+            if(count % SmallBarCountForBig == 0)
+            {
+                GameObject splitBigBar = Instantiate(SplitBarBigPrefab, HealthBarLeftPivot);
+                splitBigBar.transform.localPosition = new Vector3(localPosX, 0, 0);
+            }
+            else
+            {
+                GameObject splitSmallBar = Instantiate(SplitBarSmallPrefab, HealthBarLeftPivot);
+                splitSmallBar.transform.localPosition = new Vector3(localPosX, 0, 0);
+            }
+        }
+
     }
 }

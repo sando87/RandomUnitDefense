@@ -49,8 +49,9 @@ public class RUIFormInGame : RUiForm
 
     [SerializeField] private Text KillPointCostForNewUnit = null;
     [SerializeField] private Text KillPointCostForMineralUp = null;
-
+    
     private InGameSystem GameMgr = null;
+    public Transform KillPointSet { get { return KillPoint.transform.parent; } }
 
     public override void Init()
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,6 +25,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const int MergeCountReunit = 2;
 
     [SerializeField] private GameObject StagePrefab = null;
+    [SerializeField] private GameObject DeathPointPrefab = null;
 
     public int WaveNumber { get; private set; }
     public int Mineral { get; private set; }
@@ -39,6 +41,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private List<long> LineMobIDs = new List<long>();
     private List<BaseObject> SelectedUnits = new List<BaseObject>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
+    
+    private RUIFormInGame mInGameUI = null;
 
     protected override void Awake()
     {
@@ -47,6 +51,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     void Start()
     {
+        mInGameUI = FindObjectOfType<RUIFormInGame>();
         InGameInput.Instance.EventSelectUnits += OnSelectUnits;
         InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
         InGameInput.Instance.EventMove += OnMoveUnits;
@@ -141,10 +146,23 @@ public class InGameSystem : SingletonMono<InGameSystem>
         UpgradePower[type]++;
         return true;
     }
-    public void DeathLineMob()
+    public void DeathLineMob(BaseObject deathMob)
     {
-        KillPoint++;
         LineMobCount--;
+
+        Vector3 pos = deathMob.transform.position;
+        GameObject deathPoint = Instantiate(DeathPointPrefab, pos, Quaternion.identity, transform);
+        Vector3 jumpDest = MyUtils.Random(pos, 1);
+        deathPoint.transform.DOJump(jumpDest, 1, 1, 0.5f);
+
+        Transform kps = mInGameUI.KillPointSet;
+        deathPoint.transform.DOMove(kps.transform.position, 1).SetEase(Ease.InQuad).SetDelay(2).OnComplete(() =>
+        {
+            KillPoint++;
+            Destroy(deathPoint);
+            mInGameUI.KillPointSet.DOKill();
+            mInGameUI.KillPointSet.DOScale(new Vector3(1.2f, 1.2f, 1), 0.2f).From(1).SetEase(Ease.OutQuad).SetLoops(2, LoopType.Yoyo);
+        });
     }
     public void AddMinerals(int mineral)
     {
@@ -204,12 +222,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private IEnumerator MineralMining()
     {
         yield return null;
-        RUIFormInGame inGameUI = FindObjectOfType<RUIFormInGame>();
         while(true)
         {
             yield return newWaitForSeconds.Cache(MineralIntervalSec);
             Mineral += MineralStep;
-            inGameUI.ShowMineralRasingEffect(MineralStep);
+            mInGameUI.ShowMineralRasingEffect(MineralStep);
         }
     }
     private bool CreateLineMob()

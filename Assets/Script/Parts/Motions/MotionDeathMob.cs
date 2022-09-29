@@ -30,7 +30,7 @@ public class MotionDeathMob : MotionBase
     {
         base.OnEnter();
 
-        InGameSystem.Instance.DeathLineMob();
+        InGameSystem.Instance.DeathLineMob(mBaseObject);
         mBaseObject.Body.Lock = true;
         mBaseObject.MotionManager.Lock = true;
         this.ExDelayedCoroutine(2.0f, () =>

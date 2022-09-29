@@ -33,11 +33,11 @@ public class MotionDeathMob : MotionBase
         InGameSystem.Instance.DeathLineMob(mBaseObject);
         mBaseObject.Body.Lock = true;
         mBaseObject.MotionManager.Lock = true;
-        this.ExDelayedCoroutine(2.0f, () =>
+        this.ExDelayedCoroutine(5.0f, () =>
         {
             mBaseObject.Renderer.FadeOut(1);
         });
-        this.ExDelayedCoroutine(3.1f, () =>
+        this.ExDelayedCoroutine(6.1f, () =>
         {
             Destroy(mBaseObject.gameObject);
         });

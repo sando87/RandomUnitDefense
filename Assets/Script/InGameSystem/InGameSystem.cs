@@ -218,6 +218,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         long id = LineMobIDs[WaveNumber - 1];
         EnemyCharactor mobData = EnemyCharactors.Inst.GetDataOfId(id);
         GameObject enemy = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
+        enemy.GetComponentInChildren<UnitEnemy>().ResourceID = id;
         enemy.GetComponentInChildren<UnitEnemy>().WaveIndex = WaveNumber - 1;
         return true;
     }
@@ -252,6 +253,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         unitC.MotionManager.SwitchMotion<MotionDisappear>();
         BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
+        newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
     }
     public void OnMergeForReunit()
     {
@@ -289,7 +291,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
         SelectedUnits.AddRange(units);
         foreach(BaseObject unit in units)
         {
-            unit.GetComponentInChildren<UserInput>().OnSelect();
+            UserInput unitUI = unit.GetComponentInChildren<UserInput>();
+            if(unitUI != null)
+                unitUI.OnSelect();
         }
     }
     private void OnDeselectUnits()
@@ -300,7 +304,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         foreach (BaseObject unit in SelectedUnits)
         {
-            unit.GetComponentInChildren<UserInput>().OnDeSelect();
+            UserInput unitUI = unit.GetComponentInChildren<UserInput>();
+            if(unitUI != null)
+                unitUI.OnDeSelect();
         }
         SelectedUnits.Clear();
     }
@@ -321,12 +327,16 @@ public class InGameSystem : SingletonMono<InGameSystem>
             foreach (BaseObject unit in SelectedUnits)
             {
                 Vector3 destination = MyUtils.Random(dest, 0.5f);
-                unit.GetComponentInChildren<UserInput>().OnMove(destination);
+                UserInput unitUI = unit.GetComponentInChildren<UserInput>();
+                if(unitUI != null)
+                    unitUI.OnMove(destination);
             }
         }
         else
         {
-            obj.GetComponentInChildren<UserInput>().OnMove(dest);
+            UserInput unitUI = obj.GetComponentInChildren<UserInput>();
+            if(unitUI != null)
+                unitUI.OnMove(dest);
         }
     }
 

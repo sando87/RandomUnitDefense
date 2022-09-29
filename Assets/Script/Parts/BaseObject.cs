@@ -16,6 +16,7 @@ public class BaseObject : MonoBehaviour
     public BuffController BuffCtrl { get { return GetComponentInChildren<BuffController>(); } }
     public UnitBase Unit { get { return GetComponentInChildren<UnitBase>(); } }
     public FirePosition FirePosition { get { return GetComponentInChildren<FirePosition>(); } }
+    public SynergySpec SynSpec { get { return GetComponentInChildren<SynergySpec>(); } }
 
     public int GetLayerMaskAttackable()
     {

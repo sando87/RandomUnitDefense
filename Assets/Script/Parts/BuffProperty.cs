@@ -48,5 +48,39 @@ public class BuffProperty : MonoBehaviour
         SkillDuration -= prop.SkillDuration;
         Percentage -= prop.Percentage;
     }
+    public void MultiplyBuffProp(float rate)
+    {
+        TotalHP *= rate;
+        Armor *= rate;
+        MoveSpeed *= rate;
+        AttackDamage *= rate;
+        AttackSpeed *= rate;
+        AttackRange *= rate;
+        SkillSpeed *= rate;
+        SkillDamage *= rate;
+        SkillRange *= rate;
+        SplshRange *= rate;
+        SkillDuration *= rate;
+        Percentage *= rate;
+    }
+    public string ToPropInfo()
+    {
+        List<string> item = new List<string>();
+        
+        if(TotalHP > 0) item.Add(string.Format(TotalHP + $":{TotalHP}%"));
+        if(Armor > 0) item.Add(string.Format(Armor + $":{Armor}%"));
+        if(MoveSpeed > 0) item.Add(string.Format(MoveSpeed + $":{MoveSpeed}%"));
+        if(AttackDamage > 0) item.Add(string.Format(AttackDamage + $":{AttackDamage}%"));
+        if(AttackSpeed > 0) item.Add(string.Format(AttackSpeed + $":{AttackSpeed}%"));
+        if(AttackRange > 0) item.Add(string.Format(AttackRange + $":{AttackRange}%"));
+        if(SkillSpeed > 0) item.Add(string.Format(SkillSpeed + $":{SkillSpeed}%"));
+        if(SkillDamage > 0) item.Add(string.Format(SkillDamage + $":{SkillDamage}%"));
+        if(SkillRange > 0) item.Add(string.Format(SkillRange + $":{SkillRange}%"));
+        if(SplshRange > 0) item.Add(string.Format(SplshRange + $":{SplshRange}%"));
+        if(SkillDuration > 0) item.Add(string.Format(SkillDuration + $":{SkillDuration}%"));
+        if(Percentage > 0) item.Add(string.Format(Percentage + $":{Percentage}%"));
+
+        return String.Join(",", item);
+    }
 }
 

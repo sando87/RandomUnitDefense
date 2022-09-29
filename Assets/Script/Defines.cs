@@ -104,10 +104,18 @@ public struct Percent //단위 [%]
     private float Factor { get => (1 + (Mathf.Abs(value) * 0.01f)); }  // return 1.0 ~ 2.0 ~
     private float Multiplier { get => value > 0 ? Factor : (1 / Factor); } // 100% => x2, -100% => x0.5
     public void SetZero() { value = 0; }
+    
+    // Percent형을 int형으로 암시적 형변환 가능 예) int damage = new Percent(_damage);
+    public static implicit operator int(Percent info) => info.value;
+
+    // int형을 Percent로 암시적 형변환 가능 예) Percent info = 1;
+    public static implicit operator Percent(int percent) => new Percent(percent);
+
     public static float operator *(float val, Percent per) { return val * per.Multiplier; }
     public static float operator *(int val, Percent per) { return val * per.Multiplier; }
     public static Percent operator +(Percent a, int b) { return new Percent(a.value + b); }
     public static Percent operator -(Percent a, int b) { return new Percent(a.value - b); }
+    public static Percent operator *(Percent a, float b) { return new Percent((int)(a.value * b)); }
     public static Percent operator +(Percent a, Percent b) { return new Percent(a.value + b.value); }
     public static Percent operator -(Percent a, Percent b) { return new Percent(a.value - b.value); }
 }

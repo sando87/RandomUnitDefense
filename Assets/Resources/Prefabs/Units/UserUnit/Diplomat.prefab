@@ -639,6 +639,7 @@ Transform:
   - {fileID: 5874461322470515728}
   - {fileID: 8418433016674692050}
   - {fileID: 9068539968957038945}
+  - {fileID: 2984499435163752190}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -755,6 +756,86 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c72fcf25d19e14fceba7121cae463f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6540901485739902430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2984499435163752190}
+  - component: {fileID: 928672686581210708}
+  - component: {fileID: 3300680863806275939}
+  m_Layer: 10
+  m_Name: SynergySpec
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2984499435163752190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6540901485739902430}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6377826679273638807}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &928672686581210708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6540901485739902430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9869ebaefa1d3da4aaf076b71f091a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3300680863806275939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6540901485739902430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502df12f5b8af45328ec488e1479d896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalHP:
+    value: 0
+  Armor:
+    value: 0
+  MoveSpeed:
+    value: 0
+  AttackDamage:
+    value: 0
+  AttackSpeed:
+    value: 0
+  AttackRange:
+    value: 0
+  SkillSpeed:
+    value: 10
+  SkillDamage:
+    value: 0
+  SkillRange:
+    value: 0
+  SkillDuration:
+    value: 0
+  SplshRange:
+    value: 0
+  Percentage:
+    value: 0
 --- !u!1 &9202556232064597003
 GameObject:
   m_ObjectHideFlags: 0

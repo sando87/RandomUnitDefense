@@ -4775,7 +4775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 2.7100067, y: -0.59}
+  m_AnchoredPosition: {x: 2.7100067, y: -0.59000015}
   m_SizeDelta: {x: -35.41693, y: -20.158567}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &609039624
@@ -6242,7 +6242,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 3.64, y: 0}
+  m_AnchoredPosition: {x: 3.6399994, y: 0}
   m_SizeDelta: {x: -7.2765503, y: -11.319065}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &793259590
@@ -7171,6 +7171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StagePrefab: {fileID: 4151517836278080745, guid: ab689b0e59e7c504281255680cd643fa,
+    type: 3}
+  DeathPointPrefab: {fileID: 2179154065464930143, guid: 703b352d9358f0a4e9b2bbca19fc6f4d,
     type: 3}
 --- !u!4 &901268228
 Transform:

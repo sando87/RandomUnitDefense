@@ -65,12 +65,10 @@ public class HealthBar : MonoBehaviour
         foreach(Transform child in HealthBarLeftPivot)
             Destroy(child.gameObject);
 
-        int count = 0;
-        float curHP = 0;
-        while(curHP <= mHP.MaxHP)
+        int count = 1;
+        float curHP = HealthStepForSplit;
+        while(curHP < mHP.MaxHP)
         {
-            count++;
-            curHP += HealthStepForSplit;
             float rate = curHP / mHP.MaxHP;
             float localPosX = rate * HpTotalWorldWidth;
 
@@ -84,6 +82,9 @@ public class HealthBar : MonoBehaviour
                 GameObject splitSmallBar = Instantiate(SplitBarSmallPrefab, HealthBarLeftPivot);
                 splitSmallBar.transform.localPosition = new Vector3(localPosX, 0, 0);
             }
+            
+            count++;
+            curHP += HealthStepForSplit;
         }
 
     }

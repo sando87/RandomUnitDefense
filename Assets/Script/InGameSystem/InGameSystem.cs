@@ -51,7 +51,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     void Start()
     {
-        mInGameUI = FindObjectOfType<RUIFormInGame>();
         InGameInput.Instance.EventSelectUnits += OnSelectUnits;
         InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
         InGameInput.Instance.EventMove += OnMoveUnits;
@@ -222,6 +221,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private IEnumerator MineralMining()
     {
         yield return null;
+        
+        mInGameUI = FindObjectOfType<RUIFormInGame>();
+        
         while(true)
         {
             yield return newWaitForSeconds.Cache(MineralIntervalSec);

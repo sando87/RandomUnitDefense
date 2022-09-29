@@ -134,11 +134,27 @@ public class RUIFormInGame : RUiForm
             return;
 
         BaseObject selectedUnit = GameMgr.SelectedUnit;
-        string damage = selectedUnit.SpecProp.Damage.ToString();
-        DamageText.text = damage + " (" + selectedUnit.SpecProp.DamageInfo + ")";
-        UpgradeText.text = selectedUnit.SpecProp.DamageType.ToString();
-        DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
-        UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
+        if(selectedUnit.gameObject.layer == LayerID.Player)
+        {
+            string damage = selectedUnit.SpecProp.Damage.ToString();
+            DamageText.text = damage + " (" + selectedUnit.SpecProp.DamageInfo + ")";
+            UpgradeText.text = selectedUnit.SpecProp.DamageType.ToString();
+            DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
+            DescriptionText.text += "\n";
+            DescriptionText.text += selectedUnit.BuffProp.ToPropInfo();
+            UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
+        }
+        else if(selectedUnit.gameObject.layer == LayerID.Enemies)
+        {
+            float curHP = selectedUnit.Health.CurrentHealth;
+            float maxHP = selectedUnit.Health.MaxHP;
+            DamageText.text = curHP + " / " + maxHP;
+            UpgradeText.text = selectedUnit.SpecProp.Armor.ToString();
+            // DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
+            // DescriptionText.text += "\n";
+            // DescriptionText.text += selectedUnit.BuffProp.ToPropInfo();
+            UnitPhoto.sprite = EnemyCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
+        }
     }
     private void UpdateMergeButtonState()
     {

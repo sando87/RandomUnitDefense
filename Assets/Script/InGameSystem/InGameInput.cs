@@ -55,7 +55,7 @@ public class InGameInput : SingletonMono<InGameInput>
         if(MyUtils.RaycastScreenToWorld(
             mWorldCam, 
             InputWrapper.Instance.MousePosition(), 
-            1 << LayerID.Player | 1 << LayerID.ThemeBackground, 
+            1 << LayerID.Player | 1 << LayerID.Enemies | 1 << LayerID.ThemeBackground, 
             out RaycastHit hit))
         {
             if(hit.collider.gameObject.layer == LayerID.Player)
@@ -66,6 +66,13 @@ public class InGameInput : SingletonMono<InGameInput>
                 StopAllCoroutines();
                 StartCoroutine(CoDragging());
                 StartCoroutine(CheckLongPress());
+            }
+            else if(hit.collider.gameObject.layer == LayerID.Enemies)
+            {
+                mDownObject = hit.collider.GetBaseObject();
+                mWorldDownPosition = hit.point;
+
+                StopAllCoroutines();
             }
             else
             {
@@ -104,7 +111,7 @@ public class InGameInput : SingletonMono<InGameInput>
         }
         else if(mDownObject != null)
         {
-            if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player, out RaycastHit hit))
+            if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player | 1 << LayerID.Enemies, out RaycastHit hit))
             {
                 BaseObject upObject = hit.collider.GetBaseObject();
                 if (upObject == mDownObject)

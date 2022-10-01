@@ -72,6 +72,7 @@ public class HealthBar : MonoBehaviour
             float rate = curHP / mHP.MaxHP;
             float localPosX = rate * HpTotalWorldWidth;
 
+
             if(count % SmallBarCountForBig == 0)
             {
                 GameObject splitBigBar = Instantiate(SplitBarBigPrefab, HealthBarLeftPivot);

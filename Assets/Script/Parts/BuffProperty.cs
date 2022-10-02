@@ -67,20 +67,35 @@ public class BuffProperty : MonoBehaviour
     {
         List<string> item = new List<string>();
         
-        if(TotalHP > 0) item.Add(string.Format(TotalHP + $":{TotalHP}%"));
-        if(Armor > 0) item.Add(string.Format(Armor + $":{Armor}%"));
-        if(MoveSpeed > 0) item.Add(string.Format(MoveSpeed + $":{MoveSpeed}%"));
-        if(AttackDamage > 0) item.Add(string.Format(AttackDamage + $":{AttackDamage}%"));
-        if(AttackSpeed > 0) item.Add(string.Format(AttackSpeed + $":{AttackSpeed}%"));
-        if(AttackRange > 0) item.Add(string.Format(AttackRange + $":{AttackRange}%"));
-        if(SkillSpeed > 0) item.Add(string.Format(SkillSpeed + $":{SkillSpeed}%"));
-        if(SkillDamage > 0) item.Add(string.Format(SkillDamage + $":{SkillDamage}%"));
-        if(SkillRange > 0) item.Add(string.Format(SkillRange + $":{SkillRange}%"));
-        if(SplshRange > 0) item.Add(string.Format(SplshRange + $":{SplshRange}%"));
-        if(SkillDuration > 0) item.Add(string.Format(SkillDuration + $":{SkillDuration}%"));
-        if(Percentage > 0) item.Add(string.Format(Percentage + $":{Percentage}%"));
+        if(TotalHP > 0) item.Add(string.Format($"TotalHP:{TotalHP}%"));
+        if(Armor > 0) item.Add(string.Format($"Armor:{Armor}%"));
+        if(MoveSpeed > 0) item.Add(string.Format($"MoveSpeed:{MoveSpeed}%"));
+        if(AttackDamage > 0) item.Add(string.Format($"AttackDamage:{AttackDamage}%"));
+        if(AttackSpeed > 0) item.Add(string.Format($"AttackSpeed:{AttackSpeed}%"));
+        if(AttackRange > 0) item.Add(string.Format($"AttackRange:{AttackRange}%"));
+        if(SkillSpeed > 0) item.Add(string.Format($"SkillSpeed:{SkillSpeed}%"));
+        if(SkillDamage > 0) item.Add(string.Format($"SkillDamage:{SkillDamage}%"));
+        if(SkillRange > 0) item.Add(string.Format($"SkillRange:{SkillRange}%"));
+        if(SplshRange > 0) item.Add(string.Format($"SplshRange:{SplshRange}%"));
+        if(SkillDuration > 0) item.Add(string.Format($"SkillDuration:{SkillDuration}%"));
+        if(Percentage > 0) item.Add(string.Format($"Percentage:{Percentage}%"));
 
         return String.Join(",", item);
+    }
+    public void SetZero()
+    {
+        TotalHP.SetZero();
+        Armor.SetZero();
+        MoveSpeed.SetZero();
+        AttackDamage.SetZero();
+        AttackSpeed.SetZero();
+        AttackRange.SetZero();
+        SkillSpeed.SetZero();
+        SkillDamage.SetZero();
+        SkillRange.SetZero();
+        SplshRange.SetZero();
+        SkillDuration.SetZero();
+        Percentage.SetZero();
     }
 }
 

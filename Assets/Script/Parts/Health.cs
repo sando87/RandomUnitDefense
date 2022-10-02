@@ -9,7 +9,8 @@ public class Health : MonoBehaviour
     public event Action<float, BaseObject> EventDamaged = null;
 
     public bool IsImmortal { get; set; }
-    public float MaxHP { get { return mBaseObject.SpecProp.TotalHP; } }
+    //public float MaxHP { get { return mBaseObject.SpecProp.TotalHP; } }
+    public float MaxHP { get; private set; } = 0;
     public bool IsDead { get { return CurrentHealth <= 0; } }
     public float CurrentHealth { get; private set; } = 0;
     public float CurrentHealthRate { get { return CurrentHealth / MaxHP; } }
@@ -21,6 +22,8 @@ public class Health : MonoBehaviour
     void Start()
     {
         mBaseObject = this.GetBaseObject();
+        if(MaxHP == 0)
+            MaxHP = mBaseObject.SpecProp.TotalHP;
         if(CurrentHealth == 0)
             CurrentHealth = MaxHP;
     }
@@ -41,6 +44,7 @@ public class Health : MonoBehaviour
 
     public void InitHP(float hp)
     {
+        MaxHP = hp;
         CurrentHealth = hp;
     }
 }

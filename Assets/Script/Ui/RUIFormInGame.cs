@@ -151,6 +151,7 @@ public class RUIFormInGame : RUiForm
             float maxHP = selectedUnit.Health.MaxHP;
             DamageText.text = curHP + " / " + maxHP;
             UpgradeText.text = selectedUnit.SpecProp.Armor.ToString();
+            DescriptionText.text = "";
             // DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
             // DescriptionText.text += "\n";
             // DescriptionText.text += selectedUnit.BuffProp.ToPropInfo();

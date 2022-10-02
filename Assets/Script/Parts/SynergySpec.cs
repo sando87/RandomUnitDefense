@@ -30,6 +30,7 @@ public class SynergySpec : MonoBehaviour
 
     public void MergeSynergySpecs(SynergySpec specA, SynergySpec specB, SynergySpec synergySpecC)
     {
+        mSynergySpec.SetZero();
         mSynergySpec.AddBuffProp(specA.Spec);
         mSynergySpec.AddBuffProp(specB.Spec);
         mSynergySpec.MultiplyBuffProp(0.5f);

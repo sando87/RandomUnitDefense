@@ -118,4 +118,5 @@ public struct Percent //단위 [%]
     public static Percent operator *(Percent a, float b) { return new Percent((int)(a.value * b)); }
     public static Percent operator +(Percent a, Percent b) { return new Percent(a.value + b.value); }
     public static Percent operator -(Percent a, Percent b) { return new Percent(a.value - b.value); }
+    public override string ToString() { return value.ToString(); }
 }

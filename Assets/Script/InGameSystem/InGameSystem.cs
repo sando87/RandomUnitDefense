@@ -249,19 +249,21 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public void OnMergeForLevelup()
     {
-        List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountLevelup);
-        if (mergeUnitSet != null && mergeUnitSet.Count > 0)
-        {
-            foreach (BaseObject[] objs in mergeUnitSet)
-            {
-                if(KillPoint >= KillPointForLevelup)
-                {
-                    KillPoint -= KillPointForLevelup;
-                    LOG.warn(objs.Length != MergeCountLevelup);
-                    MergeForLevelup(objs[0], objs[1], objs[2]);
-                }
-            }
-        }
+        // List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountLevelup);
+        // if (mergeUnitSet != null && mergeUnitSet.Count > 0)
+        // {
+        //     foreach (BaseObject[] objs in mergeUnitSet)
+        //     {
+        //         if(KillPoint >= KillPointForLevelup)
+        //         {
+        //             KillPoint -= KillPointForLevelup;
+        //             LOG.warn(objs.Length != MergeCountLevelup);
+        //             MergeForLevelup(objs[0], objs[1], objs[2]);
+        //         }
+        //     }
+        // }
+
+        MergeForLevelup(SelectedUnits[0], SelectedUnits[1], SelectedUnits[2]);
 
         DeselectAll();
     }
@@ -307,7 +309,15 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private void OnSelectUnits(BaseObject[] units)
     {
         SelectedUnits.Clear();
-        SelectedUnits.AddRange(units);
+        if(units.Length == 3)
+        {
+            SelectedUnits = SortBySameUnit(units[0], units[1], units[2]);
+        }
+        else
+        {
+            SelectedUnits.AddRange(units);
+        }
+        
         foreach(BaseObject unit in units)
         {
             UserInput unitUI = unit.GetComponentInChildren<UserInput>();
@@ -359,6 +369,56 @@ public class InGameSystem : SingletonMono<InGameSystem>
         }
     }
 
+
+    // 같은 종류의 같은 레벨끼리 먼저 나오도록 정렬
+    public List<BaseObject> SortBySameUnit(BaseObject unitA, BaseObject unitB, BaseObject unitC)
+    {
+        List<BaseObject> rets = new List<BaseObject>();
+        if(unitA.IsMergable(unitB))
+        {
+            rets.Add(unitA);
+            rets.Add(unitB);
+            rets.Add(unitC);
+        }
+        else if (unitA.IsMergable(unitC))
+        {
+            rets.Add(unitA);
+            rets.Add(unitC);
+            rets.Add(unitB);
+        }
+        else if (unitB.IsMergable(unitC))
+        {
+            rets.Add(unitB);
+            rets.Add(unitC);
+            rets.Add(unitA);
+        }
+        else
+        {
+            rets.Add(unitA);
+            rets.Add(unitB);
+            rets.Add(unitC);
+        }
+        return rets;
+    }
+    public bool IsMergeableForLevelUp()
+    {
+        if(SelectedUnits.Count == 3)
+        {
+            if(SelectedUnits[0].IsMergable(SelectedUnits[1]))
+            {
+                return SelectedUnits[0].SpecProp.Level == SelectedUnits[2].SpecProp.Level;
+            }
+        }
+        return false;
+    }
+    public bool IsMergeableForReUnit()
+    {
+        if (SelectedUnits.Count == 2)
+        {
+            return SelectedUnits[0].IsMergable(SelectedUnits[1]);
+        }
+        return false;
+    }
     // 같은 종류의 같은 레벨의 맵의 모든 유닛
     public List<BaseObject> DetectSameUnit(BaseObject targetUnit)
     {

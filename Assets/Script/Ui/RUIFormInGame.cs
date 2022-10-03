@@ -63,9 +63,7 @@ public class RUIFormInGame : RUiForm
 
     void Start()
     {
-        InGameInput.Instance.EventSelectUnits += OnSelectUnits;
-        InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
-        InGameInput.Instance.EventDrawSelectArea += OnDrawSelectArea;
+        GameMgr.EventSelectUnit += OnSelectUnit;
     }
 
     public override void BindEvent()
@@ -135,6 +133,12 @@ public class RUIFormInGame : RUiForm
             return;
 
         BaseObject selectedUnit = GameMgr.SelectedUnit;
+        if(selectedUnit == null)
+        {
+            UnitDetailPanel.gameObject.SetActive(false);
+            return;
+        }
+
         if(selectedUnit.gameObject.layer == LayerID.Player)
         {
             string damage = selectedUnit.SpecProp.Damage.ToString();
@@ -144,18 +148,8 @@ public class RUIFormInGame : RUiForm
             DescriptionText.text += "\n";
             DescriptionText.text += selectedUnit.BuffProp.ToPropInfo();
             UnitPhoto.sprite = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
-        }
-        else if(selectedUnit.gameObject.layer == LayerID.Enemies)
-        {
-            float curHP = selectedUnit.Health.CurrentHealth;
-            float maxHP = selectedUnit.Health.MaxHP;
-            DamageText.text = curHP + " / " + maxHP;
-            UpgradeText.text = selectedUnit.SpecProp.Armor.ToString();
-            DescriptionText.text = "";
-            // DescriptionText.text = UserCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).skillDescription;
-            // DescriptionText.text += "\n";
-            // DescriptionText.text += selectedUnit.BuffProp.ToPropInfo();
-            UnitPhoto.sprite = EnemyCharactors.Inst.GetDataOfId(selectedUnit.Unit.ResourceID).image;
+
+            UpdateMergeButtonState();
         }
     }
     private void UpdateMergeButtonState()
@@ -167,23 +161,23 @@ public class RUIFormInGame : RUiForm
         BtnRefund.gameObject.SetActive(true);
 
     }
-    private void OnSelectUnits(BaseObject[] units)
+
+    
+    private void OnSelectUnit()
     {
         UpgradePanel.gameObject.SetActive(false);
         UnitDetailPanel.gameObject.SetActive(true);
-        SelectArea.gameObject.SetActive(false);
-        UpdateMergeButtonState();
     }
-    private void OnDeselectUnits()
-    {
-        UnitDetailPanel.gameObject.SetActive(false);
-        SelectArea.gameObject.SetActive(false);
-    }
-    private void OnDrawSelectArea(Rect worldArea)
+
+    public void ShowSelectArea(Rect worldArea)
     {
         SelectArea.gameObject.SetActive(true);
         SelectArea.sizeDelta = worldArea.size * 100;
         SelectArea.transform.position = worldArea.center;
+    }
+    public void HideSelectArea()
+    {
+        SelectArea.gameObject.SetActive(false);
     }
 
 

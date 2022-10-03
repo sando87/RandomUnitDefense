@@ -18,10 +18,15 @@ public class Health : MonoBehaviour
     public Vector3 LastHitPoint { get; set; } = Vector3.zero;
 
     private BaseObject mBaseObject = null;
+    private HealthBar mHPBar = null;
 
     void Start()
     {
         mBaseObject = this.GetBaseObject();
+        mHPBar = mBaseObject.GetComponentInChildren<HealthBar>();
+        if(mHPBar != null)
+            mHPBar.HideBar();
+
         if(MaxHP == 0)
             MaxHP = mBaseObject.SpecProp.TotalHP;
         if(CurrentHealth == 0)
@@ -47,4 +52,10 @@ public class Health : MonoBehaviour
         MaxHP = hp;
         CurrentHealth = hp;
     }
+
+    public void ShowHealthBar()
+    {
+        mHPBar.ShowHealthBar();
+    }
+
 }

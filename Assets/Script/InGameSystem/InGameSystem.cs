@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -34,14 +35,16 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int LineMobCount { get; private set; }
     public long WaveEndTick { get; private set; }
     public bool UserInputLocked { get; set; }
-    public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits[0] : null; } }
+    public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits.First().Key : null; } }
+    public event System.Action EventSelectUnit = null;
 
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
     private List<long> LineMobIDs = new List<long>();
-    private List<BaseObject> SelectedUnits = new List<BaseObject>();
+    private Dictionary<BaseObject, bool> SelectedUnits = new Dictionary<BaseObject, bool>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
-    
+    private List<BaseObject> mUnitsForLevelup = new List<BaseObject>();
+
     private RUIFormInGame mInGameUI = null;
 
     protected override void Awake()
@@ -51,9 +54,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     void Start()
     {
-        InGameInput.Instance.EventSelectUnits += OnSelectUnits;
-        InGameInput.Instance.EventDeSelectUnits += OnDeselectUnits;
-        InGameInput.Instance.EventMove += OnMoveUnits;
+        InGameInput.Instance.EventClick += OnClickUnit;
+        InGameInput.Instance.EventLongClick += OnLongClickUnit;
+        InGameInput.Instance.EventDragStart += OnDragStart;
+        InGameInput.Instance.EventDragging += OnDragging;
+        InGameInput.Instance.EventDragEnd += OnDragEnd;
     }
 
     public void StartGame()
@@ -249,23 +254,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public void OnMergeForLevelup()
     {
-        // List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountLevelup);
-        // if (mergeUnitSet != null && mergeUnitSet.Count > 0)
-        // {
-        //     foreach (BaseObject[] objs in mergeUnitSet)
-        //     {
-        //         if(KillPoint >= KillPointForLevelup)
-        //         {
-        //             KillPoint -= KillPointForLevelup;
-        //             LOG.warn(objs.Length != MergeCountLevelup);
-        //             MergeForLevelup(objs[0], objs[1], objs[2]);
-        //         }
-        //     }
-        // }
+        SortUnitsForLevelUp();
+        if(IsMergeableForLevelUp())
+            MergeForLevelup(mUnitsForLevelup[0], mUnitsForLevelup[1], mUnitsForLevelup[2]);
 
-        MergeForLevelup(SelectedUnits[0], SelectedUnits[1], SelectedUnits[2]);
-
-        DeselectAll();
+        DeSelectAll();
     }
     private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
     {
@@ -278,17 +271,13 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public void OnMergeForReunit()
     {
-        List<BaseObject[]> mergeUnitSet = DetectMergeableUnits(MergeCountReunit);
-        if (mergeUnitSet != null && mergeUnitSet.Count > 0)
+        if(IsMergeableForReUnit())
         {
-            foreach (BaseObject[] objs in mergeUnitSet)
-            {
-                LOG.warn(objs.Length != MergeCountReunit);
-                MergeForReunit(objs[0], objs[1]);
-            }
+            BaseObject[] units = SelectedUnits.Keys.ToArray();
+            MergeForReunit(units[0], units[1]);
         }
 
-        DeselectAll();
+        DeSelectAll();
     }
     private void MergeForReunit(BaseObject unitA, BaseObject unitB)
     {
@@ -299,123 +288,187 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public void RefundUnit()
     {
-        foreach(BaseObject unit in SelectedUnits)
+        foreach(var item in SelectedUnits)
         {
+            BaseObject unit = item.Key;
             unit.MotionManager.SwitchMotion<MotionDisappear>();
             AddMinerals(100 * unit.SpecProp.Level * unit.SpecProp.Level);
         }
-        DeselectAll();
+        DeSelectAll();
     }
-    private void OnSelectUnits(BaseObject[] units)
+
+
+
+
+
+    private void OnClickUnit(BaseObject unit)
     {
-        SelectedUnits.Clear();
-        if(units.Length == 3)
+        if(unit == null)
         {
-            SelectedUnits = SortBySameUnit(units[0], units[1], units[2]);
+            DeSelectAll();
+        }
+        else if(unit.gameObject.layer == LayerID.Enemies)
+        {
+            ShowEnemyHealthBar(unit);
+        }
+        else if (unit.gameObject.layer == LayerID.Player)
+        {
+            if(SelectedUnits.ContainsKey(unit))
+            {
+                DeSelectUnit(unit);
+            }
+            else
+            {
+                SelectUnit(unit);
+                EventSelectUnit?.Invoke();
+            }
+        }
+    }
+    private void OnLongClickUnit(Vector3 worldPos)
+    {
+        DeSelectAll();
+    }
+    private void OnDragStart(Vector3 worldPos)
+    {
+
+    }
+    private void OnDragging(Vector3 worldPos)
+    {
+        if(InGameInput.Instance.DownObject != null)
+        {
+            BaseObject target = InGameInput.Instance.DownObject;
+            UserInput ui = target.GetComponentInChildren<UserInput>();
+            if (ui != null)
+                ui.OnDrawMoveIndicator(worldPos);
         }
         else
         {
-            SelectedUnits.AddRange(units);
-        }
-        
-        foreach(BaseObject unit in units)
-        {
-            UserInput unitUI = unit.GetComponentInChildren<UserInput>();
-            if(unitUI != null)
-                unitUI.OnSelect();
+            Rect worldArea = ToRect(InGameInput.Instance.DownWorldPos, worldPos);
+            mInGameUI.ShowSelectArea(worldArea);
         }
     }
-    private void OnDeselectUnits()
+    private void OnDragEnd(Vector3 worldEndPos)
     {
-        DeselectAll();
-    }
-    private void DeselectAll()
-    {
-        foreach (BaseObject unit in SelectedUnits)
+        if (InGameInput.Instance.DownObject != null)
         {
-            UserInput unitUI = unit.GetComponentInChildren<UserInput>();
-            if(unitUI != null)
-                unitUI.OnDeSelect();
+            BaseObject target = InGameInput.Instance.DownObject;
+            UserInput ui = target.GetComponentInChildren<UserInput>();
+            if (ui != null)
+                ui.OnMove(worldEndPos);
         }
-        SelectedUnits.Clear();
-    }
-    private void OnMoveUnits(BaseObject obj, Vector3 dest)
-    {
-        bool isSelectedUnit = false;
-        foreach(BaseObject unit in SelectedUnits)
+        else
         {
-            if(obj == unit)
+            mInGameUI.HideSelectArea();
+            Rect worldArea = ToRect(InGameInput.Instance.DownWorldPos, worldEndPos);
+            SelectUnitsInArea(worldArea);
+            EventSelectUnit?.Invoke();
+        }
+    }
+
+    private Rect ToRect(Vector3 worldStartPos, Vector3 worldEndPos)
+    {
+        Vector2 center = (worldEndPos + worldStartPos) * 0.5f;
+        Vector2 size = worldEndPos - worldStartPos;
+        size.x = Mathf.Abs(size.x);
+        size.y = Mathf.Abs(size.y);
+        Rect worldArea = new Rect();
+        worldArea.size = size;
+        worldArea.center = center;
+        return worldArea;
+    }
+
+
+
+
+
+    private void SelectUnit(BaseObject unit)
+    {
+        SelectedUnits[unit] = true;
+        UserInput ui = unit.GetComponentInChildren<UserInput>();
+        if (ui != null)
+            ui.OnSelect();
+    }
+    private void SelectUnitsInArea(Rect area)
+    {
+        Collider[] cols = Physics.OverlapBox(area.center, area.size * 0.5f, Quaternion.identity, 1 << LayerID.Player);
+        if(cols.Length > 0)
+        {
+            DeSelectAll();
+            foreach (Collider col in cols)
             {
-                isSelectedUnit = true;
-                break;
+                SelectUnit(col.GetBaseObject());
             }
+            return;
         }
 
-        if(isSelectedUnit)
+        cols = Physics.OverlapBox(area.center, area.size * 0.5f, Quaternion.identity, 1 << LayerID.Enemies);
+        foreach (Collider col in cols)
         {
-            foreach (BaseObject unit in SelectedUnits)
-            {
-                Vector3 destination = MyUtils.Random(dest, 0.5f);
-                UserInput unitUI = unit.GetComponentInChildren<UserInput>();
-                if(unitUI != null)
-                    unitUI.OnMove(destination);
-            }
+            ShowEnemyHealthBar(col.GetBaseObject());
         }
-        else
+    }
+    private void DeSelectUnit(BaseObject unit)
+    {
+        SelectedUnits.Remove(unit);
+        UserInput ui = unit.GetComponentInChildren<UserInput>();
+        if (ui != null)
+            ui.OnDeSelect();
+    }
+    private void DeSelectAll()
+    {
+        BaseObject[] units = SelectedUnits.Keys.ToArray();
+        foreach (BaseObject unit in units)
         {
-            UserInput unitUI = obj.GetComponentInChildren<UserInput>();
-            if(unitUI != null)
-                unitUI.OnMove(dest);
+            DeSelectUnit(unit);
+        }
+    }
+    private void ShowEnemyHealthBar(BaseObject enemy)
+    {
+        if (enemy.Health != null)
+        {
+            enemy.Health.ShowHealthBar();
         }
     }
 
 
     // 같은 종류의 같은 레벨끼리 먼저 나오도록 정렬
-    public List<BaseObject> SortBySameUnit(BaseObject unitA, BaseObject unitB, BaseObject unitC)
+    public void SortUnitsForLevelUp()
     {
-        List<BaseObject> rets = new List<BaseObject>();
-        if(unitA.IsMergable(unitB))
+        mUnitsForLevelup.Clear();
+        if(SelectedUnits.Count != 3)
+            return;
+
+        BaseObject[] objs = SelectedUnits.Keys.ToArray();
+        if(objs[0].IsMergable(objs[1]))
         {
-            rets.Add(unitA);
-            rets.Add(unitB);
-            rets.Add(unitC);
+            mUnitsForLevelup.Add(objs[0]);
+            mUnitsForLevelup.Add(objs[1]);
+            mUnitsForLevelup.Add(objs[2]);
         }
-        else if (unitA.IsMergable(unitC))
+        else if (objs[0].IsMergable(objs[2]))
         {
-            rets.Add(unitA);
-            rets.Add(unitC);
-            rets.Add(unitB);
+            mUnitsForLevelup.Add(objs[0]);
+            mUnitsForLevelup.Add(objs[2]);
+            mUnitsForLevelup.Add(objs[1]);
         }
-        else if (unitB.IsMergable(unitC))
+        else if (objs[1].IsMergable(objs[2]))
         {
-            rets.Add(unitB);
-            rets.Add(unitC);
-            rets.Add(unitA);
+            mUnitsForLevelup.Add(objs[1]);
+            mUnitsForLevelup.Add(objs[2]);
+            mUnitsForLevelup.Add(objs[0]);
         }
-        else
-        {
-            rets.Add(unitA);
-            rets.Add(unitB);
-            rets.Add(unitC);
-        }
-        return rets;
     }
     public bool IsMergeableForLevelUp()
     {
-        if(SelectedUnits.Count == 3)
-        {
-            if(SelectedUnits[0].IsMergable(SelectedUnits[1]))
-            {
-                return SelectedUnits[0].SpecProp.Level == SelectedUnits[2].SpecProp.Level;
-            }
-        }
-        return false;
+        SortUnitsForLevelUp();
+        return mUnitsForLevelup.Count == 3;
     }
     public bool IsMergeableForReUnit()
     {
         if (SelectedUnits.Count == 2)
         {
-            return SelectedUnits[0].IsMergable(SelectedUnits[1]);
+            BaseObject[] units = SelectedUnits.Keys.ToArray();
+            return units[0].IsMergable(units[1]);
         }
         return false;
     }
@@ -433,61 +486,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
             }
         }
         return rets;
-    }
-    // 현재 선택된 유닛기준으로 Merge가능한 유닛별로 리스팅해서 반환
-    public List<BaseObject[]> DetectMergeableUnits(int unitMergeCount)
-    {
-        // 선택된 유닛이 한마리일 경우 전체 유닛을 모두 대상
-        if(SelectedUnits.Count == 1)
-        {
-            List<BaseObject> sameAllUnits = DetectSameUnit(SelectedUnits[0]);
-            if (sameAllUnits.Count < unitMergeCount)
-                return null;
-
-            SortByDistance(SelectedUnits[0].Body.Center, sameAllUnits);
-            List<BaseObject> mergeSet = sameAllUnits.GetRange(0, unitMergeCount);
-            return new List<BaseObject[]>() { mergeSet.ToArray() };
-        }
-        // 선택된 유닛이 다수일 경우 선택된 유닛들만 대상
-        else if(SelectedUnits.Count > 1)
-        {
-            List<BaseObject[]> rets = new List<BaseObject[]>();
-
-            BaseObject[] units = SelectedUnits.ToArray();
-            for (int i = 0; i < units.Length; ++i)
-            {
-                if (units[i] == null) continue;
-
-                List<int> sameUnitIndex = new List<int>();
-                sameUnitIndex.Add(i);
-                int j = i + 1;
-                for (; j < units.Length; ++j)
-                {
-                    if (units[j] == null) continue;
-
-                    BaseObject bo = units[j];
-                    if (bo.IsMergable(units[i]))
-                    {
-                        sameUnitIndex.Add(j);
-                        if(sameUnitIndex.Count >= unitMergeCount)
-                        {
-                            List<BaseObject> subset = new List<BaseObject>();
-                            foreach (int subIdx in sameUnitIndex)
-                            {
-                                subset.Add(units[subIdx]);
-                                units[subIdx] = null;
-                            }
-                            rets.Add(subset.ToArray());
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if(rets.Count > 0)
-                return rets;
-        }
-        return null;
     }
 
     private void SortByDistance(Vector3 center, List<BaseObject> rets)

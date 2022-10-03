@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// 유닛 선택
-// 유닛 이동
-// 같은 유닛 모두 선택
-// 영역 안의 모든 유닛 선택
-// 선택 모두 취소
+// 유닛 클릭
+// 유닛 롱클릭
+// 드래깅 시작, 중, 끝
 
 public class InGameInput : SingletonMono<InGameInput>
 {
@@ -21,10 +19,13 @@ public class InGameInput : SingletonMono<InGameInput>
     private Vector3 mWorldDownPosition = Vector3.zero;
 
     public bool Lock { get; set; } = false;
-    public event System.Action<BaseObject[]> EventSelectUnits;
-    public event System.Action EventDeSelectUnits;
-    public event System.Action<Rect> EventDrawSelectArea;
-    public event System.Action<BaseObject, Vector3> EventMove;
+    public event System.Action<BaseObject> EventClick;
+    public event System.Action<Vector3> EventLongClick;
+    public event System.Action<Vector3> EventDragStart;
+    public event System.Action<Vector3> EventDragging;
+    public event System.Action<Vector3> EventDragEnd;
+    public BaseObject DownObject { get { return mDownObject; } }
+    public Vector3 DownWorldPos { get { return mWorldDownPosition; } }
 
     protected override void Awake()
     {
@@ -58,7 +59,8 @@ public class InGameInput : SingletonMono<InGameInput>
             1 << LayerID.Player | 1 << LayerID.Enemies | 1 << LayerID.ThemeBackground, 
             out RaycastHit hit))
         {
-            if(hit.collider.gameObject.layer == LayerID.Player)
+            if(hit.collider.gameObject.layer == LayerID.Player
+                || hit.collider.gameObject.layer == LayerID.Enemies)
             {
                 mDownObject = hit.collider.GetBaseObject();
                 mWorldDownPosition = hit.point;
@@ -67,16 +69,8 @@ public class InGameInput : SingletonMono<InGameInput>
                 StartCoroutine(CoDragging());
                 StartCoroutine(CheckLongPress());
             }
-            else if(hit.collider.gameObject.layer == LayerID.Enemies)
-            {
-                mDownObject = hit.collider.GetBaseObject();
-                mWorldDownPosition = hit.point;
-
-                StopAllCoroutines();
-            }
             else
             {
-                DeSelecteAll();
                 mDownObject = null;
                 mWorldDownPosition = hit.point;
                 StopAllCoroutines();
@@ -90,34 +84,23 @@ public class InGameInput : SingletonMono<InGameInput>
 
         if(mIsDragging)
         {
+            mIsDragging = false;
             MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
             Vector3 worldUpPosition = hit.point;
-
-            if(mDownObject != null)
-            {
-                MoveUnit(mDownObject, worldUpPosition);
-            }
-            else
-            {
-                Vector2 center = (mWorldDownPosition + worldUpPosition) * 0.5f;
-                Vector2 size = mWorldDownPosition - worldUpPosition;
-                size.x = Mathf.Abs(size.x);
-                size.y = Mathf.Abs(size.y);
-                Rect worldArea = new Rect();
-                worldArea.size = size;
-                worldArea.center = center;
-                SelectAllUnitsInArea(worldArea);
-            }
+            EventDragEnd?.Invoke(worldUpPosition);
         }
-        else if(mDownObject != null)
+        else
         {
-            if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player | 1 << LayerID.Enemies, out RaycastHit hit))
+            if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player | 1 << LayerID.Enemies | 1 << LayerID.ThemeBackground, out RaycastHit hit))
             {
                 BaseObject upObject = hit.collider.GetBaseObject();
                 if (upObject == mDownObject)
                 {
-                    DeSelecteAll();
-                    SelecteObject(mDownObject);
+                    EventClick?.Invoke(mDownObject);
+                }
+                else
+                {
+                    EventClick?.Invoke(null);
                 }
             }
         }
@@ -125,43 +108,24 @@ public class InGameInput : SingletonMono<InGameInput>
         ResetAllState();
     }
 
-
     IEnumerator CoDragging()
     {
         mIsDragging = false;
         Vector2 pressedPos = InputWrapper.Instance.MousePosition();
         yield return new WaitUntil(() => IsMovedFromPosition(pressedPos));
 
-        UserInput downObjRecv = (mDownObject != null) ? mDownObject.GetComponentInChildren<UserInput>() : null;
+        mIsDragging = true;
+        EventDragStart?.Invoke(mWorldDownPosition);
 
         while (mIsDownNow)
         {
-            mIsDragging = true;
-            if(mDownObject != null)
-            {
-                MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
-                if(downObjRecv != null)
-                    downObjRecv.OnDrawMoveIndicator(hit.point);
-            }
-            else
-            {
-                MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
-                Vector3 worldUpPosition = hit.point;
-                Vector2 center = (mWorldDownPosition + worldUpPosition) * 0.5f;
-                Vector2 size = mWorldDownPosition - worldUpPosition;
-                size.x = Mathf.Abs(size.x);
-                size.y = Mathf.Abs(size.y);
-                Rect worldArea = new Rect();
-                worldArea.size = size;
-                worldArea.center = center;
-
-                DrawSelectArea(worldArea);
-            }
-        
+            MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit);
+            EventDragging?.Invoke(hit.point);
             yield return null;
         }
         mIsDragging = false;
     }
+
     IEnumerator CheckLongPress()
     {
         float time = 0;
@@ -179,19 +143,12 @@ public class InGameInput : SingletonMono<InGameInput>
             time += Time.deltaTime;
         }
 
-        if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player, out RaycastHit hit))
+        if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.ThemeBackground, out RaycastHit hit))
         {
-            if(hit.collider.GetBaseObject() == mDownObject)
-            {
-                OnLongPress(mDownObject);
-            }
+            EventLongClick?.Invoke(hit.point);
         }
 
         ResetAllState();
-    }
-    private void OnLongPress(BaseObject target)
-    {
-        SelectAllSameUnit(target);
     }
 
     bool IsMovedFromPosition(Vector2 downScreenPos)
@@ -207,47 +164,5 @@ public class InGameInput : SingletonMono<InGameInput>
     private bool IsOverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
-    }
-
-
-    private void SelectAllUnitsInArea(Rect worldArea)
-    {
-        List<BaseObject> selectedUnits = new List<BaseObject>();
-        Collider[] cols = Physics.OverlapBox(worldArea.center, worldArea.size * 0.5f, Quaternion.identity, 1 << LayerID.Player);
-        foreach(Collider col in cols)
-        {
-            selectedUnits.Add(col.GetBaseObject());
-        }
-
-        if(selectedUnits.Count > 0)
-        {
-            EventSelectUnits?.Invoke(selectedUnits.ToArray());
-        }
-        else
-        {
-            DeSelecteAll();
-        }
-    }
-    private void SelecteObject(BaseObject obj)
-    {
-        EventSelectUnits?.Invoke(new BaseObject[] { obj });
-    }
-    private void SelectAllSameUnit(BaseObject obj)
-    {
-        DeSelecteAll();
-        List<BaseObject> units = InGameSystem.Instance.DetectSameUnit(obj);
-        EventSelectUnits?.Invoke(units.ToArray());
-    }
-    private void MoveUnit(BaseObject obj, Vector3 dest)
-    {
-        EventMove?.Invoke(obj, dest);
-    }
-    private void DeSelecteAll()
-    {
-        EventDeSelectUnits?.Invoke();
-    }
-    private void DrawSelectArea(Rect worldArea)
-    {
-        EventDrawSelectArea?.Invoke(worldArea);
     }
 }

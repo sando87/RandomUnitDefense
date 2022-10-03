@@ -17,16 +17,19 @@ public class HealthBar : MonoBehaviour
 
     private Health mHP = null;
 
-    void Start()
+    void Awake()
     {
         mHP = this.GetBaseObject().Health;
         mHP.EventDamaged += OnDamaged;
+    }
 
+    void Start()
+    {
         InitSplitBars();
         
         transform.forward = Vector3.forward;
         
-        HideBar();
+        //HideBar();
     }
 
     void Update()
@@ -42,12 +45,13 @@ public class HealthBar : MonoBehaviour
         }
         else if(validDamage > 0)
         {
-            UpdateHealthBar(mHP.CurrentHealthRate);
+            ShowHealthBar();
         }
     }
 
-    public void UpdateHealthBar(float rate)
+    public void ShowHealthBar()
     {
+        float rate = mHP.CurrentHealthRate;
         gameObject.SetActive(true);
         float rateClamp = Mathf.Clamp(rate, 0, 1);
         HealthInnerBar.transform.localScale = new Vector3(rateClamp, 1, 1);

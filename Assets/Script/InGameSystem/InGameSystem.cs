@@ -156,16 +156,18 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         Vector3 pos = deathMob.transform.position;
         GameObject deathPoint = Instantiate(DeathPointPrefab, pos, Quaternion.identity, transform);
-        Vector3 jumpDest = MyUtils.Random(pos, 1);
-        deathPoint.transform.DOJump(jumpDest, 1, 1, 0.5f);
+        float ranPosX = UnityEngine.Random.Range(-0.5f, 0.5f);
+        deathPoint.transform.DOMoveY(pos.y + 1, 0.15f).SetEase(Ease.OutQuad);
+        deathPoint.transform.DOMoveY(pos.y, 0.15f).SetEase(Ease.InQuad).SetDelay(0.15f);
+        deathPoint.transform.DOMoveX(pos.x + ranPosX, 0.3f).SetEase(Ease.Linear);
 
         Transform kps = mInGameUI.KillPointSet;
-        deathPoint.transform.DOMove(kps.transform.position, 1).SetEase(Ease.InQuad).SetDelay(2).OnComplete(() =>
+        deathPoint.transform.DOMove(kps.transform.position, 1).SetEase(Ease.InQuad).SetDelay(1).OnComplete(() =>
         {
             KillPoint++;
             Destroy(deathPoint);
             mInGameUI.KillPointSet.DOKill();
-            mInGameUI.KillPointSet.DOScale(new Vector3(1.2f, 1.2f, 1), 0.2f).From(1).SetEase(Ease.OutQuad).SetLoops(2, LoopType.Yoyo);
+            mInGameUI.KillPointSet.DOScale(new Vector3(1.1f, 1.1f, 1), 0.1f).From(1).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
         });
     }
     public void AddMinerals(int mineral)

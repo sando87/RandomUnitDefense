@@ -122,6 +122,10 @@ public class MotionBase : MonoBehaviour
     {
         mAnim.SetFloat(AnimParam.VerticalIndexFloat, (float)animVerticalIndex);
     }
+    public void SetActionLoopSpeed(float speed)
+    {
+        mAnim.SetFloat(AnimParam.ActionLoopSpeed, speed);
+    }
 
     protected bool IsCooltime()
     {

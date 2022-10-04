@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: marineHero-attack4
+  m_Name: marineHero-attackB1
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 1718748f6e8102e42938adab1e0203ea, type: 3}
+      value: {fileID: 21300000, guid: ff54d8ecfb3c3034593944ddc956b2a2, type: 3}
     - time: 0.041666668
-      value: {fileID: 21300000, guid: ac3ec274ee64c93409d970c19bdd56f4, type: 3}
+      value: {fileID: 21300000, guid: 5a9e94723d41b2d4ebc3b6a84d1bd93a, type: 3}
+    - time: 0.083333336
+      value: {fileID: 21300000, guid: 86370a80b2f5ec04f9164963e8916a4b, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,14 +44,15 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 1718748f6e8102e42938adab1e0203ea, type: 3}
-    - {fileID: 21300000, guid: ac3ec274ee64c93409d970c19bdd56f4, type: 3}
+    - {fileID: 21300000, guid: ff54d8ecfb3c3034593944ddc956b2a2, type: 3}
+    - {fileID: 21300000, guid: 5a9e94723d41b2d4ebc3b6a84d1bd93a, type: 3}
+    - {fileID: 21300000, guid: 86370a80b2f5ec04f9164963e8916a4b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.083333336
+    m_StopTime: 0.125
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

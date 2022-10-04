@@ -375,6 +375,7 @@ MonoBehaviour:
   _AttackDuration: 0.5
   _SkillCastRate: 0.2
   _SkillDamageRate: 2
+  _ACForFast: {fileID: 22100000, guid: 73798003a84bdd84c86c4eae69e858a8, type: 2}
   BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
     type: 3}
   SimpleMissilePrefab: {fileID: 1240864785425162540, guid: ed02a1c336b929041983410b7ce05719,
@@ -655,7 +656,7 @@ Animator:
   m_GameObject: {fileID: 3831130851046014922}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 73798003a84bdd84c86c4eae69e858a8, type: 2}
+  m_Controller: {fileID: 22100000, guid: e0de2c61ac1e6e345b6eafb40bcb003c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

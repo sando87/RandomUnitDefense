@@ -9,6 +9,9 @@ public class UnitMarineHero : UnitPlayer
     [SerializeField] float _AttackDuration = 0.5f;
     [SerializeField][Range(0, 1)] float _SkillCastRate = 0.2f;
     [SerializeField][Range(0, 10)] float _SkillDamageRate = 2.0f;
+    [SerializeField] RuntimeAnimatorController _ACForFast = null;
+
+    [SerializeField] float _FireSpeed = 1.0f;
 
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private SimpleMissile SimpleMissilePrefab = null;
@@ -23,6 +26,9 @@ public class UnitMarineHero : UnitPlayer
 
     void Start()
     {
+        if(mBaseObj.SpecProp.Level > 1)
+            mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
+
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mMotionAttack.EventStart = OnAttackStart;
@@ -32,6 +38,7 @@ public class UnitMarineHero : UnitPlayer
 
     private void OnAttackStart(BaseObject target)
     {
+        mMotionAttack.SetActionLoopSpeed(_FireSpeed);
         if(mCoAttack != null) StopCoroutine(mCoAttack);
         mCoAttack = StartCoroutine(CoAttack(target));
     }

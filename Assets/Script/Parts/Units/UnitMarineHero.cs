@@ -10,7 +10,7 @@ public class UnitMarineHero : UnitPlayer
     [SerializeField][Range(0, 10)] float _SkillDamageRate = 2.0f;
     [SerializeField] RuntimeAnimatorController _ACForFast = null;
 
-    [SerializeField] float _FireSpeed = 1.0f;
+    [SerializeField] float FireMotionSpeed = 0.7f;
 
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private SimpleMissile SimpleMissilePrefab = null;
@@ -23,17 +23,17 @@ public class UnitMarineHero : UnitPlayer
     private MotionActionLoop mMotionAttack = null;
     private Coroutine mCoAttack = null;
     private float mFireCount = 2; // 3, 4, 5, 6
-    private float mFireInterval = 0.125f; // 0.125f, 0.125f, 0.0833f, 0.0833f
+    private int mCurFireCount = 0;
 
     void Start()
     {
         int curLevel = mBaseObj.SpecProp.Level;
         mFireCount = curLevel + 1;
         if(curLevel >= 4)
-        {
-            mFireInterval = 0.0833f;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-        }
+
+        if(curLevel >= 5)
+            FireMotionSpeed = 1;
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
@@ -44,8 +44,13 @@ public class UnitMarineHero : UnitPlayer
 
     private void OnAttackStart(BaseObject target)
     {
-        mMotionAttack.SetActionLoopSpeed(_FireSpeed);
-        if(mCoAttack != null) StopCoroutine(mCoAttack);
+        mCurFireCount = 0;
+        mMotionAttack.SetActionLoopSpeed(FireMotionSpeed);
+        mMotionAttack.AddAnimEvent(0.1f, () => FireOneShot());
+        
+        if(mCoAttack != null)
+            StopCoroutine(mCoAttack);
+
         mCoAttack = StartCoroutine(CoAttack(target));
     }
 
@@ -53,31 +58,35 @@ public class UnitMarineHero : UnitPlayer
     {
         BaseObject target = _target;
 
-        int count = 0;
-        while (!IsOutOfSkillRange(target) && count < mFireCount)
+        while (!IsOutOfSkillRange(target) && mCurFireCount < mFireCount)
         {
-            Vector3 firePosition = mBaseObj.FirePosition.transform.position;
-            SimpleMissile missile = Instantiate(SimpleMissilePrefab, firePosition, Quaternion.identity);
-            missile.Launch(target);
-            float damage = mBaseObj.SpecProp.Damage;
-            missile.EventHit = (t) => 
-            {
-                if(t != null)
-                {
-                    Vector3 pos = MyUtils.Random(t.Body.Center, 0.2f);
-                    GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
-                    Destroy(obj, 1.0f);
-
-                    t.Health.GetDamaged(damage, mBaseObj);
-                }
-            };
-
-            yield return newWaitForSeconds.Cache(mFireInterval);
-            count++;
+            yield return null;
         }
+
+        float normalTime = (int)mMotionAttack.NormalizedTime + 0.9f;
+        yield return new WaitUntil(() => mMotionAttack.NormalizedTime >= normalTime);
 
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
         mCoAttack = null;
+    }
+    private void FireOneShot()
+    {
+        mCurFireCount++;
+        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
+        SimpleMissile missile = Instantiate(SimpleMissilePrefab, firePosition, Quaternion.identity);
+        missile.Launch(mMotionAttack.Target);
+        float damage = mBaseObj.SpecProp.Damage;
+        missile.EventHit = (t) => 
+        {
+            if(t != null)
+            {
+                Vector3 pos = MyUtils.Random(t.Body.Center, 0.2f);
+                GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
+                Destroy(obj, 1.0f);
+
+                t.Health.GetDamaged(damage, mBaseObj);
+            }
+        };
     }
     private bool IsOutOfSkillRange(BaseObject target)
     {

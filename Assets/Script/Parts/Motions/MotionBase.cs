@@ -105,7 +105,7 @@ public class MotionBase : MonoBehaviour
         }
     }
 
-    protected void AddAnimEvent(float triggerRate, Action eventFunc)
+    public void AddAnimEvent(float triggerRate, Action eventFunc)
     {
         EventAnims.Add(new Tuple<float, Action>(triggerRate, eventFunc));
     }

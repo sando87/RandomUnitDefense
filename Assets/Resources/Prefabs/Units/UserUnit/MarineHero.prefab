@@ -372,11 +372,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _AttackSpeed: 2
   _AttackRange: 3
-  _AttackDuration: 0.5
   _SkillCastRate: 0.2
   _SkillDamageRate: 2
   _ACForFast: {fileID: 22100000, guid: 73798003a84bdd84c86c4eae69e858a8, type: 2}
-  BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
+  FireMotionSpeed: 0.7
+  BulletSparkPrefab: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
     type: 3}
   SimpleMissilePrefab: {fileID: 1240864785425162540, guid: ed02a1c336b929041983410b7ce05719,
     type: 3}

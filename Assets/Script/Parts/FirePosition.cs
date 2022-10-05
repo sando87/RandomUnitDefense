@@ -9,6 +9,7 @@ public class FirePosition : MonoBehaviour
     {
         transform.SetParent(parent);
         transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }
 

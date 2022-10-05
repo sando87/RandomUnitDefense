@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+// 레벨업에 따른 최대 중첩 증가 및 번개 연쇄 개수 증가
+
 public class UnitGuardian : UnitPlayer
 {
     [SerializeField] BoxCollider DetectArea = null;

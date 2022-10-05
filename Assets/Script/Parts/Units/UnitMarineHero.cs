@@ -6,7 +6,6 @@ public class UnitMarineHero : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
-    [SerializeField] float _AttackDuration = 0.5f;
     [SerializeField][Range(0, 1)] float _SkillCastRate = 0.2f;
     [SerializeField][Range(0, 10)] float _SkillDamageRate = 2.0f;
     [SerializeField] RuntimeAnimatorController _ACForFast = null;
@@ -23,11 +22,18 @@ public class UnitMarineHero : UnitPlayer
 
     private MotionActionLoop mMotionAttack = null;
     private Coroutine mCoAttack = null;
+    private float mFireCount = 2; // 3, 4, 5, 6
+    private float mFireInterval = 0.125f; // 0.125f, 0.125f, 0.0833f, 0.0833f
 
     void Start()
     {
-        if(mBaseObj.SpecProp.Level > 1)
+        int curLevel = mBaseObj.SpecProp.Level;
+        mFireCount = curLevel + 1;
+        if(curLevel >= 4)
+        {
+            mFireInterval = 0.0833f;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
+        }
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
@@ -47,8 +53,8 @@ public class UnitMarineHero : UnitPlayer
     {
         BaseObject target = _target;
 
-        float time = 0;
-        while (!IsOutOfSkillRange(target) && time < _AttackDuration)
+        int count = 0;
+        while (!IsOutOfSkillRange(target) && count < mFireCount)
         {
             Vector3 firePosition = mBaseObj.FirePosition.transform.position;
             SimpleMissile missile = Instantiate(SimpleMissilePrefab, firePosition, Quaternion.identity);
@@ -66,8 +72,8 @@ public class UnitMarineHero : UnitPlayer
                 }
             };
 
-            yield return newWaitForSeconds.Cache(0.1f);
-            time += 0.1f;
+            yield return newWaitForSeconds.Cache(mFireInterval);
+            count++;
         }
 
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();

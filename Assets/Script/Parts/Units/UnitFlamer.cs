@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 
 // 바닥에 불길을 생성하여 적을 불태운다.
+// 레벨업에 따른 화염 뎀지 크기 범위 증가
 
 public class UnitFlamer : UnitPlayer
 {

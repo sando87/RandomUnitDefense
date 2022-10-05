@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+// 레벨 업에 따른 미사일 및 가스통 발사 개수 증가
+
 public class UnitShellstorm : UnitPlayer
 {
     [SerializeField] MotionActionSingle _MotionMissileAttack = null;

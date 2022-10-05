@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+// 레벨업에 따른 최대 이속 감소(레이져가 더 두껍게, 강하게 보이도록 필요)
+
 public class UnitGunner : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;

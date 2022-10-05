@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+// animing되는 라인 갯수 증가
+// 레벨 업에 따른 기본 뎀지 증가, 크리티컬 뎀지 증가, aiming 시간 증가
+
 public class UnitSniper : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 레벨 업에 따른 느려지는 적 타게팅 증가
+
 public class UnitMarineBasic : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
@@ -29,7 +31,7 @@ public class UnitMarineBasic : UnitPlayer
     }
 
     private void OnAttack(int idx)
-    {   
+    {
         BaseObject target = mMotionAttack.Target;
         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
         target.BuffCtrl.ApplyBuff(AttackDeBuff, SkillDuration, true);

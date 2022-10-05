@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-// 스킬 사거리 20%증가
+// 레벨업에 따른 방깍 증가
 
 public class UnitDiplomat : UnitPlayer
 {

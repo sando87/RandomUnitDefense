@@ -5,6 +5,8 @@ using UnityEngine;
 
 // return "3회공격시마다 (0.1/0.2/0.3)범위의 (1/1.5/2)초 스턴";
 
+// 레벨업에 따라 뒤로 밀려나고 스턴되는 타게팅 개수 증가
+
 public class UnitBrawler : UnitPlayer
 {
     [SerializeField] BoxCollider DetectArea = null;

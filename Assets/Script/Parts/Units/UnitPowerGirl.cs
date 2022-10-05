@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 레벨 업에 따른 미사일 개수 증가
+
 public class UnitPowerGirl : UnitPlayer
 {
     [SerializeField] MotionActionSingle NormalAttack = null;

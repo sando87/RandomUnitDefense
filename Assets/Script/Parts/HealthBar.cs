@@ -11,9 +11,11 @@ public class HealthBar : MonoBehaviour
     [SerializeField] Transform HealthBarLeftPivot;
     [SerializeField] GameObject SplitBarSmallPrefab;
     [SerializeField] GameObject SplitBarBigPrefab;
-    [SerializeField] float HealthStepForSplit = 20.0f;
+    [SerializeField] int _HealthStepForSplit = 10;
     [SerializeField] int SmallBarCountForBig = 10;
     [SerializeField] float HpTotalWorldWidth = 1;
+
+    public int HealthStepForSplit { get; set; }
 
     private Health mHP = null;
 
@@ -25,6 +27,7 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
+        InitHealthStep();
         InitSplitBars();
         
         transform.forward = Vector3.forward;
@@ -64,6 +67,39 @@ public class HealthBar : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    void InitHealthStep()
+    {
+        int step = _HealthStepForSplit;
+        while(((float)step / mHP.MaxHP) < 0.03f)
+        {
+            step *= SmallBarCountForBig;
+        }
+        HealthStepForSplit = step;
+    }
+    Color GetSplitBarColor(bool isBig)
+    {
+        int idx = (int)Mathf.Log(HealthStepForSplit / _HealthStepForSplit, SmallBarCountForBig);
+        if(isBig)
+            idx++;
+
+        if(idx == 0)
+            return Color.black;
+        else if (idx == 1)
+            return Color.gray;
+        else if(idx == 2)
+            return Color.green;
+        else if (idx == 3)
+            return Color.blue;
+        else if (idx == 4)
+            return Color.yellow;
+        else if (idx == 5)
+            return Color.cyan;
+        else if (idx == 6)
+            return Color.magenta;
+
+        return Color.white;
+    }
+
     void InitSplitBars()
     {
         foreach(Transform child in HealthBarLeftPivot)
@@ -71,21 +107,25 @@ public class HealthBar : MonoBehaviour
 
         int count = 1;
         float curHP = HealthStepForSplit;
+        float BigPartHP = HealthStepForSplit * SmallBarCountForBig;
         while(curHP < mHP.MaxHP)
         {
             float rate = curHP / mHP.MaxHP;
             float localPosX = rate * HpTotalWorldWidth;
 
-
             if(count % SmallBarCountForBig == 0)
             {
                 GameObject splitBigBar = Instantiate(SplitBarBigPrefab, HealthBarLeftPivot);
                 splitBigBar.transform.localPosition = new Vector3(localPosX, 0, 0);
+                splitBigBar.GetComponentInChildren<SpriteRenderer>().color = GetSplitBarColor(true);
             }
             else
             {
                 GameObject splitSmallBar = Instantiate(SplitBarSmallPrefab, HealthBarLeftPivot);
                 splitSmallBar.transform.localPosition = new Vector3(localPosX, 0, 0);
+                splitSmallBar.GetComponentInChildren<SpriteRenderer>().color = GetSplitBarColor(false);
+                float widthRate = Mathf.Min(1.0f, BigPartHP / mHP.MaxHP);
+                splitSmallBar.transform.localScale = new Vector3(widthRate, 1, 1);
             }
             
             count++;

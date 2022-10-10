@@ -20,7 +20,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public const int KillPointForNewUnit = 5;
     public const int KillPointForMineralUp = 5;
     public const int LineMobLimit = 80;
-    public const int StartKillPoint = 20;
+    public const int StartKillPoint = 10;
     public const int MergeCountLevelup = 3;
     public const int KillPointForLevelup = 0;
     public const int MergeCountReunit = 2;

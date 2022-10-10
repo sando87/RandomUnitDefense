@@ -21,7 +21,7 @@ public class UnitEnemy : UnitBase
         if(HitEffect != null)
             mBaseObj.Health.EventDamaged += OnDamaged;
 
-        mBaseObj.Health.InitHP(15 + (WaveIndex * WaveIndex * 30));
+        mBaseObj.Health.InitHP(30 + (WaveIndex * WaveIndex * 30));
         StartCoroutine(MoveAround());
     }
 

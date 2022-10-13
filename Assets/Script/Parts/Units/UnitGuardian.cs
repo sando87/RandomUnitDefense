@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-// 레벨업에 따른 최대 중첩 증가 및 번개 연쇄 개수 증가
+// 레벨업에 따른 검기 범위 사거리 뎀지 증가
 
 public class UnitGuardian : UnitPlayer
 {

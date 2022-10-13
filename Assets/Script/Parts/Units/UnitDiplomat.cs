@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-// 레벨업에 따른 방깍 증가
+// 피격시 범위 피해
+// 레벨업에 따른 개수 증가
 
 public class UnitDiplomat : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
+    [SerializeField] float _SplshRange = 0.1f;
     [SerializeField] float _SkillRange = 3.0f;
     
     [SerializeField] private Sprite[] ProjSprites = null;
@@ -17,6 +19,7 @@ public class UnitDiplomat : UnitPlayer
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
+    float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
     private MotionActionSingle mMotionAttack = null;
@@ -28,7 +31,8 @@ public class UnitDiplomat : UnitPlayer
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
-        StartCoroutine(RepeatBuff());
+
+        // StartCoroutine(RepeatBuff());
     }
 
     void OnAttack(int idx)
@@ -44,11 +48,19 @@ public class UnitDiplomat : UnitPlayer
         SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
         proj.transform.right = dir.normalized;
         float damage = mBaseObj.SpecProp.Damage;
+        float splashRange = SplshRange + ((mBaseObj.SpecProp.Level - 1) * 0.1f);
+        float projSize = proj.transform.localScale.x + ((mBaseObj.SpecProp.Level - 1) * 0.2f);
+        proj.transform.DOScale(projSize, 0.3f);
+
         proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
-            target.Health.GetDamaged(damage, mBaseObj);
+            Collider[] cols = target.DetectAround(splashRange, 1 << LayerID.Enemies);
+            foreach(Collider col in cols)
+            {
+                col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
+            }
 
             Destroy(proj.gameObject);
         });

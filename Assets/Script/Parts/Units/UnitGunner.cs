@@ -1,31 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
-// 레벨업에 따른 최대 이속 감소(레이져가 더 두껍게, 강하게 보이도록 필요)
+// 발사 피격시 랜덤하게 연쇄레이저
 
 public class UnitGunner : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 2;
-    [SerializeField] float _SkillRange = 2;
-    [SerializeField] float _SlowDuration = 1.0f;
-    [SerializeField][Range(0, 1)] float DotDamageRate = 0.1f;
+    [SerializeField] float _LaserPercent = 0.3f;
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
-    [SerializeField] BuffBase BuffPrefab = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
-    float SlowDuration { get { return _SlowDuration * mBaseObj.BuffProp.SkillDuration; } }
+    float LaserPercent { get { return _LaserPercent * mBaseObj.BuffProp.Percentage; } }
+    int LaserChainCount { get { return mBaseObj.SpecProp.Level; } }
 
-    private LaserAimming mLaserEffectObject = null;
     private MotionActionSingle mAttackMotion = null;
-    private MotionActionLoop mLaserMotion = null;
 
     void Start()
     {
@@ -34,11 +30,7 @@ public class UnitGunner : UnitPlayer
         mAttackMotion = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mAttackMotion.EventFired = OnAttack;
 
-        mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
-        mLaserMotion.EventStart = OnAttackBeamStart;
-        mLaserMotion.EventEnd = OnAttackBeamEnd;
         StartCoroutine(CoMotionSwitcher(mAttackMotion, () => AttackSpeed, () => AttackRange));
-        StartCoroutine(CoMotionSwitcher(mLaserMotion, () => 0, () => SkillRange));
     }
 
     private void OnAttack(int idx)
@@ -54,55 +46,61 @@ public class UnitGunner : UnitPlayer
 
         SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
         proj.transform.right = dir.normalized;
+        
         float damage = mBaseObj.SpecProp.Damage;
+        bool isHit = MyUtils.IsHitPercent(LaserPercent);
+        int laserChainCount = LaserChainCount;
+
         proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
             target.Health.GetDamaged(damage, mBaseObj);
 
+            if(isHit)
+            {
+                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage, laserChainCount);
+            }
+
             Destroy(proj.gameObject);
         });
     }
 
-    private void OnAttackBeamStart(BaseObject target)
+    private void AttackLaserBeam(BaseObject target, Transform startPos, float damage, int remainChainCount)
     {
-        if(mLaserEffectObject != null)
+        if(remainChainCount <= 0)
+            return;
+
+        LaserAimming laserEffectObject = LaserAimming.Play(startPos.position, target.Body.gameObject, "GunnerLaser");
+        laserEffectObject.transform.SetParent(startPos);
+        laserEffectObject.transform.DOLocalMoveY(0, 0.5f).OnComplete(() => Destroy(laserEffectObject.gameObject));
+
+        if(target.Health != null)
         {
-            Destroy(mLaserEffectObject.gameObject);
-            mLaserEffectObject = null;
-        }
-        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
-        mLaserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject, "GunnerLaser");
-        mLaserEffectObject.transform.SetParent(mBaseObj.FirePosition.transform);
-        StartCoroutine("CoAttackBeam");
-    }
-    IEnumerator CoAttackBeam()
-    {
-        BaseObject target = mLaserMotion.Target;
-        while (!IsOutOfSkillRange(target))
-        {
-            if(target.Health != null)
+            StartCoroutine(CoDamageLaser(target, damage, 0.5f));
+
+            Collider[] cols = target.DetectAround(2, 1 << LayerID.Enemies);
+            if(cols.Length > 1)
             {
-                float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
-                target.Health.GetDamaged(damage, mBaseObj);
+                var sortCols = cols.OrderBy((col) => (target.transform.position - col.transform.position).sqrMagnitude);
+                AttackLaserBeam(sortCols.ElementAt(1).GetBaseObject(), target.Body.transform, damage, remainChainCount - 1);
             }
-            target.BuffCtrl.ApplyBuff(BuffPrefab, 1);
-            yield return newWaitForSeconds.Cache(0.1f);
         }
-        mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
     }
-    private bool IsOutOfSkillRange(BaseObject target)
+
+    IEnumerator CoDamageLaser(BaseObject target, float damage, float duration)
     {
-        return (target.transform.position - mBaseObj.transform.position).magnitude > (SkillRange * 1.2f);
-    }
-    private void OnAttackBeamEnd()
-    {
-        if (mLaserEffectObject != null)
+        float time = 0;
+        float dotDamge = damage * 0.5f;
+        while(time < duration)
         {
-            Destroy(mLaserEffectObject.gameObject);
-            mLaserEffectObject = null;
+            yield return new WaitForSeconds(0.05f);
+            if(target == null || target.Health == null || target.Health.IsDead)
+                break;
+
+            target.Health.GetDamaged(dotDamge, mBaseObj);
+            dotDamge *= 0.5f;
+            time += 0.05f;
         }
-        StopCoroutine("CoAttackBeam");
     }
 }

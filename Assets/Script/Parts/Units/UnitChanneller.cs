@@ -5,8 +5,6 @@ using UnityEngine;
 
 // 레이저로 누적데미지를 입힌다.
 
-// 레벨업에 따른 레이저 개수 증가
-
 public class UnitChanneller : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-// animing되는 라인 갯수 증가
-// 레벨 업에 따른 기본 뎀지 증가, 크리티컬 뎀지 증가, aiming 시간 증가
+// animing되는 연출 개선(조준 흔들림, 조준 정렬되는 연출필요)
+// 레벨 업에 따른 기본 뎀지 증가, 크리티컬 확률 뎀지 증가, aiming 시간 증가
 
 public class UnitSniper : UnitPlayer
 {

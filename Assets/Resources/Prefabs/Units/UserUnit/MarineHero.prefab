@@ -370,8 +370,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e167e7d42b352b4c85a1857059786ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AttackSpeed: 2
-  _AttackRange: 3
+  _AttackSpeed: 1.5
+  _AttackRange: 1.5
   _SkillCastRate: 0.2
   _SkillDamageRate: 2
   _ACForFast: {fileID: 22100000, guid: 73798003a84bdd84c86c4eae69e858a8, type: 2}
@@ -546,7 +546,7 @@ MonoBehaviour:
   AttackDamage:
     value: 0
   AttackSpeed:
-    value: 10
+    value: 0
   AttackRange:
     value: 0
   SkillSpeed:
@@ -558,7 +558,7 @@ MonoBehaviour:
   SkillDuration:
     value: 0
   SplshRange:
-    value: 0
+    value: 10
   Percentage:
     value: 0
 --- !u!1 &3831130851046014922

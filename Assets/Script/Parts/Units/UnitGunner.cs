@@ -73,11 +73,13 @@ public class UnitGunner : UnitPlayer
 
         LaserAimming laserEffectObject = LaserAimming.Play(startPos.position, target.Body.gameObject, "GunnerLaser");
         laserEffectObject.transform.SetParent(startPos);
-        laserEffectObject.transform.DOLocalMoveY(0, 0.5f).OnComplete(() => Destroy(laserEffectObject.gameObject));
+        laserEffectObject.transform.DOLocalMoveY(0, 0.2f).OnComplete(() => Destroy(laserEffectObject.gameObject));
 
         if(target.Health != null)
         {
-            StartCoroutine(CoDamageLaser(target, damage, 0.5f));
+            target.Health.GetDamaged(damage, mBaseObj);
+
+            // StartCoroutine(CoDamageLaser(target, damage, 0.5f));
 
             Collider[] cols = target.DetectAround(2, 1 << LayerID.Enemies);
             if(cols.Length > 1)

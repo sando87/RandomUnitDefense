@@ -21,12 +21,12 @@ public class UnitEnemy : UnitBase
         if(HitEffect != null)
             mBaseObj.Health.EventDamaged += OnDamaged;
 
-        float baseHP = WaveIndex < 5 ? 30 :
-                        (WaveIndex < 10 ? 800 :
-                        (WaveIndex < 15 ? 3000 :
-                        (WaveIndex < 20 ? 10000 : 30000)));
+        // float baseHP = WaveIndex < 5 ? 30 :
+        //                 (WaveIndex < 10 ? 800 :
+        //                 (WaveIndex < 15 ? 3000 :
+        //                 (WaveIndex < 20 ? 10000 : 30000)));
 
-        mBaseObj.Health.InitHP(baseHP + (WaveIndex * WaveIndex * 30));
+        mBaseObj.Health.InitHP(30 + (WaveIndex * WaveIndex * 65));
         StartCoroutine(MoveAround());
     }
 

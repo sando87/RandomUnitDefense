@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _AttackSpeed: 1.5
-  _AttackRange: 1.5
+  _AttackRange: 2
   _SkillCastRate: 0.2
   _SkillDamageRate: 2
   _ACForFast: {fileID: 22100000, guid: 73798003a84bdd84c86c4eae69e858a8, type: 2}

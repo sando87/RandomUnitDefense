@@ -29,11 +29,49 @@ public class UnitMarineHero : UnitPlayer
     {
         int curLevel = mBaseObj.SpecProp.Level;
         mFireCount = curLevel + 1;
-        if(curLevel >= 4)
+        if (curLevel <= 1)
+        {
+            mFireCount = 2;
+        }
+        else if (curLevel <= 2)
+        {
+            mFireCount = 3;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 50;
+        }
+        else if (curLevel <= 3)
+        {
+            mFireCount = 4;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 250;
+        }
+        else if (curLevel <= 4)
+        {
+            mFireCount = 6;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-
-        if(curLevel >= 5)
+            _AttackSpeed *= 0.7f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 1250;
+        }
+        else if (curLevel <= 5)
+        {
+            mFireCount = 8;
+            mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             FireMotionSpeed = 1;
+            _AttackSpeed *= 0.5f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 6000;
+        }
+        else if (curLevel <= 6)
+        {
+            mFireCount = 10;
+            mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
+            FireMotionSpeed = 2;
+            _AttackSpeed *= 0.2f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 30000;
+        }
+        
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
@@ -58,7 +96,7 @@ public class UnitMarineHero : UnitPlayer
     {
         BaseObject target = _target;
 
-        while (!IsOutOfSkillRange(target) && mCurFireCount < mFireCount)
+        while (mCurFireCount < mFireCount)
         {
             yield return null;
         }

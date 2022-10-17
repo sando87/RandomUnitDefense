@@ -256,9 +256,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public void OnMergeForLevelup()
     {
-        SortUnitsForLevelUp();
         if(IsMergeableForLevelUp())
-            MergeForLevelup(mUnitsForLevelup[0], mUnitsForLevelup[1], mUnitsForLevelup[2]);
+        {
+            BaseObject[] units = SelectedUnits.Keys.ToArray();
+            MergeForLevelup(units[0], units[1], units[2]);
+        }
 
         DeSelectAll();
     }
@@ -267,7 +269,19 @@ public class InGameSystem : SingletonMono<InGameSystem>
         unitA.MotionManager.SwitchMotion<MotionDisappear>();
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
         unitC.MotionManager.SwitchMotion<MotionDisappear>();
-        BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
+        
+        List<UserCharactor> list = new List<UserCharactor>();
+        foreach(UserCharactor charData in UserCharactors.Inst.Enums())
+        {
+            if(charData.prefab.GetBaseObject().SpecProp.DamageType != unitA.SpecProp.DamageType)
+                continue;
+
+            list.Add(charData);
+        }
+        
+        int randomIndex = UnityEngine.Random.Range(0, list.Count);
+
+        BaseObject newUnit = CreateUnit(list[randomIndex].ID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
         newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
     }
@@ -285,7 +299,20 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         unitA.MotionManager.SwitchMotion<MotionDisappear>();
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
-        BaseObject newUnit = CreateRandomUnit();
+        
+        List<UserCharactor> list = new List<UserCharactor>();
+        foreach(UserCharactor charData in UserCharactors.Inst.Enums())
+        {
+            if(charData.ID == unitA.Unit.ResourceID)
+                continue;
+                
+            if(unitA.SpecProp.Level > 1 && charData.prefab.GetBaseObject().SpecProp.DamageType != unitA.SpecProp.DamageType)
+                continue;
+
+            list.Add(charData);
+        }
+        
+        BaseObject newUnit = CreateUnit(list.Count > 0 ? list[UnityEngine.Random.Range(0, list.Count)].ID : unitA.Unit.ResourceID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level;
     }
     public void RefundUnit()
@@ -462,8 +489,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public bool IsMergeableForLevelUp()
     {
-        SortUnitsForLevelUp();
-        return mUnitsForLevelup.Count == 3;
+        if (SelectedUnits.Count == 3)
+        {
+            BaseObject[] units = SelectedUnits.Keys.ToArray();
+            return units[0].IsMergable(units[1]) && units[0].IsMergable(units[2]);
+        }
+        return false;
     }
     public bool IsMergeableForReUnit()
     {

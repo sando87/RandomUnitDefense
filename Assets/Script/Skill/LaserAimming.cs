@@ -9,8 +9,6 @@ public class LaserAimming : MonoBehaviour
 
     public GameObject Target { get; set; } = null;
 
-    private Vector3 mDestPos = Vector3.zero;
-
     public static LaserAimming Play(Vector3 startPos, GameObject target, string vfxName)
     {
         LaserAimming prefab = ResourcesCache.Load<LaserAimming>("Prefabs/Effects/" + vfxName);
@@ -27,13 +25,17 @@ public class LaserAimming : MonoBehaviour
 
     private void UpdateTranform()
     {
-        if (Target != null)
-            mDestPos = Target.transform.position;
-
-        Vector3 dir = mDestPos - transform.position;
+        if (Target == null)
+        {
+            transform.localScale = Vector3.zero;
+            return;
+        }
+            
+        Vector3 dir = Target.transform.position - transform.position;
         dir.z = 0;
+        transform.localScale = Vector3.one;
         transform.right = dir.normalized;
         Laser.transform.localScale = new Vector3(dir.magnitude, 1, 1);
-        Outro.transform.position = mDestPos;
+        Outro.transform.position = Target.transform.position;
     }
 }

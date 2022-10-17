@@ -11,5 +11,40 @@ using UnityEngine;
 
 public class UnitPlayer : UnitBase
 {
+    private LaserAimming mBuffEffectLine = null;
 
+    protected IEnumerator KeepBuff(BuffBase buffPrefab)
+    {
+        mBaseObj.GetComponentInChildren<UserInput>().EventSelected += () => ShowPassiveBuffEffect();
+        mBaseObj.GetComponentInChildren<UserInput>().EventDeSelected += () => HidePassiveBuffEffect();
+
+        while(true)
+        {
+            yield return newWaitForSeconds.Cache(1);
+            Collider col = mBaseObj.DetectMostCloseAround(1, 1 << mBaseObj.gameObject.layer);
+            if(col != null)
+            {
+                col.GetBaseObject().BuffCtrl.ApplyBuff(buffPrefab, 1.1f);
+            }
+
+            if(mBuffEffectLine != null)
+                mBuffEffectLine.Target = col == null ? null : col.GetBaseObject().gameObject;
+        }
+    }
+
+    void ShowPassiveBuffEffect()
+    {
+        Vector3 startPosition = mBaseObj.Body.Center;
+        mBuffEffectLine = LaserAimming.Play(startPosition, null, "ChannellerLaser");
+        mBuffEffectLine.transform.SetParent(mBaseObj.Body.transform);
+
+    }
+    void HidePassiveBuffEffect()
+    {
+        if(mBuffEffectLine != null)
+        {
+            Destroy(mBuffEffectLine.gameObject);
+            mBuffEffectLine = null;
+        }
+    }
 }

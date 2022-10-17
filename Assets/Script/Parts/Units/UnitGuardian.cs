@@ -31,7 +31,7 @@ public class UnitGuardian : UnitPlayer
         MotionAttackB.EventFired = OnAttack;
 
         StartCoroutine(CoMotionSwitcherMelee(new MotionBase[] { MotionAttackA, MotionAttackB }, DetectArea));
-        StartCoroutine(RepeatBuff());
+        StartCoroutine(KeepBuff(BuffEffectPrefab));
     }
     
     protected IEnumerator CoMotionSwitcherMelee(MotionBase[] motions, BoxCollider detectArea)
@@ -79,17 +79,6 @@ public class UnitGuardian : UnitPlayer
             {
                 hp.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
             }
-        }
-    }
-    
-    private IEnumerator RepeatBuff()
-    {
-        while(true)
-        {
-            yield return newWaitForSeconds.Cache(0.5f);
-            Collider[] cols = mBaseObj.DetectAround(SkillRange, 1 << mBaseObj.gameObject.layer);
-            foreach (Collider col in cols)
-                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffectPrefab, 1);
         }
     }
 

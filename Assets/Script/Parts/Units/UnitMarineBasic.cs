@@ -28,7 +28,7 @@ public class UnitMarineBasic : UnitPlayer
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
-        StartCoroutine(RepeatBuff());
+        StartCoroutine(KeepBuff(PassiveBuff));
 
         InitMuzzleEffect();
     }
@@ -64,17 +64,6 @@ public class UnitMarineBasic : UnitPlayer
                     Destroy(obj, 1.0f);
                 }
             }
-        }
-    }
-
-    private IEnumerator RepeatBuff()
-    {
-        while(true)
-        {
-            yield return newWaitForSeconds.Cache(0.5f);
-            Collider[] cols = mBaseObj.DetectAround(BuffRange, 1 << mBaseObj.gameObject.layer);
-            foreach (Collider col in cols)
-                col.GetBaseObject().BuffCtrl.ApplyBuff(PassiveBuff, 1);
         }
     }
 

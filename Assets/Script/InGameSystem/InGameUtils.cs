@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -133,6 +134,19 @@ public static class InGameUtils
     public static Collider[] DetectAround(this BaseObject obj, float range, int layerMask)
     {
         return DetectAround(obj.transform.position, range, layerMask);
+    }
+    public static Collider DetectMostCloseAround(this BaseObject obj, float range, int layerMask)
+    {
+        Collider[] cols = obj.DetectAround(range, layerMask);
+        if(cols.Length > 0)
+        {
+            var sortCols = cols.OrderBy((col) => (obj.transform.position - col.transform.position).sqrMagnitude);
+            if(sortCols.First().GetBaseObject() == obj)
+                return cols.Length == 1 ? null : sortCols.ElementAt(1);
+            else
+                return sortCols.ElementAt(0);
+        }
+        return null;
     }
     public static Collider[] DetectAround(this BaseObject obj, BoxCollider boxArea, int layerMask)
     {

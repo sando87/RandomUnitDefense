@@ -32,7 +32,7 @@ public class UnitDiplomat : UnitPlayer
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
 
-        // StartCoroutine(RepeatBuff());
+        StartCoroutine(KeepBuff(BuffEffect));
     }
 
     void OnAttack(int idx)
@@ -64,18 +64,5 @@ public class UnitDiplomat : UnitPlayer
 
             Destroy(proj.gameObject);
         });
-    }
-
-    
-
-    private IEnumerator RepeatBuff()
-    {
-        while(true)
-        {
-            yield return newWaitForSeconds.Cache(0.5f);
-            Collider[] cols = mBaseObj.DetectAround(SkillRange, 1 << mBaseObj.gameObject.layer);
-            foreach (Collider col in cols)
-                col.GetBaseObject().BuffCtrl.ApplyBuff(BuffEffect, 1);
-        }
     }
 }

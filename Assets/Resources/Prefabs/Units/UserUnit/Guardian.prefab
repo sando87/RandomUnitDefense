@@ -719,7 +719,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 1
+    attackType: 3
     damage: 10
     damagesPerUp:
     - 1

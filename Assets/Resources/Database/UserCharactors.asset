@@ -43,3 +43,9 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: bf754f57f9f0dac48b2aed72899bcf8a,
       type: 3}
     skillDescription: "\uC77C\uC815\uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC"
+  - ID: 638017246608224389
+    name: Sniper
+    image: {fileID: 21300000, guid: 08a867f1150f2334683653c13f4210f5, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: bdd3c23c87e83c44bafbe8dcc6d66955,
+      type: 3}
+    skillDescription: "\uC77C\uC815\uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC"

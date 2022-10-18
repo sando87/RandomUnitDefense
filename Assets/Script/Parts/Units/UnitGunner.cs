@@ -25,6 +25,39 @@ public class UnitGunner : UnitPlayer
 
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        if (curLevel <= 1)
+        {
+        }
+        else if (curLevel <= 2)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 40;
+        }
+        else if (curLevel <= 3)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 200;
+        }
+        else if (curLevel <= 4)
+        {
+            _AttackSpeed *= 0.7f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 1000;
+        }
+        else if (curLevel <= 5)
+        {
+            _AttackSpeed *= 0.5f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 5000;
+        }
+        else if (curLevel <= 6)
+        {
+            _AttackSpeed *= 0.2f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 25000;
+        }
+        
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         mAttackMotion = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();

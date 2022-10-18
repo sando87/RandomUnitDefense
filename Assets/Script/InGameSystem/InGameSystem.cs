@@ -273,7 +273,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         List<UserCharactor> list = new List<UserCharactor>();
         foreach(UserCharactor charData in UserCharactors.Inst.Enums())
         {
-            if(charData.prefab.GetBaseObject().SpecProp.DamageType != unitA.SpecProp.DamageType)
+            if(charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != unitA.SpecProp.DamageType)
                 continue;
 
             list.Add(charData);
@@ -306,7 +306,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
             if(charData.ID == unitA.Unit.ResourceID)
                 continue;
                 
-            if(unitA.SpecProp.Level > 1 && charData.prefab.GetBaseObject().SpecProp.DamageType != unitA.SpecProp.DamageType)
+            if(unitA.SpecProp.Level > 1 && charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != unitA.SpecProp.DamageType)
                 continue;
 
             list.Add(charData);
@@ -531,5 +531,48 @@ public class InGameSystem : SingletonMono<InGameSystem>
             float distB = (center - unitB.transform.position).sqrMagnitude;
             return distA > distB ? 1 : -1;
         });
+    }
+    
+
+
+    // 현재 선택된 유닛기준으로 Merge가능한 유닛별로 리스팅해서 반환
+    public List<BaseObject[]> DetectMergeableUnits(int unitMergeCount)
+    {
+        List<BaseObject[]> rets = new List<BaseObject[]>();
+
+        BaseObject[] units = SelectedUnits.Keys.ToArray();
+        for (int i = 0; i < units.Length; ++i)
+        {
+            if (units[i] == null) continue;
+
+            List<int> sameUnitIndex = new List<int>();
+            sameUnitIndex.Add(i);
+            int j = i + 1;
+            for (; j < units.Length; ++j)
+            {
+                if (units[j] == null) continue;
+
+                BaseObject bo = units[j];
+                if (bo.IsMergable(units[i]))
+                {
+                    sameUnitIndex.Add(j);
+                    if(sameUnitIndex.Count >= unitMergeCount)
+                    {
+                        List<BaseObject> subset = new List<BaseObject>();
+                        foreach (int subIdx in sameUnitIndex)
+                        {
+                            subset.Add(units[subIdx]);
+                            units[subIdx] = null;
+                        }
+                        rets.Add(subset.ToArray());
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(rets.Count > 0)
+            return rets;
+        return null;
     }
 }

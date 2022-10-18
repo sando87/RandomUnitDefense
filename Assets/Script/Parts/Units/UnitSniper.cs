@@ -26,6 +26,39 @@ public class UnitSniper : UnitPlayer
 
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        if (curLevel <= 1)
+        {
+        }
+        else if (curLevel <= 2)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 50;
+        }
+        else if (curLevel <= 3)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 400;
+        }
+        else if (curLevel <= 4)
+        {
+            _AttackSpeed *= 0.7f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 3200;
+        }
+        else if (curLevel <= 5)
+        {
+            _AttackSpeed *= 0.5f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 25600;
+        }
+        else if (curLevel <= 6)
+        {
+            _AttackSpeed *= 0.2f;
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 204800;
+        }
+
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         mMotionAiming = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();

@@ -258,8 +258,15 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         if(IsMergeableForLevelUp())
         {
-            BaseObject[] units = SelectedUnits.Keys.ToArray();
-            MergeForLevelup(units[0], units[1], units[2]);
+            List<BaseObject[]> groups = GroupBySameUnits();
+            foreach(BaseObject[] sameUnits in groups)
+            {
+                int loopCnt = sameUnits.Length / 3;
+                for(int i = 0; i < loopCnt; ++i)
+                {
+                    MergeForLevelup(sameUnits[(i*3) + 0], sameUnits[(i*3) + 1], sameUnits[(i*3) + 2]);
+                }
+            }
         }
 
         DeSelectAll();
@@ -289,8 +296,15 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         if(IsMergeableForReUnit())
         {
-            BaseObject[] units = SelectedUnits.Keys.ToArray();
-            MergeForReunit(units[0], units[1]);
+            List<BaseObject[]> groups = GroupBySameUnits();
+            foreach(BaseObject[] sameUnits in groups)
+            {
+                int loopCnt = sameUnits.Length / 2;
+                for(int i = 0; i < loopCnt; ++i)
+                {
+                    MergeForReunit(sameUnits[(i*2) + 0], sameUnits[(i*2) + 1]);
+                }
+            }
         }
 
         DeSelectAll();
@@ -342,20 +356,28 @@ public class InGameSystem : SingletonMono<InGameSystem>
         }
         else if (unit.gameObject.layer == LayerID.Player)
         {
-            if(SelectedUnits.ContainsKey(unit))
-            {
-                DeSelectUnit(unit);
-            }
-            else
-            {
-                SelectUnit(unit);
-                EventSelectUnit?.Invoke();
-            }
+            DeSelectAll();
+            SelectUnit(unit);
+            EventSelectUnit?.Invoke();
         }
     }
     private void OnLongClickUnit(Vector3 worldPos)
     {
-        DeSelectAll();
+        if(InGameInput.Instance.DownObject != null && InGameInput.Instance.DownObject.gameObject.layer == LayerID.Player)
+        {
+            DeSelectAll();
+            
+            long targetUnitID = InGameInput.Instance.DownObject.Unit.ResourceID;
+            UnitPlayer[] allPlayerUnits = StageRoot.transform.GetComponentsInChildren<UnitPlayer>();
+            foreach(UnitPlayer playerUnit in allPlayerUnits)
+            {
+                if(playerUnit.ResourceID == targetUnitID)
+                {
+                    SelectUnit(playerUnit.GetBaseObject());
+                }
+            }
+        }
+        
     }
     private void OnDragStart(Vector3 worldPos)
     {
@@ -363,7 +385,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void OnDragging(Vector3 worldPos)
     {
-        if(InGameInput.Instance.DownObject != null)
+        if(InGameInput.Instance.DownObject != null && InGameInput.Instance.DownObject.gameObject.layer == LayerID.Player)
         {
             BaseObject target = InGameInput.Instance.DownObject;
             UserInput ui = target.GetComponentInChildren<UserInput>();
@@ -378,12 +400,29 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void OnDragEnd(Vector3 worldEndPos)
     {
-        if (InGameInput.Instance.DownObject != null)
+        if (InGameInput.Instance.DownObject != null && InGameInput.Instance.DownObject.gameObject.layer == LayerID.Player)
         {
             BaseObject target = InGameInput.Instance.DownObject;
             UserInput ui = target.GetComponentInChildren<UserInput>();
             if (ui != null)
-                ui.OnMove(worldEndPos);
+            {
+                // 이동시키는 유닛이 선택된 상태이면 같이 선택된 모든 유닛 이동
+                if(ui.IsSelected)
+                {
+                    foreach(var item in SelectedUnits)
+                    {
+                        BaseObject unit = item.Key;
+                        Vector3 dir = worldEndPos - unit.transform.position;
+                        Vector3 dest = worldEndPos - dir.normalized * UnityEngine.Random.Range(0.5f, 1);
+                        unit.GetComponentInChildren<UserInput>().OnMove(dest);
+                    }
+                        
+                }
+                else // 아니면 드래깅했던 유닛 하나만 이동
+                {
+                    ui.OnMove(worldEndPos);
+                }
+            }
         }
         else
         {
@@ -489,19 +528,21 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public bool IsMergeableForLevelUp()
     {
-        if (SelectedUnits.Count == 3)
+        List<BaseObject[]> groups = GroupBySameUnits();
+        foreach(BaseObject[] group in groups)
         {
-            BaseObject[] units = SelectedUnits.Keys.ToArray();
-            return units[0].IsMergable(units[1]) && units[0].IsMergable(units[2]);
+            if(group.Length >= 3)
+                return true;
         }
         return false;
     }
     public bool IsMergeableForReUnit()
     {
-        if (SelectedUnits.Count == 2)
+        List<BaseObject[]> groups = GroupBySameUnits();
+        foreach(BaseObject[] group in groups)
         {
-            BaseObject[] units = SelectedUnits.Keys.ToArray();
-            return units[0].IsMergable(units[1]);
+            if(group.Length >= 2)
+                return true;
         }
         return false;
     }
@@ -535,44 +576,26 @@ public class InGameSystem : SingletonMono<InGameSystem>
     
 
 
-    // 현재 선택된 유닛기준으로 Merge가능한 유닛별로 리스팅해서 반환
-    public List<BaseObject[]> DetectMergeableUnits(int unitMergeCount)
+    // 현재 선택된 유닛기준으로 Merge가능한 유닛별로 리스팅해서 반환(같은유닛, 같은레벨이여야 합성 가능)
+    public List<BaseObject[]> GroupBySameUnits()
     {
-        List<BaseObject[]> rets = new List<BaseObject[]>();
+        Dictionary<long, List<BaseObject>> container = new Dictionary<long, List<BaseObject>>();
 
         BaseObject[] units = SelectedUnits.Keys.ToArray();
-        for (int i = 0; i < units.Length; ++i)
+        foreach(var item in SelectedUnits)
         {
-            if (units[i] == null) continue;
+            BaseObject unit = item.Key;
+            long key = unit.Unit.ResourceID + unit.SpecProp.Level;
+            if(!container.ContainsKey(key))
+                container[key] = new List<BaseObject>();
 
-            List<int> sameUnitIndex = new List<int>();
-            sameUnitIndex.Add(i);
-            int j = i + 1;
-            for (; j < units.Length; ++j)
-            {
-                if (units[j] == null) continue;
-
-                BaseObject bo = units[j];
-                if (bo.IsMergable(units[i]))
-                {
-                    sameUnitIndex.Add(j);
-                    if(sameUnitIndex.Count >= unitMergeCount)
-                    {
-                        List<BaseObject> subset = new List<BaseObject>();
-                        foreach (int subIdx in sameUnitIndex)
-                        {
-                            subset.Add(units[subIdx]);
-                            units[subIdx] = null;
-                        }
-                        rets.Add(subset.ToArray());
-                        break;
-                    }
-                }
-            }
+            container[key].Add(unit);
         }
 
-        if(rets.Count > 0)
-            return rets;
-        return null;
+        List<BaseObject[]> ret = new List<BaseObject[]>();
+        foreach(var item in container)
+            ret.Add(item.Value.ToArray());
+
+        return ret;
     }
 }

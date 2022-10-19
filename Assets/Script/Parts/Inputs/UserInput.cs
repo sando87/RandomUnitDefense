@@ -15,6 +15,8 @@ public class UserInput : CharacterInput
     private BaseObject mBaseObject = null;
     private GameObject mIndicator = null;
 
+    public bool IsSelected { get; private set; } = false;
+
     void Awake()
     {
         mBaseObject = this.GetBaseObject();
@@ -23,11 +25,13 @@ public class UserInput : CharacterInput
     public void OnSelect()
     {
         if(Lock) return;
+        IsSelected = true;
         EventSelected?.Invoke();
     }
     public void OnDeSelect()
     {
         if (Lock) return;
+        IsSelected = false;
         EventDeSelected?.Invoke();
     }
     public void OnMove(Vector3 destination)

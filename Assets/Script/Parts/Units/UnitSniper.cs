@@ -14,6 +14,7 @@ public class UnitSniper : UnitPlayer
     [SerializeField][Range(1, 10)] float _CriticalDamageMultiplier = 3.0f;
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] private Sprite[] AimingSprites = null;
+    [SerializeField] LineRenderer AimmingLine = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -66,6 +67,10 @@ public class UnitSniper : UnitPlayer
         mMotionShoot = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionShoot.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAiming, () => AttackSpeed, () => AttackRange));
+
+        AimmingLine.positionCount = 2;
+        AimmingLine.SetPositions(new Vector3[] { Vector3.zero, Vector3.zero });
+        AimmingLine.gameObject.SetActive(false);
     }
 
     private void OnAttackBeamStart(BaseObject target)
@@ -75,9 +80,12 @@ public class UnitSniper : UnitPlayer
             Destroy(mAimingEffect.gameObject);
             mAimingEffect = null;
         }
+        
+        AimmingLine.gameObject.SetActive(true);
+        
         mAimingEffect = SpritesAnimator.Play(target.Body.Center, AimingSprites, false);
         mAimingEffect.transform.SetParent(target.transform);
-        mAimingEffect.EventEnd = () => 
+        mAimingEffect.EventEnd = () =>
         {
             mMotionShoot.Target = target;
             mBaseObj.MotionManager.SwitchMotion(mMotionShoot);
@@ -85,6 +93,11 @@ public class UnitSniper : UnitPlayer
     }
     private void OnAttackBeamUpdate(BaseObject target)
     {
+        Vector3 startPos = mBaseObj.FirePosition.transform.position;
+        Vector3 endPos = target.Body.Center;
+        AimmingLine.SetPosition(0, startPos);
+        AimmingLine.SetPosition(1, endPos);
+
         if (IsOutOfRange(target))
         {
             mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
@@ -96,6 +109,7 @@ public class UnitSniper : UnitPlayer
     }
     private void OnAttackBeamEnd()
     {
+        AimmingLine.gameObject.SetActive(false);
         if (mAimingEffect != null)
         {
             Destroy(mAimingEffect.gameObject);

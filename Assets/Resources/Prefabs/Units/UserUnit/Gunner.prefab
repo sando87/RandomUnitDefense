@@ -934,9 +934,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd90507403171433284c963d61285624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AttackSpeed: 0.5
-  _AttackRange: 4
-  _LaserPercent: 0.3
+  _AttackSpeed: 1
+  _AttackRange: 3
+  _LaserPercent: 0.7
   IntroSprites:
   - {fileID: 21300000, guid: 75859ed2dc50109409737b4ce8cf88e8, type: 3}
   - {fileID: 21300000, guid: 3ee55dad11958ed43b0f211d345cf298, type: 3}

@@ -81,7 +81,7 @@ public class UnitGunner : UnitPlayer
         bool isHit = MyUtils.IsHitPercent(LaserPercent);
         int laserChainCount = LaserChainCount;
 
-        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
+        proj.transform.CoMoveTo(target.Body.transform, 0.5f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
@@ -89,7 +89,7 @@ public class UnitGunner : UnitPlayer
 
             if(isHit)
             {
-                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage, laserChainCount);
+                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage * 3, laserChainCount);
             }
 
             Destroy(proj.gameObject);

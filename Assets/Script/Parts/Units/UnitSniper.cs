@@ -128,7 +128,7 @@ public class UnitSniper : UnitPlayer
         LaserAimming laserObj = LaserAimming.Play(firePosition, target.Body.gameObject, "SniperLaser");
         this.ExDelayedCoroutine(1, () => Destroy(laserObj.gameObject));
 
-        SpritesAnimator.Play(target.Body.Center, OutroSprites);
+        SpritesAnimator.Play(target.transform.position, OutroSprites);
 
         float damage = mBaseObj.SpecProp.Damage;
         int percent = (int)(CriticalPercent * 100.0f);
@@ -136,7 +136,15 @@ public class UnitSniper : UnitPlayer
         {
             damage *= CriticalDamageMultiplier;
         }
-
-        target.Health.GetDamaged(damage, mBaseObj);
+        
+        Collider[] cols = Physics.OverlapSphere(target.Body.Center, 0.5f, 1 << LayerID.Enemies);
+        foreach (Collider col in cols)
+        {
+            Health hp = col.GetComponentInBaseObject<Health>();
+            if (hp != null)
+            {
+                hp.GetDamaged(damage, mBaseObj);
+            }
+        }
     }
 }

@@ -37,7 +37,7 @@ public class MotionMove : MotionBase
 
         Vector3 diff = (Destination - mBaseObject.transform.position).ZeroZ();
         mBaseObject.transform.position += (diff.normalized * mBaseObject.SpecProp.MoveSpeed * Time.deltaTime);
-        if(diff.magnitude < 0.1f)
+        if(diff.magnitude < 0.01f || Vector3.Dot(diff, (Destination - mBaseObject.transform.position)) < 0)
         {
             SwitchMotionToIdle();
         }

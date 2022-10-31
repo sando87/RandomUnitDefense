@@ -11,15 +11,18 @@ using UnityEngine.EventSystems;
 public class InGameInput : SingletonMono<InGameInput>
 {
     [SerializeField] float _LongPressDurtaion = 1.0f;
+    [SerializeField] float _DoubleClickInterval = 0.5f;
 
     private Camera mWorldCam = null;
     private bool mIsDownNow = false;
     private bool mIsDragging = false;
+    private long mFirstClickTick = 0;
     private BaseObject mDownObject = null;
     private Vector3 mWorldDownPosition = Vector3.zero;
 
     public bool Lock { get; set; } = false;
     public event System.Action<BaseObject> EventClick;
+    public event System.Action<BaseObject> EventDoubleClick;
     public event System.Action<Vector3> EventLongClick;
     public event System.Action<Vector3> EventDragStart;
     public event System.Action<Vector3> EventDragging;
@@ -94,13 +97,15 @@ public class InGameInput : SingletonMono<InGameInput>
             if(MyUtils.RaycastScreenToWorld(mWorldCam, InputWrapper.Instance.MousePosition(), 1 << LayerID.Player | 1 << LayerID.Enemies | 1 << LayerID.ThemeBackground, out RaycastHit hit))
             {
                 BaseObject upObject = hit.collider.GetBaseObject();
-                if (upObject == mDownObject)
+                if(MyUtils.IsCooltimeOver(mFirstClickTick, _DoubleClickInterval))
                 {
-                    EventClick?.Invoke(mDownObject);
+                    EventClick?.Invoke(upObject == mDownObject ? mDownObject : null);
+                    mFirstClickTick = DateTime.Now.Ticks;
                 }
                 else
                 {
-                    EventClick?.Invoke(null);
+                    EventDoubleClick?.Invoke(upObject == mDownObject ? mDownObject : null);
+                    mFirstClickTick = 0;
                 }
             }
         }

@@ -183,13 +183,15 @@ public class RUIFormInGame : RUiForm
 
     private void OnClickCreateUnit()
     {
-        if (!GameMgr.TryCreateRandomUnit())
-            RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForNewUnit + " kill point.", null);
+        GameMgr.TryCreateRandomUnit();
+        // if (!GameMgr.TryCreateRandomUnit())
+        //     RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForNewUnit + " kill point.", null);
     }
     private void OnClickRaiseMineral()
     {
-        if (!GameMgr.RaiseMineralStep())
-            RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForMineralUp + " kill point.", null);
+        GameMgr.RaiseMineralStep();
+        // if (!GameMgr.RaiseMineralStep())
+        //     RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForMineralUp + " kill point.", null);
     }
     private void OnClickToggleUpgradePanel()
     {

@@ -55,7 +55,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     void Start()
     {
         InGameInput.Instance.EventClick += OnClickUnit;
-        InGameInput.Instance.EventLongClick += OnLongClickUnit;
+        InGameInput.Instance.EventDoubleClick += OnDoubleClickUnit;
         InGameInput.Instance.EventDragStart += OnDragStart;
         InGameInput.Instance.EventDragging += OnDragging;
         InGameInput.Instance.EventDragEnd += OnDragEnd;
@@ -220,6 +220,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
             if (WaveNumber > LineMobIDs.Count)
             {
+                yield return new WaitUntil(() => LineMobCount <= 0);
                 FinishGame(true);
                 break;
             }
@@ -361,17 +362,18 @@ public class InGameSystem : SingletonMono<InGameSystem>
             EventSelectUnit?.Invoke();
         }
     }
-    private void OnLongClickUnit(Vector3 worldPos)
+    private void OnDoubleClickUnit(BaseObject target)
     {
         if(InGameInput.Instance.DownObject != null && InGameInput.Instance.DownObject.gameObject.layer == LayerID.Player)
         {
             DeSelectAll();
             
             long targetUnitID = InGameInput.Instance.DownObject.Unit.ResourceID;
+            int targetUnitLevel = InGameInput.Instance.DownObject.SpecProp.Level;
             UnitPlayer[] allPlayerUnits = StageRoot.transform.GetComponentsInChildren<UnitPlayer>();
             foreach(UnitPlayer playerUnit in allPlayerUnits)
             {
-                if(playerUnit.ResourceID == targetUnitID)
+                if(playerUnit.ResourceID == targetUnitID && playerUnit.GetBaseObject().SpecProp.Level == targetUnitLevel)
                 {
                     SelectUnit(playerUnit.GetBaseObject());
                 }
@@ -407,13 +409,22 @@ public class InGameSystem : SingletonMono<InGameSystem>
             if (ui != null)
             {
                 // 이동시키는 유닛이 선택된 상태이면 같이 선택된 모든 유닛 이동
-                if(ui.IsSelected)
+                if(ui.IsSelected && SelectedUnits.Count > 1)
                 {
+                    Vector3 cenPos = Vector3.zero;
                     foreach(var item in SelectedUnits)
                     {
                         BaseObject unit = item.Key;
-                        Vector3 dir = worldEndPos - unit.transform.position;
-                        Vector3 dest = worldEndPos - dir.normalized * UnityEngine.Random.Range(0.5f, 1);
+                        cenPos += unit.transform.position;
+                    }
+                    cenPos /= SelectedUnits.Count;
+
+                    foreach(var item in SelectedUnits)
+                    {
+                        BaseObject unit = item.Key;
+                        Vector3 dir = unit.transform.position - cenPos;
+                        float dist = dir.magnitude / 3.0f;
+                        Vector3 dest = worldEndPos + (dir.normalized * dist);
                         unit.GetComponentInChildren<UserInput>().OnMove(dest);
                     }
                         

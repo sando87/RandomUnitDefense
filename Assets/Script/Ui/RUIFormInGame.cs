@@ -219,8 +219,8 @@ public class RUIFormInGame : RUiForm
         else if (selBtn == UpgradeWeaponE)
             ret = GameMgr.UpgradeWeapon(UpgradeType.Missile);
 
-        if (!ret)
-            RUiMessageBox.PopUp("Not enough minerals.", null);
+        // if (!ret)
+        //     RUiMessageBox.PopUp("Not enough minerals.", null);
     }
 
 

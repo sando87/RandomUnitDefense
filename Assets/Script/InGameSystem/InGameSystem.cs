@@ -13,14 +13,14 @@ public enum UpgradeType
 
 public class InGameSystem : SingletonMono<InGameSystem>
 {
-    public const float MineralIntervalSec = 3.0f;
-    public const float WaveIntervalSec = 3.0f;
-    public const int MobCountPerWave = 30;
-    public const float LineMobBurstIntervalSec = 1.7f;
-    public const int KillPointForNewUnit = 5;
-    public const int KillPointForMineralUp = 5;
-    public const int LineMobLimit = 80;
-    public const int StartKillPoint = 10;
+    public const float MineralIntervalSec = 5.0f;
+    public const float WaveIntervalSec = 5.0f;
+    public const int MobCountPerWave = 60;
+    public const float LineMobBurstIntervalSec = 1.0f;
+    public const int KillPointForNewUnit = 10;
+    public const int KillPointForMineralUp = 10;
+    public const int LineMobLimit = 150;
+    public const int StartKillPoint = 20;
     public const int MergeCountLevelup = 3;
     public const int KillPointForLevelup = 0;
     public const int MergeCountReunit = 2;
@@ -59,6 +59,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
         InGameInput.Instance.EventDragStart += OnDragStart;
         InGameInput.Instance.EventDragging += OnDragging;
         InGameInput.Instance.EventDragEnd += OnDragEnd;
+
+        InputWrapper.Instance.EventDownTriggered += (it) => 
+        {
+            if(it == InputType.KeyA) Time.timeScale += 0.2f;
+            else if(it == InputType.KeyB) Time.timeScale -= 0.2f;
+        };
     }
 
     public void StartGame()
@@ -289,7 +295,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
         
         int randomIndex = UnityEngine.Random.Range(0, list.Count);
 
-        BaseObject newUnit = CreateUnit(list[randomIndex].ID);
+        //BaseObject newUnit = CreateUnit(list[randomIndex].ID);
+        BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
         newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
     }

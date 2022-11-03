@@ -28,21 +28,30 @@ public class UnitGunner : UnitPlayer
         int curLevel = mBaseObj.SpecProp.Level;
         if (curLevel <= 1)
         {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 4;
+            spec.damagesPerUp[0] = 2;
+            _AttackSpeed = 0.5f;
         }
         else if (curLevel <= 2)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 50;
+            spec.damage = 270;
+            spec.damagesPerUp[1] = 8;
+            _AttackSpeed = 1.0f;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 300;
+            spec.damage = 1420;
+            spec.damagesPerUp[2] = 26;
+            _AttackSpeed = 1.5f;
         }
         else if (curLevel <= 4)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 1800;
+            spec.damage = 230;
+            spec.damagesPerUp[3] = 10;
         }
         else if (curLevel <= 5)
         {
@@ -79,17 +88,19 @@ public class UnitGunner : UnitPlayer
         
         float damage = mBaseObj.SpecProp.Damage;
         bool isHit = MyUtils.IsHitPercent(LaserPercent);
-        int laserChainCount = LaserChainCount;
+        int laserChainCount = LaserChainCount + 1;
 
         proj.transform.CoMoveTo(target.Body.transform, 0.5f, () =>
         {
             SpritesAnimator.Play(proj.transform.position, OutroSprites);
 
-            target.Health.GetDamaged(damage, mBaseObj);
-
             if(isHit)
             {
-                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage * 3, laserChainCount);
+                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage * 2.0f, laserChainCount);
+            }
+            else
+            {
+                target.Health.GetDamaged(damage, mBaseObj);
             }
 
             Destroy(proj.gameObject);

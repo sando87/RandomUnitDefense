@@ -11,7 +11,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField] Transform HealthBarLeftPivot;
     [SerializeField] GameObject SplitBarSmallPrefab;
     [SerializeField] GameObject SplitBarBigPrefab;
-    [SerializeField] int _HealthStepForSplit = 10;
+    [SerializeField] int _HPStepForSplit = 100;
     [SerializeField] int SmallBarCountForBig = 10;
     [SerializeField] float HpTotalWorldWidth = 1;
 
@@ -69,7 +69,7 @@ public class HealthBar : MonoBehaviour
 
     void InitHealthStep()
     {
-        int step = _HealthStepForSplit;
+        int step = _HPStepForSplit;
         while(((float)step / mHP.MaxHP) < 0.03f)
         {
             step *= SmallBarCountForBig;
@@ -78,7 +78,7 @@ public class HealthBar : MonoBehaviour
     }
     Color GetSplitBarColor(bool isBig)
     {
-        int idx = (int)Mathf.Log(HealthStepForSplit / _HealthStepForSplit, SmallBarCountForBig);
+        int idx = (int)Mathf.Log(HealthStepForSplit / _HPStepForSplit, SmallBarCountForBig);
         if(isBig)
             idx++;
 

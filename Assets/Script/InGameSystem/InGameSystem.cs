@@ -13,7 +13,7 @@ public enum UpgradeType
 
 public class InGameSystem : SingletonMono<InGameSystem>
 {
-    public const float MineralIntervalSec = 5.0f;
+    public const float MineralIntervalSec = 3.0f;
     public const float WaveIntervalSec = 5.0f;
     public const int MobCountPerWave = 60;
     public const float LineMobBurstIntervalSec = 1.0f;

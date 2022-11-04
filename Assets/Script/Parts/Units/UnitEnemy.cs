@@ -26,9 +26,9 @@ public class UnitEnemy : UnitBase
         //                 (WaveIndex < 15 ? 3000 :
         //                 (WaveIndex < 20 ? 10000 : 30000)));
 
-        float mul = WaveIndex < 3 ? 64 : 
-                    (WaveIndex < 8 ? 128 : 
-                    (WaveIndex < 15 ? 256 : 512));
+        float mul = WaveIndex < 2 ? 60 : 
+                    (WaveIndex < 7 ? 90 : 
+                    (WaveIndex < 20 ? 180 : 512));
         
         mBaseObj.Health.InitHP(35 + (WaveIndex * WaveIndex * mul));
         StartCoroutine(MoveAround());

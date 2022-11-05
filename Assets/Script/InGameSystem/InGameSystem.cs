@@ -13,7 +13,7 @@ public enum UpgradeType
 
 public class InGameSystem : SingletonMono<InGameSystem>
 {
-    public const float MineralIntervalSec = 3.0f;
+    public const float KillPointIntervalSec = 1.0f;
     public const float WaveIntervalSec = 5.0f;
     public const int MobCountPerWave = 60;
     public const float LineMobBurstIntervalSec = 1.0f;
@@ -82,7 +82,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
             LineMobIDs.Add(mob.ID);
 
         StartCoroutine(LineMobGenerator());
-        StartCoroutine(MineralMining());
+        StartCoroutine(KillPointMining());
     }
     public void CleanUpGame()
     {
@@ -166,14 +166,18 @@ public class InGameSystem : SingletonMono<InGameSystem>
         deathPoint.transform.DOMoveY(pos.y + 1, 0.15f).SetEase(Ease.OutQuad);
         deathPoint.transform.DOMoveY(pos.y, 0.15f).SetEase(Ease.InQuad).SetDelay(0.15f);
         deathPoint.transform.DOMoveX(pos.x + ranPosX, 0.3f).SetEase(Ease.Linear);
+        int minStep = MineralStep;
 
-        Transform kps = mInGameUI.KillPointSet;
-        deathPoint.transform.DOMove(kps.transform.position, 1).SetEase(Ease.InQuad).SetDelay(1).OnComplete(() =>
+        Transform kps = mInGameUI.MineralSet;
+        Vector3 diff = (deathPoint.transform.position - kps.transform.position);
+        diff.z = 0;
+        deathPoint.transform.DOMove(kps.transform.position, diff.magnitude * 0.1f).SetEase(Ease.InQuad).SetDelay(0.8f).OnComplete(() =>
         {
-            KillPoint++;
+            Mineral += minStep;
             Destroy(deathPoint);
-            mInGameUI.KillPointSet.DOKill();
-            mInGameUI.KillPointSet.DOScale(new Vector3(1.1f, 1.1f, 1), 0.1f).From(1).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
+            mInGameUI.MineralSet.DOKill();
+            mInGameUI.MineralSet.DOScale(new Vector3(1.1f, 1.1f, 1), 0.1f).From(1).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
+            mInGameUI.ShowMineralRasingEffect(minStep);
         });
     }
     public void AddMinerals(int mineral)
@@ -232,7 +236,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
             }
         }
     }
-    private IEnumerator MineralMining()
+    private IEnumerator KillPointMining()
     {
         yield return null;
         
@@ -240,9 +244,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
         
         while(true)
         {
-            yield return newWaitForSeconds.Cache(MineralIntervalSec);
-            Mineral += MineralStep;
-            mInGameUI.ShowMineralRasingEffect(MineralStep);
+            yield return newWaitForSeconds.Cache(KillPointIntervalSec);
+            KillPoint++;
         }
     }
     private bool CreateLineMob()

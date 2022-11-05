@@ -252,7 +252,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         EnemyCharactor mobData = EnemyCharactors.Inst.GetDataOfId(id);
         GameObject enemy = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
         enemy.GetComponentInChildren<UnitEnemy>().ResourceID = id;
-        enemy.GetComponentInChildren<UnitEnemy>().WaveIndex = WaveNumber - 1;
+        enemy.GetComponentInChildren<UnitEnemy>().WaveNumber = WaveNumber;
         return true;
     }
 

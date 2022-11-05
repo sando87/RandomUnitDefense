@@ -7,7 +7,7 @@ public class UnitEnemy : UnitBase
 {
     [SerializeField] Sprite[] HitEffect = null;
 
-    public int WaveIndex { get; set; } = 0;
+    public int WaveNumber { get; set; } = 0;
 
     private Vector3[] mWayPoints = null;
     private int mWayPointIndex = 0;
@@ -21,16 +21,19 @@ public class UnitEnemy : UnitBase
         if(HitEffect != null)
             mBaseObj.Health.EventDamaged += OnDamaged;
 
-        // float baseHP = WaveIndex < 5 ? 30 :
-        //                 (WaveIndex < 10 ? 800 :
-        //                 (WaveIndex < 15 ? 3000 :
-        //                 (WaveIndex < 20 ? 10000 : 30000)));
 
-        float mul = WaveIndex < 2 ? 60 : 
-                    (WaveIndex < 7 ? 90 : 
-                    (WaveIndex < 20 ? 180 : 512));
+        float hp = 0;
+        if(WaveNumber >= 18)
+            hp = 10000 * WaveNumber;
+        else if(WaveNumber >= 12) hp = 1030 * WaveNumber;
+        else if (WaveNumber >= 11) hp = 720 * WaveNumber;
+        else if (WaveNumber >= 10) hp = 450 * WaveNumber;
+        else if(WaveNumber >= 6) hp = 260 * WaveNumber;
+        else if (WaveNumber >= 5) hp = 180 * WaveNumber;
+        else if (WaveNumber >= 4) hp = 120 * WaveNumber;
+        else hp = 55 * WaveNumber;
         
-        mBaseObj.Health.InitHP(35 + (WaveIndex * WaveIndex * mul));
+        mBaseObj.Health.InitHP(hp);
         StartCoroutine(MoveAround());
     }
 

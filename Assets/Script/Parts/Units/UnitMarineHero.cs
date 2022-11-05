@@ -33,22 +33,22 @@ public class UnitMarineHero : UnitPlayer
         {
             mFireCount = 2;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 5;
-            spec.damagesPerUp[0] = 2;
+            spec.damage = 8;
+            spec.damagesPerUp[0] = 1;
         }
         else if (curLevel <= 2)
         {
             mFireCount = 3;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 15;
+            spec.damage = 25;
             spec.damagesPerUp[1] = 6;
         }
         else if (curLevel <= 3)
         {
             mFireCount = 4;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 45;
-            spec.damagesPerUp[2] = 18;
+            spec.damage = 120;
+            spec.damagesPerUp[2] = 32;
         }
         else if (curLevel <= 4)
         {

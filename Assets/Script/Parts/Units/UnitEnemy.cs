@@ -23,8 +23,14 @@ public class UnitEnemy : UnitBase
 
 
         float hp = 0;
-        if(WaveNumber >= 18)
-            hp = 10000 * WaveNumber;
+        if(WaveNumber >= 50)
+            hp = 100000 * WaveNumber;
+        else if (WaveNumber >= 35) hp = 25030 * WaveNumber;
+        else if (WaveNumber >= 34) hp = 17020 * WaveNumber;
+        else if (WaveNumber >= 33) hp = 11150 * WaveNumber;
+        else if (WaveNumber >= 21) hp = 5030 * WaveNumber;
+        else if (WaveNumber >= 20) hp = 3720 * WaveNumber;
+        else if (WaveNumber >= 19) hp = 2250 * WaveNumber;
         else if(WaveNumber >= 12) hp = 1030 * WaveNumber;
         else if (WaveNumber >= 11) hp = 720 * WaveNumber;
         else if (WaveNumber >= 10) hp = 450 * WaveNumber;

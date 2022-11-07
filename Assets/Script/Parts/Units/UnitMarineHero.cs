@@ -56,7 +56,8 @@ public class UnitMarineHero : UnitPlayer
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             _AttackSpeed *= 0.7f;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 1250;
+            spec.damage = 250;
+            spec.damagesPerUp[3] = 192;
         }
         else if (curLevel <= 5)
         {
@@ -65,7 +66,8 @@ public class UnitMarineHero : UnitPlayer
             FireMotionSpeed = 1;
             _AttackSpeed *= 0.5f;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 6000;
+            spec.damage = 600;
+            spec.damagesPerUp[4] = 1220;
         }
         else if (curLevel <= 6)
         {

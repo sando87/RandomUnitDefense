@@ -13,12 +13,12 @@ public enum UpgradeType
 
 public class InGameSystem : SingletonMono<InGameSystem>
 {
-    public const float KillPointIntervalSec = 1.0f;
+    public const float KillPointIntervalSec = 1.5f;
     public const float WaveIntervalSec = 5.0f;
     public const int MobCountPerWave = 60;
     public const float LineMobBurstIntervalSec = 1.0f;
     public const int KillPointForNewUnit = 10;
-    public const int KillPointForMineralUp = 10;
+    public const int KillPointForMineralUp = 30;
     public const int LineMobLimit = 150;
     public const int StartKillPoint = 20;
     public const int MergeCountLevelup = 3;

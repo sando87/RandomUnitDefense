@@ -29,7 +29,7 @@ public class UnitGunner : UnitPlayer
         if (curLevel <= 1)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 12;
+            spec.damage = 6;
             spec.damagesPerUp[0] = 1;
             _AttackSpeed = 1.0f;
         }
@@ -37,14 +37,14 @@ public class UnitGunner : UnitPlayer
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 48;
-            spec.damagesPerUp[1] = 6;
+            spec.damagesPerUp[1] = 12;
             _AttackSpeed = 1.4f;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 210;
-            spec.damagesPerUp[2] = 32;
+            spec.damagesPerUp[2] = 100;
             _AttackSpeed = 1.8f;
         }
         else if (curLevel <= 4)

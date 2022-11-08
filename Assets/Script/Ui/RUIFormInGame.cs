@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class RUIFormInGame : RUiForm
@@ -88,6 +89,15 @@ public class RUIFormInGame : RUiForm
 
     private void Update()
     {
+        if (Keyboard.current.uKey.wasPressedThisFrame)
+            GameMgr.UpgradeWeapon(UpgradeType.Gun);
+        if (Keyboard.current.iKey.wasPressedThisFrame)
+            OnClickRaiseMineral();
+        if (Keyboard.current.oKey.wasPressedThisFrame)
+            OnClickCreateUnit();
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+            OnClickToggleUpgradePanel();
+
 
 #if UNITY_EDITOR
         if (InputWrapper.Instance.IsKeyDownTrigger_F1() && Application.isPlaying)

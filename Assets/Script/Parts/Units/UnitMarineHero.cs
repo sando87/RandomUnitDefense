@@ -4,119 +4,83 @@ using UnityEngine;
 
 public class UnitMarineHero : UnitPlayer
 {
-    [SerializeField] float _AttackSpeed = 0.5f;
+    [SerializeField] float _AttackSPD = 1.0f;
     [SerializeField] float _AttackRange = 0.5f;
     [SerializeField][Range(0, 1)] float _SkillCastRate = 0.2f;
     [SerializeField][Range(0, 10)] float _SkillDamageRate = 2.0f;
     [SerializeField] RuntimeAnimatorController _ACForFast = null;
 
-    [SerializeField] float FireMotionSpeed = 0.7f;
-
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private SimpleMissile SimpleMissilePrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
 
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackSpeed { get { return _AttackSPD * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     float SkillCastRate { get { return _SkillCastRate * mBaseObj.BuffProp.Percentage; } }
 
-    private MotionActionLoop mMotionAttack = null;
-    private Coroutine mCoAttack = null;
-    private float mFireCount = 2; // 3, 4, 5, 6
-    private int mCurFireCount = 0;
+    private MotionActionSingle mMotionAttack = null;
 
     void Start()
     {
         int curLevel = mBaseObj.SpecProp.Level;
-        mFireCount = curLevel + 1;
         if (curLevel <= 1)
         {
-            mFireCount = 2;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 8;
             spec.damagesPerUp[0] = 1;
+            _AttackSPD = 2.0f;
         }
         else if (curLevel <= 2)
         {
-            mFireCount = 3;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 25;
-            spec.damagesPerUp[1] = 6;
+            spec.damagesPerUp[1] = 14;
+            _AttackSPD = 4.0f;
         }
         else if (curLevel <= 3)
         {
-            mFireCount = 4;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 120;
-            spec.damagesPerUp[2] = 32;
+            spec.damagesPerUp[2] = 100;
+            _AttackSPD = 8.0f;
         }
         else if (curLevel <= 4)
         {
-            mFireCount = 6;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            _AttackSpeed *= 0.7f;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 250;
             spec.damagesPerUp[3] = 192;
+            _AttackSPD = 10.0f;
         }
         else if (curLevel <= 5)
         {
-            mFireCount = 8;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            FireMotionSpeed = 1;
-            _AttackSpeed *= 0.5f;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 600;
             spec.damagesPerUp[4] = 1220;
+            _AttackSPD = 20.0f;
         }
         else if (curLevel <= 6)
         {
-            mFireCount = 10;
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            FireMotionSpeed = 2;
-            _AttackSpeed *= 0.2f;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 30000;
+            _AttackSPD = 100.0f;
         }
         
-
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
-        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
-        mMotionAttack.EventStart = OnAttackStart;
-        mMotionAttack.EventEnd = OnAttackEnd;
+        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
+        mMotionAttack.EventFired = OnAttackFire;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
     }
 
-    private void OnAttackStart(BaseObject target)
+    private void OnAttackFire(int fireIndex)
     {
-        mCurFireCount = 0;
-        mMotionAttack.SetActionLoopSpeed(FireMotionSpeed);
-        mMotionAttack.AddAnimEvent(0.1f, () => FireOneShot());
-        
-        if(mCoAttack != null)
-            StopCoroutine(mCoAttack);
-
-        mCoAttack = StartCoroutine(CoAttack(target));
+        FireOneShot();
     }
 
-    IEnumerator CoAttack(BaseObject _target)
-    {
-        BaseObject target = _target;
-
-        while (mCurFireCount < mFireCount)
-        {
-            yield return null;
-        }
-
-        float normalTime = (int)mMotionAttack.NormalizedTime + 0.9f;
-        yield return new WaitUntil(() => mMotionAttack.NormalizedTime >= normalTime);
-
-        mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
-        mCoAttack = null;
-    }
     private void FireOneShot()
     {
-        mCurFireCount++;
         Vector3 firePosition = mBaseObj.FirePosition.transform.position;
         SimpleMissile missile = Instantiate(SimpleMissilePrefab, firePosition, Quaternion.identity);
         missile.Launch(mMotionAttack.Target);
@@ -136,15 +100,6 @@ public class UnitMarineHero : UnitPlayer
     private bool IsOutOfSkillRange(BaseObject target)
     {
         return (target.transform.position - mBaseObj.transform.position).magnitude > (AttackRange * 1.2f);
-    }
-
-    private void OnAttackEnd()
-    {
-        if(mCoAttack != null)
-        {
-            StopCoroutine(mCoAttack);
-            mCoAttack = null;
-        }
     }
 
     private void ShootSimpleGun(BaseObject target)

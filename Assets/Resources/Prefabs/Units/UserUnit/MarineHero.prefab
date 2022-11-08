@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1305606860730891856}
   - component: {fileID: 1305606860730891857}
   - component: {fileID: 1305606860730891858}
-  - component: {fileID: 7707080476410513989}
+  - component: {fileID: 4851653656520293970}
   m_Layer: 10
   m_Name: Motions
   m_TagString: Untagged
@@ -214,7 +214,7 @@ MonoBehaviour:
     ClipLength: 0.18333334
   AppearParticle: {fileID: 483063996695773581, guid: e100c232f84af3540b54051c37ea1488,
     type: 3}
---- !u!114 &7707080476410513989
+--- !u!114 &4851653656520293970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,14 +223,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1305606860730891868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bae108743bb94bd1aef34ab93e6069f, type: 3}
+  m_Script: {fileID: 11500000, guid: a93d6e88bccb147f1b9c8cc4dd4acb05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: ActionLoop
-    AnimatorParamActionType: 5
-    AnimationClipName: Blend Tree
-    MotionName: MotionActionLoop
+    StateName: actionA1
+    AnimatorParamActionType: 3
+    AnimationClipName: actionA1
+    MotionName: MotionActionSingle
     LayerIndex: 0
     ClipLength: 1.3333334
   _FirePositions:
@@ -239,6 +239,8 @@ MonoBehaviour:
   - {fileID: 3498837635720991904}
   - {fileID: 7591330716819080527}
   - {fileID: 1181101237990038319}
+  _FireTimePoints:
+  - 0.1
 --- !u!1 &1305606861373442141
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,21 +25,20 @@ public class UnitEnemy : UnitBase
         float hp = 0;
         if(WaveNumber >= 50)
             hp = 100000 * WaveNumber;
-        else if (WaveNumber >= 35) hp = 25030 * WaveNumber;
-        else if (WaveNumber >= 34) hp = 17020 * WaveNumber;
-        else if (WaveNumber >= 33) hp = 11150 * WaveNumber;
+        else if (WaveNumber >= 35) hp = 45030 * WaveNumber;
+        else if (WaveNumber >= 34) hp = 40020 * WaveNumber;
+        else if (WaveNumber >= 33) hp = 35150 * WaveNumber;
+        else if (WaveNumber >= 32) hp = 30030 * WaveNumber;
+        else if (WaveNumber >= 31) hp = 25720 * WaveNumber;
+        else if (WaveNumber >= 30) hp = 20000 * WaveNumber;
         
-        else if (WaveNumber >= 29) hp = 15030 * WaveNumber;
-        else if (WaveNumber >= 28) hp = 13720 * WaveNumber;
-        else if (WaveNumber >= 27) hp = 12250 * WaveNumber;
+        else if (WaveNumber >= 29) hp = 15000 * WaveNumber;
+        else if (WaveNumber >= 28) hp = 15000 * WaveNumber;
 
-        else if (WaveNumber >= 20) hp = 12000 * WaveNumber;
-        else if (WaveNumber >= 19) hp = 10000 * WaveNumber;
-        else if (WaveNumber >= 18) hp = 8000 * WaveNumber;//110up
-        else if (WaveNumber >= 17) hp = 6000 * WaveNumber;
-        else if (WaveNumber >= 16) hp = 4000 * WaveNumber;
-        else if (WaveNumber >= 15) hp = 2000 * WaveNumber;
+        // 26wave -> //155up
+        else if (15 <= WaveNumber && WaveNumber <= 27) hp = (2000 + (1000 * (WaveNumber - 15))) * WaveNumber;
 
+        // 16wave -> //100up
         else if (WaveNumber >= 11) hp = 1750 * WaveNumber;
         else if (WaveNumber >= 10) hp = 1400 * WaveNumber;//80up
         else if (WaveNumber >= 9) hp = 1050 * WaveNumber;

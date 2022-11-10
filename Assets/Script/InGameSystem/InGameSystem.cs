@@ -29,9 +29,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     [SerializeField] private GameObject DeathPointPrefab = null;
 
     public int WaveNumber { get; private set; }
-    public int Mineral { get; private set; }
+    public int NextWaveNumberForTest { get; set; }
+    public int Mineral { get; set; }
     public int MineralStep { get; private set; }
-    public int KillPoint { get; private set; }
+    public int KillPoint { get; set; }
     public int LineMobCount { get; private set; }
     public long WaveEndTick { get; private set; }
     public bool UserInputLocked { get; set; }
@@ -219,14 +220,19 @@ public class InGameSystem : SingletonMono<InGameSystem>
                 mobBurstCount++;
                 yield return newWaitForSeconds.Cache(LineMobBurstIntervalSec);
 
-                if (LineMobCount >= LineMobLimit)
-                    FinishGame(false);
+                // if (LineMobCount >= LineMobLimit)
+                //     FinishGame(false);
             }
 
             //한 웨이브 끝나고 대기시간 후 다음 웨이브 시작
             WaveEndTick = 0;
             yield return newWaitForSeconds.Cache(WaveIntervalSec);
             WaveNumber++;
+            if(NextWaveNumberForTest > 0)
+            {
+                WaveNumber = NextWaveNumberForTest;
+                NextWaveNumberForTest = 0;
+            }
 
             if (WaveNumber > LineMobIDs.Count)
             {

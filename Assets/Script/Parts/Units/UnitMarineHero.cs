@@ -49,7 +49,7 @@ public class UnitMarineHero : UnitPlayer
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 250;
-            spec.damagesPerUp[3] = 900;
+            spec.damagesPerUp[3] = 555;
             _AttackSPD = 10.0f;
         }
         else if (curLevel <= 5)

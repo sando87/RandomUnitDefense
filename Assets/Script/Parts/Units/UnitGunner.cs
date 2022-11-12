@@ -90,7 +90,7 @@ public class UnitGunner : UnitPlayer
         proj.transform.right = dir.normalized;
         
         float damage = mBaseObj.SpecProp.Damage;
-        bool isHit = MyUtils.IsHitPercent(LaserPercent);
+        bool isHit = MyUtils.IsPercentHit((int)(LaserPercent * 100.0f));
         int laserChainCount = LaserChainCount + 1;
 
         proj.transform.CoMoveTo(target.Body.transform, 0.5f, () =>

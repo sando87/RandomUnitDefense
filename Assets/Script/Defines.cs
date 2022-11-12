@@ -1,18 +1,6 @@
 using System;
 using UnityEngine;
 
-public enum LanguageType
-{
-    None,
-    English,
-    Japanese,
-    Korean,
-    Portuguese,
-    Russian,
-    ChineseSimplified,
-    Spanish,
-    ChineseTraditional,
-}
 
 [Serializable]
 public class UserSaveData

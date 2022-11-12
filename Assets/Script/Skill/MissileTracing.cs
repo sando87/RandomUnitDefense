@@ -27,7 +27,11 @@ public class MissileTracing : MonoBehaviour
     {
         SpritesAnimator.Play(transform.position, IntroSprites);
 
-        StartCoroutine(MyUtils.CoRotateTowards2DLerp(0.5f, transform, Target.transform, 3.14f * 2));
+        this.ExDelayedCoroutine(0.5f, () =>
+        {
+            StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.transform, 3.14f * 2));
+        });
+        
 
         Vector3 lastDest = Target.transform.position;
 

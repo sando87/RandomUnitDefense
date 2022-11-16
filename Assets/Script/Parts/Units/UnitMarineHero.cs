@@ -13,6 +13,8 @@ public class UnitMarineHero : UnitPlayer
     [SerializeField] private GameObject BulletSparkPrefab = null;
     [SerializeField] private SimpleMissile SimpleMissilePrefab = null;
     [SerializeField] private MagicGun MagicGunMissile = null;
+    [SerializeField][SFXSelector] string _SFXName = "";
+    [SerializeField][PrefabSelector(Consts.VFXPath)] string _VFXName = "";
 
     float AttackSpeed { get { return _AttackSPD * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -77,6 +79,8 @@ public class UnitMarineHero : UnitPlayer
     private void OnAttackFire(int fireIndex)
     {
         FireOneShot();
+        SoundPlayManager.Instance.PlaySFX(_SFXName);
+        ObjectPooling.Instance.InstantiateVFX(_VFXName, mBaseObj.transform.position, Quaternion.identity).ReturnAfter(1);
     }
 
     private void FireOneShot()

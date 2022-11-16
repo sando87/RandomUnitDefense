@@ -39,7 +39,7 @@ public class UserSaveData
 public class Consts
 {
     public const string VFXPath = "VFX/";
-    public const string SFXPath = "Sound/SFX/InGame/";
+    public const string SFXPath = "Sound/SFX/";
 }
 
 public class AnimParam

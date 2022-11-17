@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum HealthBarSize { Small, Medium, Big }
 
@@ -57,7 +58,7 @@ public class HealthBar : MonoBehaviour
         float rate = mHP.CurrentHealthRate;
         gameObject.SetActive(true);
         float rateClamp = Mathf.Clamp(rate, 0, 1);
-        HealthInnerBar.transform.localScale = new Vector3(rateClamp, 1, 1);
+        HealthInnerBar.GetComponent<Image>().fillAmount = rateClamp;
         CancelInvoke();
         Invoke("HideBar", 5);
     }
@@ -117,13 +118,13 @@ public class HealthBar : MonoBehaviour
             {
                 GameObject splitBigBar = Instantiate(SplitBarBigPrefab, HealthBarLeftPivot);
                 splitBigBar.transform.localPosition = new Vector3(localPosX, 0, 0);
-                splitBigBar.GetComponentInChildren<SpriteRenderer>().color = GetSplitBarColor(true);
+                splitBigBar.GetComponentInChildren<Image>().color = GetSplitBarColor(true);
             }
             else
             {
                 GameObject splitSmallBar = Instantiate(SplitBarSmallPrefab, HealthBarLeftPivot);
                 splitSmallBar.transform.localPosition = new Vector3(localPosX, 0, 0);
-                splitSmallBar.GetComponentInChildren<SpriteRenderer>().color = GetSplitBarColor(false);
+                splitSmallBar.GetComponentInChildren<Image>().color = GetSplitBarColor(false);
                 float widthRate = Mathf.Min(1.0f, BigPartHP / mHP.MaxHP);
                 splitSmallBar.transform.localScale = new Vector3(widthRate, 1, 1);
             }

@@ -21,7 +21,14 @@ public class UnitEnemy : UnitBase
         if(HitEffect != null)
             mBaseObj.Health.EventDamaged += OnDamaged;
 
+        float hp = GetBalanceTable();
+        
+        mBaseObj.Health.InitHP(hp);
+        StartCoroutine(MoveAround());
+    }
 
+    float GetBalanceTable()
+    {
         float hp = 0;
         if(WaveNumber >= 50) hp = 100000 * WaveNumber;
         else if (WaveNumber >= 40) hp = 70030 * WaveNumber;
@@ -76,9 +83,8 @@ public class UnitEnemy : UnitBase
         // 4w +1 15up
         // 10w +3 50up 2/1/1
         // 21w +4 80up 2/2/2 끝...
-        
-        mBaseObj.Health.InitHP(hp);
-        StartCoroutine(MoveAround());
+
+        return hp;
     }
 
     private void OnDamaged(float valideDamage, BaseObject attacker)

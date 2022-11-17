@@ -242,7 +242,7 @@ MonoBehaviour:
   - {fileID: 7591330716819080527}
   - {fileID: 1181101237990038319}
   _FireTimePoints:
-  - 0.1
+  - 0.3
 --- !u!1 &1305606861373442141
 GameObject:
   m_ObjectHideFlags: 0

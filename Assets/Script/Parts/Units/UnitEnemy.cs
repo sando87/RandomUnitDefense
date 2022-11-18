@@ -5,25 +5,15 @@ using UnityEngine;
 
 public class UnitEnemy : UnitBase
 {
-    [SerializeField] Sprite[] HitEffect = null;
-
     public int WaveNumber { get; set; } = 0;
-
-    private Vector3[] mWayPoints = null;
-    private int mWayPointIndex = 0;
-    private MotionMove mMotionMove = null;
 
     void Start()
     {
-        mWayPoints = InGameSystem.Instance.GetWayPoints();
-        mWayPointIndex = 0;
-        mMotionMove = mBaseObj.MotionManager.FindMotion<MotionMove>();
-        if(HitEffect != null)
-            mBaseObj.Health.EventDamaged += OnDamaged;
+        mBaseObj.Health.EventDamaged += OnDamaged;
 
         float hp = GetBalanceTable();
-        
         mBaseObj.Health.InitHP(hp);
+
         StartCoroutine(MoveAround());
     }
 
@@ -101,18 +91,21 @@ public class UnitEnemy : UnitBase
     {
         yield return null;
 
+        Vector3[] wayPoints = InGameSystem.Instance.GetWayPoints();
+        int wayPointIndex = 0;
+        MotionMove motionMove = mBaseObj.MotionManager.FindMotion<MotionMove>();
+
         while (true)
         {
-            Vector3 dest = mWayPoints[mWayPointIndex];
-            mMotionMove.Destination = dest;
-            mBaseObj.MotionManager.SwitchMotion(mMotionMove);
+            Vector3 dest = wayPoints[wayPointIndex];
+            motionMove.Destination = dest;
+            motionMove.EventArrived = () => 
+            {
+                wayPointIndex = (wayPointIndex + 1) % wayPoints.Length;
+            };
+            mBaseObj.MotionManager.SwitchMotion(motionMove);
 
             yield return new WaitUntil(() => mBaseObj.MotionManager.IsCurrentMotion<MotionIdle>());
-
-            if((mBaseObj.transform.position - dest).sqrMagnitude < 0.1)
-                mWayPointIndex = (mWayPointIndex + 1) % mWayPoints.Length;
-                
-            yield return null;
         }
     }
 

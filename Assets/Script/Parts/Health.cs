@@ -47,6 +47,18 @@ public class Health : MonoBehaviour
         EventDamaged?.Invoke(damage, attacker);
     }
 
+    public void GetForced(Vector3 force, BaseObject attacker)
+    {
+        if(IsDead) return;
+
+        MotionForced motionForced = mBaseObject.MotionManager.FindMotion<MotionForced>();
+        if(motionForced != null)
+        {
+            motionForced.ExtForce = force;
+            mBaseObject.MotionManager.SwitchMotion(motionForced);
+        }
+    }
+
     public void InitHP(float hp)
     {
         MaxHP = hp;

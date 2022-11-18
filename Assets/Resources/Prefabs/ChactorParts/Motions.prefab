@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9032202033693982563}
   - component: {fileID: 8552774515936888085}
   - component: {fileID: 5942133883183923084}
+  - component: {fileID: 8148779624559238397}
   m_Layer: 11
   m_Name: Motions
   m_TagString: Untagged
@@ -31,6 +32,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -124,3 +126,24 @@ MonoBehaviour:
     MotionName: MotionStun
     LayerIndex: 0
     ClipLength: 0.18333334
+--- !u!114 &8148779624559238397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414586506002351786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9261876d539d2234fb4d573aae2f5cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimState:
+    StateName: idle
+    AnimatorParamActionType: 0
+    AnimationClipName: idle
+    MotionName: MotionForced
+    LayerIndex: 0
+    ClipLength: 0.18333334
+  _Mass: 1
+  _ReduceVel: 0.1

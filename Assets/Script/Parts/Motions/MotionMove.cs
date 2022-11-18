@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class MotionMove : MotionBase
 {
+    public System.Action EventArrived = null;
+
     public override void OnInit()
     {
         base.OnInit();
@@ -39,6 +41,7 @@ public class MotionMove : MotionBase
         mBaseObject.transform.position += (diff.normalized * mBaseObject.SpecProp.MoveSpeed * Time.deltaTime);
         if(diff.magnitude < 0.01f || Vector3.Dot(diff, (Destination - mBaseObject.transform.position)) < 0)
         {
+            EventArrived?.Invoke();
             SwitchMotionToIdle();
         }
     }

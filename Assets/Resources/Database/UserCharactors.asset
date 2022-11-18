@@ -42,10 +42,16 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: c9e0ed8a0ab80574694d838519c383d1, type: 3}
     prefab: {fileID: 6377826679273638812, guid: bf754f57f9f0dac48b2aed72899bcf8a,
       type: 3}
-    skillDescription: "\uC77C\uC815\uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC"
+    skillDescription: "\uBC88\uAC1C \uC5F0\uC1C4 \uACF5\uACA9"
   - ID: 638017246608224389
     name: Sniper
     image: {fileID: 21300000, guid: 08a867f1150f2334683653c13f4210f5, type: 3}
     prefab: {fileID: 6377826679273638812, guid: bdd3c23c87e83c44bafbe8dcc6d66955,
       type: 3}
     skillDescription: "\uC77C\uC815\uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC"
+  - ID: 638043789776110302
+    name: Marine
+    image: {fileID: 21300000, guid: cfb356aca3d98da4884f60b69ee4fb35, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 54b90e8f8b1f07b4695f670fa1c04603,
+      type: 3}
+    skillDescription: "\uC801 \uBC00\uCE58\uB294 \uACF5\uACA9"

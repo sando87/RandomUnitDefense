@@ -912,13 +912,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _AttackSpeed: 1
-  _AttackRange: 2
+  _AttackRange: 1
   _BuffRange: 1
   _SkillDuration: 3
   _ForcePower: 10
-  MuzzleParticle: {fileID: 0}
-  HitParticle: {fileID: 1489009062531968954, guid: 6e76c581f0c32a8418dba261a6e7e5ae,
-    type: 3}
   PassiveBuff: {fileID: 7610135905271046776}
   AttackDeBuff: {fileID: 4413279295320478944}
 --- !u!114 &6377826679273638800

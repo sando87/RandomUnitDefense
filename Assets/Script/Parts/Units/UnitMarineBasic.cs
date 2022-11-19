@@ -7,12 +7,10 @@ using UnityEngine;
 public class UnitMarineBasic : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
-    [SerializeField] float _AttackRange = 0.5f;
+    [SerializeField] float _AttackRange = 1;
     [SerializeField] float _BuffRange = 3.0f;
     [SerializeField] float _SkillDuration = 3.0f;
     [SerializeField] float _ForcePower = 10.0f;
-    [SerializeField] private ParticleSystem MuzzleParticle = null;
-    [SerializeField] private GameObject HitParticle = null;
     [SerializeField] private BuffBase PassiveBuff = null;
     [SerializeField] private BuffBase AttackDeBuff = null;
 
@@ -30,72 +28,66 @@ public class UnitMarineBasic : UnitPlayer
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
         // StartCoroutine(KeepBuff(PassiveBuff));
-
-        // InitMuzzleEffect();
     }
 
     private void OnAttack(int idx)
     {
-        // PlayMuzzleEffect();
+        Vector3[] fireDirs = DoMuzzleShotgunEffect();
 
         List<BaseObject> targets = new List<BaseObject>();
 
-        BaseObject target = mMotionAttack.Target;
-        Vector3 force = (target.transform.position - mBaseObj.transform.position).normalized * _ForcePower;
-        target.Health.GetForced(force, mBaseObj);
-        target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
-        target.BuffCtrl.ApplyBuff(AttackDeBuff, SkillDuration, true);
-        targets.Add(target);
-        
-        GameObject obj = Instantiate(HitParticle, target.Body.Center, Quaternion.identity);
-        Destroy(obj, 1.0f);
-
-        // Vector3 muzzlePos = mBaseObj.FirePosition.transform.position;        
-        // for(int i = 0; i < mBaseObj.SpecProp.Level; ++i)
-        // {
-        //     Vector3 dir = GetMuzzleDir(i);
-        //     if(Physics.Raycast(muzzlePos, dir, out RaycastHit hit, AttackRange, 1 << LayerID.Enemies))
-        //     {
-        //         target = hit.collider.GetBaseObject();
-        //         if(!targets.Contains(target))
-        //         {
-        //             force = (target.transform.position - mBaseObj.transform.position).normalized * 3;
-        //             target.Health.GetForced(force, mBaseObj);
-
-        //             target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
-        //             target.BuffCtrl.ApplyBuff(AttackDeBuff, SkillDuration, true);
-        //             targets.Add(target);
-                    
-        //             obj = Instantiate(HitParticle, target.Body.Center, Quaternion.identity);
-        //             Destroy(obj, 1.0f);
-        //         }
-        //     }
-        // }
-    }
-
-    private void InitMuzzleEffect()
-    {
-        MuzzleParticle.transform.SetParent(mBaseObj.FirePosition.transform);
-        MuzzleParticle.transform.localPosition = Vector3.zero;
-        MuzzleParticle.transform.localRotation = Quaternion.identity;
-        for(int i = 0; i < mBaseObj.SpecProp.Level; ++i)
+        Vector3 muzzlePos = mBaseObj.FirePosition.transform.position;
+        foreach(Vector3 fireDir in fireDirs)
         {
-            MuzzleParticle.transform.GetChild(i).gameObject.SetActive(true);
+            RaycastHit[] hits = Physics.RaycastAll(muzzlePos, fireDir, AttackRange, 1 << LayerID.Enemies);
+            foreach(RaycastHit hit in hits)
+            {
+                BaseObject target = hit.collider.GetBaseObject();
+                if (!targets.Contains(target))
+                {
+                    targets.Add(target);
+                    break;
+                }
+            }
         }
 
-        float rotateAngle = (10 * (mBaseObj.SpecProp.Level - 1)) * 0.5f;
-        MuzzleParticle.transform.localRotation = Quaternion.Euler(0, 0, rotateAngle);
-    }
-    private void PlayMuzzleEffect()
-    {
-        MuzzleParticle.Play();
-    }
-    
-    private Vector3 GetMuzzleDir(int idx)
-    {
-        return MuzzleParticle.transform.GetChild(idx).right;
+        foreach (BaseObject target in targets)
+        {
+            Vector3 force = (target.transform.position - mBaseObj.transform.position).normalized * 3;
+            target.Health.GetForced(force, mBaseObj);
+
+            target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+            target.BuffCtrl.ApplyBuff(AttackDeBuff, SkillDuration, true);
+
+            ObjectPooling.Instance.InstantiateVFX("HitSimple", target.Body.Center, Quaternion.identity).ReturnAfter(1);
+        }
     }
 
+    private Vector3[] DoMuzzleShotgunEffect()
+    {
+        Vector3 firePos = mBaseObj.FirePosition.transform.position;
+        Vector3 fireDir = mBaseObj.FirePosition.transform.position - mBaseObj.Body.Center;
+
+        List<Vector3> ShootDirections = new List<Vector3>();
+        GameObject vfx = ObjectPooling.Instance.InstantiateVFX("MuzzleShotgun", firePos, Quaternion.identity);
+        vfx.transform.localScale = new Vector3(AttackRange, AttackRange, 1);
+        vfx.transform.right = fireDir;
+
+        float rotateAngle = 7.5f * (mBaseObj.SpecProp.Level - 1);
+        vfx.transform.Rotate(new Vector3(0, 0, rotateAngle));
+
+        for(int i = 0; i < vfx.transform.childCount; ++i)
+        {
+            GameObject subVFX = vfx.transform.GetChild(i).gameObject;
+            subVFX.SetActive(i < mBaseObj.SpecProp.Level);
+            if(subVFX.activeSelf)
+                ShootDirections.Add(subVFX.transform.right);
+        }
+
+        vfx.ReturnAfter(1);
+        return ShootDirections.ToArray();
+    }
+    
 
 
 }

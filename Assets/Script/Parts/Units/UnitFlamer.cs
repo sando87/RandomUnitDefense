@@ -19,6 +19,12 @@ public class UnitFlamer : UnitPlayer
     float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
     float SkillDuration { get { return _SkillDuration * mBaseObj.BuffProp.SkillDuration; } }
 
+    
+    [SerializeField] float duration = 1; // ~ 5
+    [SerializeField] float lifetime = 0.5f; // ~ 1
+    [SerializeField] float angle = 10; // ~ 20
+    [SerializeField] int count = 20; // ~ 100
+
     private MotionActionSingle mMotionAttack = null;
 
     [SerializeField] GameObject FireBlastPrefab = null;
@@ -47,11 +53,22 @@ public class UnitFlamer : UnitPlayer
 
         GameObject fireBlastEffect = Instantiate(FireBlastPrefab, firePosition, Quaternion.identity);
         fireBlastEffect.transform.right = dir;
+        ParticleSystem ps = fireBlastEffect.GetComponent<ParticleSystem>();
+        ps.Stop();
+        var main = ps.main;
+        main.duration = duration;
+        main.startLifetime = lifetime;
+        var emission = ps.emission;
+        emission.rateOverTime = count;
+        var shape = ps.shape;
+        shape.angle = angle;
+        ps.Play();
 
         GameObject decal = Instantiate(FireDecalPrefab, dest, Quaternion.identity);
         StartCoroutine(RepeatBuff(decal));
 
-        while(true)
+        float time = 0;
+        while(time < duration)
         {
             Collider[] cols = Physics.OverlapSphere(dest, SplshRange, 1 << LayerID.Enemies);
             foreach (Collider col in cols)
@@ -64,10 +81,13 @@ public class UnitFlamer : UnitPlayer
             }
 
             yield return newWaitForSeconds.Cache(0.1f);
+            time += 0.1f;
 
-            if(!mBaseObj.MotionManager.IsCurrentMotion(mMotionAttack))
-                break;
+            // if(!mBaseObj.MotionManager.IsCurrentMotion(mMotionAttack))
+            //     break;
         }
+
+        yield return newWaitForSeconds.Cache(1);
 
         Destroy(fireBlastEffect);
         

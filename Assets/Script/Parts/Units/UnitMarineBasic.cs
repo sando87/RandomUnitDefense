@@ -53,7 +53,7 @@ public class UnitMarineBasic : UnitPlayer
 
         foreach (BaseObject target in targets)
         {
-            Vector3 force = (target.transform.position - mBaseObj.transform.position).normalized * 3;
+            Vector3 force = (target.transform.position - mBaseObj.transform.position).normalized * _ForcePower;
             target.Health.GetForced(force, mBaseObj);
 
             target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);

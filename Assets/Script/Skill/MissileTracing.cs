@@ -10,7 +10,10 @@ public class MissileTracing : MonoBehaviour
     [SerializeField] private Sprite[] OutroSprites = null;
 
     public BaseObject Target { get; set; } = null;
-    public Action<BaseObject> EventHit { get; set; } = null;
+    public Action<Vector3> EventHit { get; set; } = null;
+    public bool IsAttackable = false;
+
+    float mMoveSpeed = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -20,33 +23,37 @@ public class MissileTracing : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.right * 5 * Time.deltaTime;
+        transform.position += transform.right * mMoveSpeed * Time.deltaTime;
     }
 
     private IEnumerator CoStartMoving()
     {
         SpritesAnimator.Play(transform.position, IntroSprites);
 
-        this.ExDelayedCoroutine(0.5f, () =>
-        {
-            StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.transform, 3.14f * 2));
-        });
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0.6f, 0.8f));
+        //yield return new WaitUntil(() => IsAttackable);
+
+        Vector3 offset = MyUtils.Random(Vector3.zero, 0.5f);
+        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.transform, 3.14f * 2, offset));
         
+        Vector3 lastDest = Target.transform.position + offset;
 
-        Vector3 lastDest = Target.transform.position;
-
-        while(Vector2.Distance(transform.position, lastDest) > 0.1f)
+        while(transform.position.y > lastDest.y)
         {
             if(Target != null)
-                lastDest = Target.transform.position;
+                lastDest = Target.transform.position + offset;
 
             yield return null;
+            mMoveSpeed += (10 * Time.deltaTime);
         }
 
         SpritesAnimator.Play(transform.position, OutroSprites);
-        EventHit?.Invoke(Target);
-            
-        Destroy(gameObject);
+        EventHit?.Invoke(lastDest); // 위치 주변 적을 타격입히는방식으로 변경 필요...
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        StopAllCoroutines();
+        enabled = false;
+        Destroy(gameObject, 1);
     }
 
 }

@@ -35,7 +35,7 @@ public class SpritesAnimator : MonoBehaviour
         return obj;
     }
 
-    void OnEnable()
+    void Start()
     {
         if(Sprites == null) return;
 

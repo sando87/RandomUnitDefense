@@ -16,6 +16,9 @@ public class UnitDiplomat : UnitPlayer
     [SerializeField] private Sprite[] ProjSprites = null;
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] BuffBase BuffEffect = null;
+    
+    [SerializeField] GuidedMissile _Projectaile = null;
+    [SerializeField][PrefabSelector(Consts.VFXPath)] string _HitVFX = "";
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -45,24 +48,15 @@ public class UnitDiplomat : UnitPlayer
         Vector3 dir = target.Body.Center - firePosition;
         dir.z = 0;
 
-        SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
-        proj.transform.right = dir.normalized;
+        GuidedMissile projectile = Instantiate(_Projectaile, firePosition, Quaternion.identity);
+        projectile.transform.right = dir.normalized;
+        
         float damage = mBaseObj.SpecProp.Damage;
-        float splashRange = SplshRange + ((mBaseObj.SpecProp.Level - 1) * 0.1f);
-        float projSize = proj.transform.localScale.x + ((mBaseObj.SpecProp.Level - 1) * 0.2f);
-        proj.transform.DOScale(projSize, 0.3f);
 
-        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
+        projectile.EventHit += (target) => 
         {
-            SpritesAnimator.Play(proj.transform.position, OutroSprites);
-
-            Collider[] cols = target.DetectAround(splashRange, 1 << LayerID.Enemies);
-            foreach(Collider col in cols)
-            {
-                col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
-            }
-
-            Destroy(proj.gameObject);
-        });
+            ObjectPooling.Instance.InstantiateVFX(_HitVFX, projectile.transform.position, Quaternion.identity).ReturnAfter(1);
+            target.Health.GetDamaged(damage, mBaseObj);
+        };
     }
 }

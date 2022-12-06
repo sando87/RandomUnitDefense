@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class BuffBase : MonoBehaviour
 {
+    [ContextMenu ("AssignBuffID")]
+    void DoAssignBuffID() { _BuffID = DateTime.Now.Ticks; }
+
     [SerializeField][Identifier] long _BuffID = 0;
     [SerializeField] BuffProperty BuffProp;
 
     public long BuffID { get { return _BuffID; } }
     public float Duration { get; set; } = 1;
 
-    private BaseObject mBaseObject = null;
-    private BuffProperty mUnitBuffProp = null;
-    //private float mElapsedTime = 0;
+    protected BaseObject mBaseObject = null;
+    protected BuffProperty mUnitBuffProp = null;
+    private float mElapsedTime = 0;
 
     void Awake()
     {
@@ -21,10 +24,11 @@ public class BuffBase : MonoBehaviour
         mUnitBuffProp = mBaseObject.BuffProp;
     }
 
-    void Start()
+    void Update()
     {
-        if(Duration > 0)
-            StartCoroutine(BuffDestroier());
+        mElapsedTime += Time.deltaTime;
+        if(Duration < mElapsedTime)
+            Destroy(gameObject);
     }
 
     void OnEnable()
@@ -37,28 +41,18 @@ public class BuffBase : MonoBehaviour
         BuffOFF();
     }
 
-    void BuffON()
+    protected virtual void BuffON()
     {
         mUnitBuffProp.AddBuffProp(BuffProp);
     }
-    void BuffOFF()
+    protected virtual void BuffOFF()
     {
         mUnitBuffProp.RemoveBuffProp(BuffProp);
     }
 
-    IEnumerator BuffDestroier()
-    {
-        yield return new WaitForSeconds(Duration);
-        Destroy(gameObject);
-    }
-
     public void ResetDuration()
     {
-        if (Duration > 0)
-        {
-            StopAllCoroutines();
-            StartCoroutine(BuffDestroier());
-        }
+        mElapsedTime = 0;
     }
 
 }

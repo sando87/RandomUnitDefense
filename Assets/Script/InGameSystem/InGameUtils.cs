@@ -125,7 +125,12 @@ public static class InGameUtils
 
     public static bool IsInDetectRange(this BaseObject obj, BaseObject target, float range)
     {
-        return (obj.transform.position - target.transform.position).magnitude <= range;
+        Vector2 extends = new Vector2(range, range * 0.4f);
+
+        Rect area = new Rect();
+        area.size = extends * 2;
+        area.center = obj.transform.position;
+        return area.Contains(target.transform.position);
     }
     public static Collider[] DetectAround(this GameObject obj, float range, int layerMask)
     {
@@ -160,7 +165,8 @@ public static class InGameUtils
     public static bool DetectAround<T>(this BaseObject obj, float range, int layerMask, List<T> rets) where T : MonoBehaviour
     {
         bool isFounded = false;
-        Collider[] hitColliders = Physics.OverlapSphere(obj.transform.position, range, layerMask);
+        Vector2 extends = new Vector2(range, range * 0.4f);
+        Collider[] hitColliders = Physics.OverlapBox(obj.transform.position, extends, Quaternion.identity, layerMask);
         foreach (Collider hitCollider in hitColliders)
         {
             BaseObject baseObj = hitCollider.GetBaseObject();

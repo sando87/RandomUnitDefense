@@ -17,6 +17,7 @@ public class SlashProjectile : MonoBehaviour
     void Start()
     {
         mSize = transform.localScale.x;
+        // DOTween.To(() => mMoveSpeed, (_a) => { mMoveSpeed = _a; }, 0, 1).From(MaxMoveSpeed);
         StartCoroutine(CoStartMoving());
     }
 
@@ -28,14 +29,14 @@ public class SlashProjectile : MonoBehaviour
     private IEnumerator CoStartMoving()
     {
         float time = 0;
-        while(mSize > 0.1f && time < 3)
+        while(mSize > 0.1f && time < 1)
         {
             Collider[] cols = InGameUtils.DetectAround(transform.position, 0.2f, 1 << LayerID.Enemies);
             if(cols.Length > 0)
             {
                 time = 0;
-                mSize -= 0.1f;
-                mMoveSpeed -= 0.5f;
+                mSize *= 0.8f;
+                mMoveSpeed *= 0.5f;
                 transform.localScale = new Vector3(mSize, mSize, 1);
                 EventHit?.Invoke(cols[0].GetBaseObject());
                 yield return new WaitForSeconds(0.1f);

@@ -16,6 +16,8 @@ public class UnitBrawler : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _StunDuration = 1;
 
+    [SerializeField] SlashProjectile _SlashProjectile = null;
+
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float StunDuration { get { return _StunDuration * mBaseObj.BuffProp.SkillDuration; } }
     
@@ -63,30 +65,39 @@ public class UnitBrawler : UnitPlayer
 
     private void OnAttack(int idx)
     {
-        mStunableCounter = (mStunableCounter + 1) % 3;
-        if(mStunableCounter == 0)
+        float damage = mBaseObj.SpecProp.Damage;
+        Vector3 firePos = mBaseObj.FirePosition.transform.position;
+        SlashProjectile proj = Instantiate(_SlashProjectile, firePos, Quaternion.identity);
+        proj.transform.right = mBaseObj.transform.right;
+        proj.EventHit += (target) => 
         {
-            SpritesAnimator.Play(AttackArea.bounds.center, HitSprites);
-        }
+            target.Health.GetDamaged(damage, mBaseObj);
+        };
 
-        Collider[] cols = Physics.OverlapBox(AttackArea.bounds.center, AttackArea.bounds.extents, Quaternion.identity, 1 << LayerID.Enemies);
-        foreach (Collider col in cols)
-        {
-            BaseObject target = col.GetBaseObject();
-            if (target.Health != null)
-            {
-                target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
-            }
+        // mStunableCounter = (mStunableCounter + 1) % 3;
+        // if(mStunableCounter == 0)
+        // {
+        //     SpritesAnimator.Play(AttackArea.bounds.center, HitSprites);
+        // }
 
-            if(mStunableCounter == 0)
-            {
-                MotionStun motionStun = target.MotionManager.FindMotion<MotionStun>();
-                if(motionStun != null)
-                {
-                    motionStun.StunDuration = StunDuration;
-                    target.MotionManager.SwitchMotion(motionStun);
-                }
-            }
-        }
+        // Collider[] cols = Physics.OverlapBox(AttackArea.bounds.center, AttackArea.bounds.extents, Quaternion.identity, 1 << LayerID.Enemies);
+        // foreach (Collider col in cols)
+        // {
+        //     BaseObject target = col.GetBaseObject();
+        //     if (target.Health != null)
+        //     {
+        //         target.Health.GetDamaged(mBaseObj.SpecProp.Damage, mBaseObj);
+        //     }
+
+        //     if(mStunableCounter == 0)
+        //     {
+        //         MotionStun motionStun = target.MotionManager.FindMotion<MotionStun>();
+        //         if(motionStun != null)
+        //         {
+        //             motionStun.StunDuration = StunDuration;
+        //             target.MotionManager.SwitchMotion(motionStun);
+        //         }
+        //     }
+        // }
     }
 }

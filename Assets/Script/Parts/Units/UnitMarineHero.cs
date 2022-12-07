@@ -15,6 +15,8 @@ public class UnitMarineHero : UnitPlayer
     [SerializeField] private MagicGun MagicGunMissile = null;
     [SerializeField][SFXSelector] string _SFXName = "";
     [SerializeField][PrefabSelector(Consts.VFXPath)] string _VFXName = "";
+    
+    [SerializeField] TextHitEffect _TextHitVFX = null;
 
     float AttackSpeed { get { return _AttackSPD * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -96,6 +98,10 @@ public class UnitMarineHero : UnitPlayer
                 Vector3 pos = MyUtils.Random(t.Body.Center, 0.2f);
                 GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
                 Destroy(obj, 1.0f);
+
+                TextHitEffect textHitVfx = Instantiate(_TextHitVFX, pos, Quaternion.identity);
+                textHitVfx.SetText((int)damage);
+                Destroy(textHitVfx.gameObject, 1.0f);
 
                 t.Health.GetDamaged(damage, mBaseObj);
             }

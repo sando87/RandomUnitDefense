@@ -388,6 +388,8 @@ MonoBehaviour:
     type: 3}
   _SFXName: electricity_00
   _VFXName: hitSimple
+  _TextHitVFX: {fileID: 1510947756211685659, guid: 1dbaae643b4e18640825f2fdf43cf0fa,
+    type: 3}
 --- !u!114 &-6514655696365316727
 MonoBehaviour:
   m_ObjectHideFlags: 0

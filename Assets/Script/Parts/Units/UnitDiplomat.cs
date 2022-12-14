@@ -10,11 +10,8 @@ public class UnitDiplomat : UnitPlayer
 {
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 0.5f;
-    [SerializeField] float _SplshRange = 0.1f;
-    [SerializeField] float _SkillRange = 3.0f;
+    [SerializeField] int _PassPercent = 10;
     
-    [SerializeField] private Sprite[] ProjSprites = null;
-    [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] BuffBase BuffEffect = null;
     
     [SerializeField] GuidedMissile _Projectaile = null;
@@ -22,20 +19,62 @@ public class UnitDiplomat : UnitPlayer
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
-    float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
+    int PassPercent { get { return _PassPercent + mBaseObj.BuffProp.Percentage; } }
 
     private MotionActionSingle mMotionAttack = null;
     
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        if (curLevel <= 1)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 8;
+            spec.damagesPerUp[0] = 1;
+            _PassPercent = 10;
+        }
+        else if (curLevel <= 2)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 25;
+            spec.damagesPerUp[1] = 14;
+            _PassPercent = 20;
+        }
+        else if (curLevel <= 3)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 120;
+            spec.damagesPerUp[2] = 85;
+            _PassPercent = 30;
+        }
+        else if (curLevel <= 4)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 250;
+            spec.damagesPerUp[3] = 555;
+            _PassPercent = 40;
+        }
+        else if (curLevel <= 5)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 600;
+            spec.damagesPerUp[4] = 1220;
+            _PassPercent = 50;
+        }
+        else if (curLevel <= 6)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 30000;
+            _PassPercent = 60;
+        }
+
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
 
-        StartCoroutine(KeepBuff(BuffEffect));
+        // StartCoroutine(KeepBuff(BuffEffect));
     }
 
     void OnAttack(int idx)
@@ -50,12 +89,13 @@ public class UnitDiplomat : UnitPlayer
 
         GuidedMissile projectile = Instantiate(_Projectaile, firePosition, Quaternion.identity);
         projectile.transform.right = dir.normalized;
-        
+        projectile.PassPercent = PassPercent;
+
         float damage = mBaseObj.SpecProp.Damage;
 
         projectile.EventHit += (target) => 
         {
-            ObjectPooling.Instance.InstantiateVFX(_HitVFX, projectile.transform.position, Quaternion.identity).ReturnAfter(1);
+            // ObjectPooling.Instance.InstantiateVFX(_HitVFX, projectile.transform.position, Quaternion.identity).ReturnAfter(1);
             target.Health.GetDamaged(damage, mBaseObj);
         };
     }

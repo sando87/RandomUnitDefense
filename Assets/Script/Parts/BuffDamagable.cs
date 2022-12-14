@@ -6,7 +6,7 @@ using UnityEngine;
 public class BuffDamagable : BuffBase
 {
     public float Damage = 5;
-    public float Interval = 0.5f;
+    public float Interval = 0.2f;
 
     protected override void BuffON()
     {

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GuidedMissile : MonoBehaviour
 {
-    [SerializeField] float _MoveSpeed = 5;
-    [SerializeField] int _PassCount = 3;
+    [SerializeField] float MoveSpeed = 7;
+    public int PassPercent = 10;
 
     public Action<BaseObject> EventHit { get; set; } = null;
 
@@ -30,7 +30,7 @@ public class GuidedMissile : MonoBehaviour
         // 1초 기달 후
         transform.DOScale(new Vector3(1.2f, 0.5f, 1), 0.3f);
         // 초반에 속도가 증가하며 항상 right 방향으로 직진하는 코드
-        DOTween.To(() => moveSpeed, (_a) => { moveSpeed = _a; }, _MoveSpeed, 0.5f).From(0);
+        DOTween.To(() => moveSpeed, (_a) => { moveSpeed = _a; }, MoveSpeed, 0.5f).From(0);
         yield return new WaitForSeconds(0.3f);
 
         float eclipseTime = 0;
@@ -49,7 +49,7 @@ public class GuidedMissile : MonoBehaviour
                     if(colsSub.Length <= 0)
                         break;
 
-                    target = colsSub[0].GetBaseObject();
+                    target = colsSub[UnityEngine.Random.Range(0, colsSub.Length)].GetBaseObject();
 
                     // 타겟을 향해 방향전환 후 이동
                     Vector2 firstDir = target.Body.Center - transform.position;
@@ -71,19 +71,18 @@ public class GuidedMissile : MonoBehaviour
                     EventHit?.Invoke(target);
                     // hitCount++;
 
-                    // // 일정 관통횟수 이상 통과시 바로 파괴
-                    // if(_PassCount <= hitCount)
-                    // {
-                    //     DestroyMissile();
-                    //     yield break;
-                    // }
+                    // 타격 후 일정 확률로 통과하여 다시 유도됨
+                    if(MyUtils.IsPercentHit(PassPercent))
+                    {
+                        // 약간 기달
+                        yield return new WaitForSeconds(UnityEngine.Random.Range(0.15f, 0.25f));
+                    }
+                    else
+                    {
+                        DestroyMissile();
+                        yield break;
+                    }
 
-                    // 1초 기달
-                    yield return new WaitForSeconds(UnityEngine.Random.Range(0.15f, 0.25f));
-
-                    // if 타겟이 죽었다면 break
-                    // if(target == null || target.Health.IsDead)
-                    //     break;
                 }
             }
 

@@ -26,6 +26,44 @@ public class UnitPowerGirl : UnitPlayer
 
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        if (curLevel <= 1)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 7;
+            spec.damagesPerUp[0] = 1;
+        }
+        else if (curLevel <= 2)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 35;
+            spec.damagesPerUp[1] = 15;
+        }
+        else if (curLevel <= 3)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 140;
+            spec.damagesPerUp[2] = 85;
+        }
+        else if (curLevel <= 4)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 350;
+            spec.damagesPerUp[3] = 1150;
+        }
+        else if (curLevel <= 5)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 835;
+            spec.damagesPerUp[4] = 1460;
+        }
+        else if (curLevel <= 6)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 204800;
+        }
+
+
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         NormalAttack.EventFired = OnAttack;
@@ -43,8 +81,15 @@ public class UnitPowerGirl : UnitPlayer
         float damage = mBaseObj.SpecProp.Damage;
         missile.EventHit = (t) => 
         {
-            if(t != null)
-                t.Health.GetDamaged(damage, mBaseObj);
+            Collider[] cols = Physics.OverlapSphere(missile.transform.position, 0.25f, 1 << LayerID.Enemies);
+            foreach (Collider col in cols)
+            {
+                Health hp = col.GetComponentInBaseObject<Health>();
+                if (hp != null)
+                {
+                    hp.GetDamaged(damage, mBaseObj);
+                }
+            }
         };
     }
 
@@ -64,8 +109,7 @@ public class UnitPowerGirl : UnitPlayer
                 foreach (Collider col in targets)
                 {
                     int percent = (int)(Accuracy * 100.0f);
-                    int ranVal = UnityEngine.Random.Range(0, 100);
-                    if (ranVal < percent)
+                    if (MyUtils.IsPercentHit(percent))
                     {
                         float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
                         col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);

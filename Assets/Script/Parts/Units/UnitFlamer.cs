@@ -20,6 +20,8 @@ public class UnitFlamer : UnitPlayer
     float SkillDuration { get { return _SkillDuration * mBaseObj.BuffProp.SkillDuration; } }
 
     
+    // lifetime 0.5f, angle 10도이면 시작점에서 수평으로 2칸 길이의 삼각형 넓이가 공격범위
+    // lifetime 1, angle 20도이면 시작점에서 수평으로 3.5칸 길이의 삼각형 넓이가 공격범위
     [SerializeField] float duration = 1; // ~ 5
     [SerializeField] float lifetime = 0.5f; // ~ 1
     [SerializeField] float angle = 10; // ~ 20
@@ -51,8 +53,8 @@ public class UnitFlamer : UnitPlayer
         Vector3 dest = mMotionAttack.Target.transform.position;
         Vector3 dir = dest - firePosition; dir.z = 0;
 
-        GameObject fireBlastEffect = Instantiate(FireBlastPrefab, firePosition, Quaternion.identity);
-        fireBlastEffect.transform.right = dir;
+        GameObject fireBlastEffect = Instantiate(FireBlastPrefab, firePosition, Quaternion.identity, mBaseObj.transform);
+        //fireBlastEffect.transform.right = dir;
         ParticleSystem ps = fireBlastEffect.GetComponent<ParticleSystem>();
         ps.Stop();
         var main = ps.main;
@@ -64,8 +66,8 @@ public class UnitFlamer : UnitPlayer
         shape.angle = angle;
         ps.Play();
 
-        GameObject decal = Instantiate(FireDecalPrefab, dest, Quaternion.identity);
-        StartCoroutine(RepeatBuff(decal));
+        // GameObject decal = Instantiate(FireDecalPrefab, dest, Quaternion.identity);
+        // StartCoroutine(RepeatBuff(decal));
 
         float time = 0;
         while(time < duration)

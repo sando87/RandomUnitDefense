@@ -60,12 +60,6 @@ public class InGameSystem : SingletonMono<InGameSystem>
         InGameInput.Instance.EventDragStart += OnDragStart;
         InGameInput.Instance.EventDragging += OnDragging;
         InGameInput.Instance.EventDragEnd += OnDragEnd;
-
-        InputWrapper.Instance.EventDownTriggered += (it) => 
-        {
-            if(it == InputType.KeyA) Time.timeScale += 0.2f;
-            else if(it == InputType.KeyB) Time.timeScale -= 0.2f;
-        };
     }
 
     public void StartGame()

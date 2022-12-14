@@ -89,23 +89,6 @@ public class RUIFormInGame : RUiForm
 
     private void Update()
     {
-        if (Keyboard.current.uKey.wasPressedThisFrame)
-            GameMgr.UpgradeWeapon(UpgradeType.Gun);
-        if (Keyboard.current.iKey.wasPressedThisFrame)
-            OnClickRaiseMineral();
-        if (Keyboard.current.oKey.wasPressedThisFrame)
-            OnClickCreateUnit();
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-            OnClickToggleUpgradePanel();
-
-
-#if UNITY_EDITOR
-        if (InputWrapper.Instance.IsKeyDownTrigger_F1() && Application.isPlaying)
-        {
-            UnityEditor.EditorWindow.focusedWindow.maximized = !UnityEditor.EditorWindow.focusedWindow.maximized;
-        }
-#endif
-
         UpdateForm(default);
     }
 

@@ -22,7 +22,8 @@ public class UnitFlamer : UnitPlayer
     int PS_count { get { return (int)(SplshRange * 20); } }
     float SplshHeight { get { return 2 * SplshRange * Mathf.Tan(PS_angle * 0.5f * Mathf.Deg2Rad); } }
 
-    private MotionActionSingle mMotionAttack = null;
+    private MotionActionLoop mMotionAttack = null;
+    private ParticleSystem mFireBlastEffect = null;
 
     [SerializeField] GameObject FireBlastPrefab = null;
     [SerializeField] GameObject FireDecalPrefab = null;
@@ -32,32 +33,44 @@ public class UnitFlamer : UnitPlayer
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
-        mMotionAttack.EventFired = OnAttack;
+        mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
+        mMotionAttack.EventStart = OnAttack;
+        mMotionAttack.EventEnd = () => StopFireBlasting();
         StartCoroutine(CoMotionSwitcherFlamer(mMotionAttack));
     }
 
-    private void OnAttack(int idx)
+    private void OnAttack(BaseObject target)
     {
-        StartCoroutine(CoAttack(idx));
+        StartCoroutine("CoAttack");
     }
 
-    IEnumerator CoAttack(int idx)
+    private void StopFireBlasting()
+    {
+        StopCoroutine("CoAttack");
+        if(mFireBlastEffect != null)
+        {
+            mFireBlastEffect.Stop();
+            Destroy(mFireBlastEffect.gameObject, 0.5f);
+            mFireBlastEffect = null;
+        }
+    }
+
+    IEnumerator CoAttack()
     {
         Vector3 firePosition = mBaseObj.FirePosition.transform.position;
 
         GameObject fireBlastEffect = Instantiate(FireBlastPrefab, firePosition, Quaternion.identity, mBaseObj.transform);
-        //fireBlastEffect.transform.right = dir;
-        ParticleSystem ps = fireBlastEffect.GetComponent<ParticleSystem>();
-        ps.Stop();
-        var main = ps.main;
+        fireBlastEffect.transform.localRotation = Quaternion.identity;
+        mFireBlastEffect = fireBlastEffect.GetComponent<ParticleSystem>();
+        mFireBlastEffect.Stop();
+        var main = mFireBlastEffect.main;
         main.duration = SkillDuration;
         main.startLifetime = PS_lifetime;
-        var emission = ps.emission;
+        var emission = mFireBlastEffect.emission;
         emission.rateOverTime = PS_count;
-        var shape = ps.shape;
+        var shape = mFireBlastEffect.shape;
         shape.angle = PS_angle;
-        ps.Play();
+        mFireBlastEffect.Play();
 
         // GameObject decal = Instantiate(FireDecalPrefab, dest, Quaternion.identity);
         // StartCoroutine(RepeatBuff(decal));
@@ -77,15 +90,9 @@ public class UnitFlamer : UnitPlayer
 
             yield return newWaitForSeconds.Cache(0.1f);
             time += 0.1f;
-
-            // if(!mBaseObj.MotionManager.IsCurrentMotion(mMotionAttack))
-            //     break;
         }
 
-        yield return newWaitForSeconds.Cache(1);
-
-        Destroy(fireBlastEffect);
-        
+        mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
     }
     
     private IEnumerator RepeatBuff(GameObject decal)
@@ -116,10 +123,11 @@ public class UnitFlamer : UnitPlayer
                 if (!mBaseObj.MotionManager.IsCurrentMotion<MotionIdle>())
                     continue;
 
-                if (!IsEnmiesInFlameArea())
+                BaseObject target = DetectTargetInFlameArea();
+                if (target == null)
                     continue;
 
-                motion.Target = null;
+                motion.Target = target;
                 mBaseObj.MotionManager.SwitchMotion(motion);
 
                 yield return new WaitUntil(() => !mBaseObj.MotionManager.IsCurrentMotion(motion));
@@ -128,22 +136,24 @@ public class UnitFlamer : UnitPlayer
         }
     }
 
-    private bool IsEnmiesInFlameArea()
+    private BaseObject DetectTargetInFlameArea()
     {
         Vector3 firePos = mBaseObj.FirePosition.transform.position;
         Vector3 fireDir = new Vector3(mBaseObj.transform.right.x, 0, 0);
         Vector3 cenPos = firePos + fireDir * SplshRange * 0.5f;
         Vector3 size = new Vector3(SplshRange, SplshHeight, 1);
-        if(Physics.CheckBox(cenPos, size * 0.5f, Quaternion.identity, 1 << LayerID.Enemies))
-            return true;
+        Collider[] cols = Physics.OverlapBox(cenPos, size * 0.5f, Quaternion.identity, 1 << LayerID.Enemies);
+        if(cols.Length > 0)
+            return cols[0].GetBaseObject();
 
         Vector3 tmp = cenPos - mBaseObj.Body.Center;
         tmp.x *= -1;
         Vector3 oppositeCenPos = mBaseObj.Body.Center + tmp;
-        if(Physics.CheckBox(oppositeCenPos, size * 0.5f, Quaternion.identity, 1 << LayerID.Enemies))
-            return true;
+        cols = Physics.OverlapBox(oppositeCenPos, size * 0.5f, Quaternion.identity, 1 << LayerID.Enemies);
+        if(cols.Length > 0)
+            return cols[0].GetBaseObject();
 
-        return false;
+        return null;
     }
 
     // 화염방사되는 삼각형 지역 안에 들어오는 적들을 반환한다.(정확히는 해상 타겟의 Body.Center위치가 안에 들어오는 객체만)
@@ -162,9 +172,9 @@ public class UnitFlamer : UnitPlayer
                 BaseObject target = col.GetBaseObject();
                 if(target == null) continue;
 
-                Vector3 targetDir = target.Body.Center - firePos;
-                float degree = Vector3.Angle(fireDir, targetDir.normalized);
-                if(degree <= (PS_angle * 0.5f))
+                // Vector3 targetDir = target.Body.Center - firePos;
+                // float degree = Vector3.Angle(fireDir, targetDir.normalized);
+                // if(degree <= (PS_angle * 0.5f))
                 {
                     targets.Add(target);
                 }

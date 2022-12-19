@@ -8,6 +8,7 @@ using UnityEngine;
 public class MotionActionLoop : MotionBase
 {
     [SerializeField] Transform[] _FirePositions = null;
+    [SerializeField] bool _IsAutoAiming = true;
 
     private int VertAnimCount { get { return _FirePositions == null ? 0 : _FirePositions.Length; } }
 
@@ -36,10 +37,13 @@ public class MotionActionLoop : MotionBase
 
         base.OnUpdate();
 
-        mBaseObject.Body.TurnHeadTo(Target.transform.position);
-        int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
-        SetAnimParamVerticalIndexFloat(vertIdx);
-        mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
+        if(_IsAutoAiming)
+        {
+            mBaseObject.Body.TurnHeadTo(Target.transform.position);
+            int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
+            SetAnimParamVerticalIndexFloat(vertIdx);
+            mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
+        }
         
         EventUpdate?.Invoke(Target);
     }

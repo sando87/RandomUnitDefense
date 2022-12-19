@@ -7,60 +7,21 @@ using UnityEngine;
 
 public class UnitChanneller : UnitPlayer
 {
-    [SerializeField] float _AttackSpeed = 0.5f;
-    [SerializeField] float _AttackRange = 2;
     [SerializeField] float _SkillRange = 2;
-    [SerializeField] float _AccDamageStep = 0.2f;
-    [SerializeField] [Range(0, 1)] float _DotDamageRate = 0.1f;
 
-    [SerializeField] private Sprite[] IntroSprites = null;
-    [SerializeField] private Sprite[] ProjSprites = null;
-    [SerializeField] private Sprite[] OutroSprites = null;
-
-    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
-    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
 
     private LaserAimming mLaserEffectObject = null;
-    private MotionActionSingle mAttackMotion = null;
     private MotionActionLoop mLaserMotion = null;
 
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
-        mAttackMotion = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
-        mAttackMotion.EventFired = OnAttack;
-
         mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
-        StartCoroutine(CoMotionSwitcher(mAttackMotion, () => AttackSpeed, () => AttackRange));
         StartCoroutine(CoMotionSwitcher(mLaserMotion, () => 0, () => SkillRange));
-    }
-
-    private void OnAttack(int idx)
-    {
-        ShootProjectail(mAttackMotion.Target);
-    }
-    private void ShootProjectail(BaseObject target)
-    {
-        Vector3 firePosition = mBaseObj.FirePosition.transform.position;
-        Vector3 dir = target.Body.Center - mBaseObj.Body.Center;
-        dir.z = 0;
-        SpritesAnimator.Play(firePosition, IntroSprites);
-
-        SpritesAnimator proj = SpritesAnimator.Play(firePosition, ProjSprites, true);
-        proj.transform.right = dir.normalized;
-        float damage = mBaseObj.SpecProp.Damage;
-        proj.transform.CoMoveTo(target.Body.transform, 0.3f, () =>
-        {
-            SpritesAnimator.Play(proj.transform.position, OutroSprites);
-
-            target.Health.GetDamaged(damage, mBaseObj);
-
-            Destroy(proj.gameObject);
-        });
     }
 
     private void OnAttackBeamStart(BaseObject target)
@@ -78,18 +39,76 @@ public class UnitChanneller : UnitPlayer
     IEnumerator CoAttackBeam()
     {
         BaseObject target = mLaserMotion.Target;
-        float accDamage = 0;
+        StartCoroutine(CoAttackBeamSub(target, mLaserEffectObject, 3));
+        
+        float timeToMaxDamage = 3;
+        float hitInterval = 0.1f;
+        float currentDamageRate = 0;
+        float currentTime = 0;
+        float currentDamagePerSec = 0;
         while (!IsOutOfSkillRange(target))
         {
-            if(target.Health != null)
+            Collider[] cols = Physics.OverlapSphere(target.transform.position, 0.2f, 1 << LayerID.Enemies);
+            foreach (Collider col in cols)
             {
-                float damage = (mBaseObj.SpecProp.Damage + accDamage) * _DotDamageRate;
-                target.Health.GetDamaged(damage, mBaseObj);
+                Health hp = col.GetComponentInBaseObject<Health>();
+                if (hp != null)
+                {
+                    float dotDamage = currentDamagePerSec * hitInterval;
+                    hp.GetDamaged(dotDamage, mBaseObj);
+                }
             }
-            yield return newWaitForSeconds.Cache(0.1f);
-            accDamage += _AccDamageStep;
+
+            yield return newWaitForSeconds.Cache(hitInterval);
+            currentTime += hitInterval;
+            currentDamageRate = Mathf.Min(1, currentTime / timeToMaxDamage);
+            currentDamagePerSec = mBaseObj.SpecProp.Damage * currentDamageRate;
+
+            if(target == null || target.Health.IsDead)
+                break;
         }
         mBaseObj.MotionManager.SwitchMotion<MotionIdle>();
+    }
+    IEnumerator CoAttackBeamSub(BaseObject startTarget, LaserAimming parentLaser, int count)
+    {
+        Collider[] nextCols = startTarget.DetectAround(1, 1 << LayerID.Enemies);
+        if(nextCols.Length <= 1 || count <= 0)
+            yield break;
+
+        BaseObject target = nextCols[nextCols.Length - 1].GetBaseObject();
+        
+        Vector3 firePosition = startTarget.Body.Center;
+        LaserAimming laserEffectObject = LaserAimming.Play(firePosition, target.Body.gameObject, "ChannellerLaser");
+        laserEffectObject.transform.SetParent(startTarget.Body.transform);
+
+        count--;
+        StartCoroutine(CoAttackBeamSub(target, laserEffectObject, count));
+
+        float timeToMaxDamage = 3;
+        float hitInterval = 0.1f;
+        float currentDamageRate = 0;
+        float currentTime = 0;
+        float currentDamagePerSec = 0;
+        while (target != null && !target.Health.IsDead && parentLaser != null)
+        {
+            Collider[] cols = Physics.OverlapSphere(target.transform.position, 0.2f, 1 << LayerID.Enemies);
+            foreach (Collider col in cols)
+            {
+                Health hp = col.GetComponentInBaseObject<Health>();
+                if (hp != null)
+                {
+                    float dotDamage = currentDamagePerSec * hitInterval;
+                    hp.GetDamaged(dotDamage, mBaseObj);
+                }
+            }
+
+            yield return newWaitForSeconds.Cache(hitInterval);
+            currentTime += hitInterval;
+            currentDamageRate = Mathf.Min(1, currentTime / timeToMaxDamage);
+            currentDamagePerSec = mBaseObj.SpecProp.Damage * currentDamageRate;
+        }
+
+        Destroy(laserEffectObject.gameObject);
     }
     private bool IsOutOfSkillRange(BaseObject target)
     {

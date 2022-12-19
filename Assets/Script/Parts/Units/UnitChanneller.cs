@@ -7,9 +7,11 @@ using UnityEngine;
 
 public class UnitChanneller : UnitPlayer
 {
-    [SerializeField] float _SkillRange = 2;
+    [SerializeField] float _AttackSpeed = 1;
+    [SerializeField] float _AttackRange = 2;
 
-    float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
+    float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
+    float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
 
     private LaserAimming mLaserEffectObject = null;
     private MotionActionLoop mLaserMotion = null;
@@ -21,7 +23,7 @@ public class UnitChanneller : UnitPlayer
         mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;
         mLaserMotion.EventEnd = OnAttackBeamEnd;
-        StartCoroutine(CoMotionSwitcher(mLaserMotion, () => 0, () => SkillRange));
+        StartCoroutine(CoMotionSwitcher(mLaserMotion, () => AttackSpeed, () => AttackRange));
     }
 
     private void OnAttackBeamStart(BaseObject target)
@@ -46,7 +48,7 @@ public class UnitChanneller : UnitPlayer
         float currentDamageRate = 0;
         float currentTime = 0;
         float currentDamagePerSec = 0;
-        while (!IsOutOfSkillRange(target))
+        while (!IsOutOfAttackRange(target))
         {
             Collider[] cols = Physics.OverlapSphere(target.transform.position, 0.2f, 1 << LayerID.Enemies);
             foreach (Collider col in cols)
@@ -71,7 +73,7 @@ public class UnitChanneller : UnitPlayer
     }
     IEnumerator CoAttackBeamSub(BaseObject startTarget, LaserAimming parentLaser, int count)
     {
-        Collider[] nextCols = startTarget.DetectAround(1, 1 << LayerID.Enemies);
+        Collider[] nextCols = startTarget.DetectAround(3, 1 << LayerID.Enemies);
         if(nextCols.Length <= 1 || count <= 0)
             yield break;
 
@@ -110,9 +112,9 @@ public class UnitChanneller : UnitPlayer
 
         Destroy(laserEffectObject.gameObject);
     }
-    private bool IsOutOfSkillRange(BaseObject target)
+    private bool IsOutOfAttackRange(BaseObject target)
     {
-        return (target.transform.position - mBaseObj.transform.position).magnitude > (SkillRange * 1.2f);
+        return (target.transform.position - mBaseObj.transform.position).magnitude > (AttackRange * 1.2f);
     }
     private void OnAttackBeamEnd()
     {

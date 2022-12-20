@@ -30,32 +30,37 @@ public class UnitPowerGirl : UnitPlayer
         if (curLevel <= 1)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 7;
+            spec.damage = 5;
             spec.damagesPerUp[0] = 1;
+            Accuracy = 0.1f;
         }
         else if (curLevel <= 2)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 35;
-            spec.damagesPerUp[1] = 15;
+            spec.damage = 15;
+            spec.damagesPerUp[1] = 8;
+            Accuracy = 0.3f;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 140;
-            spec.damagesPerUp[2] = 85;
+            spec.damage = 85;
+            spec.damagesPerUp[2] = 68;
+            Accuracy = 0.5f;
         }
         else if (curLevel <= 4)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 350;
-            spec.damagesPerUp[3] = 1150;
+            spec.damage = 240;
+            spec.damagesPerUp[3] = 870;
+            Accuracy = 0.7f;
         }
         else if (curLevel <= 5)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 835;
-            spec.damagesPerUp[4] = 1460;
+            spec.damage = 615;
+            spec.damagesPerUp[4] = 1210;
+            Accuracy = 0.9f;
         }
         else if (curLevel <= 6)
         {

@@ -35,13 +35,13 @@ public class UnitEnemy : UnitBase
         
         else if (WaveNumber >= 29) hp = 15000 * WaveNumber;
         else if (WaveNumber >= 28) hp = 15000 * WaveNumber;
-
         else if (WaveNumber >= 27) hp = 15000 * WaveNumber;
         else if (WaveNumber >= 26) hp = 14000 * WaveNumber;
         else if (WaveNumber >= 25) hp = 12000 * WaveNumber;
         else if (WaveNumber >= 24) hp = 10000 * WaveNumber;
         else if (WaveNumber >= 23) hp = 8600 * WaveNumber;
         else if (WaveNumber >= 22) hp = 7200 * WaveNumber;
+
         else if (WaveNumber >= 21) hp = 5800 * WaveNumber;
         else if (WaveNumber >= 20) hp = 5800 * WaveNumber;
         else if (WaveNumber >= 19) hp = 5800 * WaveNumber;

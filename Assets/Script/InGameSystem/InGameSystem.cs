@@ -301,7 +301,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         //BaseObject newUnit = CreateUnit(list[randomIndex].ID);
         BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
         newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
-        newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
+        // newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
     }
     public void OnMergeForReunit()
     {

@@ -43,27 +43,9 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: bf754f57f9f0dac48b2aed72899bcf8a,
       type: 3}
     skillDescription: "\uBC88\uAC1C \uC5F0\uC1C4 \uACF5\uACA9"
-  - ID: 638017246608224389
-    name: PowerGirl
-    image: {fileID: 21300000, guid: 8b027592d7db7aa4fa0b9f6483c8d985, type: 3}
-    prefab: {fileID: 1367240741272029638, guid: 9b12042992a632743b379bf31d80011e,
-      type: 3}
-    skillDescription: "\uC8FC\uAE30\uC801\uC73C\uB85C \uB09C\uC0AC\uACF5\uACA9"
-  - ID: 638066364726287397
-    name: Flamer
-    image: {fileID: 21300000, guid: 0357d0a899f6cad4eb5fbfccf35ab3a2, type: 3}
-    prefab: {fileID: 6377826679273638812, guid: b24537ede5d823c489db3dbc61358ac5,
-      type: 3}
-    skillDescription: "\uD654\uC5FC\uBC29\uC0AC"
   - ID: 638066365053007616
     name: ShellStorm
     image: {fileID: 21300000, guid: a9992683d3bf74d4d86237c47428b79e, type: 3}
     prefab: {fileID: 6377826679273638812, guid: b578ab0c66f0e6e45be9f59d8b2aa69b,
       type: 3}
     skillDescription: "\uB3C5\uAC00\uC2A4\uD1B5 \uBC1C\uC0AC"
-  - ID: 638066365506225892
-    name: Diplomat
-    image: {fileID: 21300000, guid: f9f6e98719f8c4646bef3913b96506ed, type: 3}
-    prefab: {fileID: 6377826679273638812, guid: b14f0c5113673f3429029a05a314a13c,
-      type: 3}
-    skillDescription: "\uC720\uB3C4\uBBF8\uC0AC\uC77C\uBC1C\uC0AC"

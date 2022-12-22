@@ -33,15 +33,15 @@ public class MissileTracing : MonoBehaviour
         yield return new WaitForSeconds(UnityEngine.Random.Range(0.6f, 0.8f));
         //yield return new WaitUntil(() => IsAttackable);
 
-        Vector3 offset = MyUtils.Random(Vector3.zero, 0.5f);
-        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.transform, 3.14f * 2, offset));
+        Vector3 offset = MyUtils.Random(Vector3.zero, 0.3f);
+        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.Body.transform, 3.14f * 2, offset));
         
-        Vector3 lastDest = Target.transform.position + offset;
+        Vector3 lastDest = Target.Body.Center + offset;
 
         while(transform.position.y > lastDest.y)
         {
             if(Target != null)
-                lastDest = Target.transform.position + offset;
+                lastDest = Target.Body.Center + offset;
 
             yield return null;
             mMoveSpeed += (10 * Time.deltaTime);

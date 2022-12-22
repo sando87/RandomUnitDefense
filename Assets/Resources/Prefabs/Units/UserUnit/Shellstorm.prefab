@@ -688,7 +688,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 5
+    attackType: 2
     damage: 6
     damagesPerUp:
     - 1
@@ -725,12 +725,14 @@ MonoBehaviour:
   _MotionMissileAttack: {fileID: 622547147699294387}
   _AttackSpeed: 0.5
   _AttackRange: 3
+  _MissileCount: 1
   _SkillAttack: {fileID: 6577991469760676028}
   _SkillSpeed: 0.3
   _SkillRange: 5
   _SplshRange: 1
   _SkillDuration: 3
-  _SkillDamageRate: 3
+  _BarrelDamageRate: 5
+  _PosionDamageRate: 0.2
   MissilePrefab: {fileID: 2382948227277557631, guid: 128845c5bb61bb3438dee537d1c087aa,
     type: 3}
   BarrelPrefab: {fileID: 1945621386255130330, guid: 9746c4278000e6c4e84ba2d385f0d8aa,

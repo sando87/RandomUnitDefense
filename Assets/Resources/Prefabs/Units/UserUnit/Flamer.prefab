@@ -498,10 +498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a926293f05f45fdab2136ef76b0e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AttackSpeed: 1
+  _AttackSpeed: 0.5
   _SplshRange: 2
   _SkillDuration: 1
-  _DotDamageRate: 0.1
+  _DotDamageRate: 0.3
   FireBlastPrefab: {fileID: 7148568338040661346, guid: af5c5df92bdcd7d4ea3a0e9b17f78656,
     type: 3}
   FireDecalPrefab: {fileID: 4149092143720216171, guid: ca222274f5ff44d42a2691c322ffc541,

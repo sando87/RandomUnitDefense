@@ -11,7 +11,7 @@ public class UnitFlamer : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _SplshRange = 2.0f; // ~ 4.0f
     [SerializeField] float _SkillDuration = 1.0f; // ~ 5.0f
-    [SerializeField][Range(0, 1)] float _DotDamageRate = 0.1f;
+    [SerializeField][Range(0, 1)] float _DotDamageRate = 0.3f;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float SplshRange { get { return _SplshRange * mBaseObj.BuffProp.SplshRange; } }
@@ -32,6 +32,43 @@ public class UnitFlamer : UnitPlayer
     void Start()
     {
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
+
+        int curLevel = mBaseObj.SpecProp.Level;
+        if (curLevel <= 1)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 7;
+            spec.damagesPerUp[0] = 1;
+        }
+        else if (curLevel <= 2)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 35;
+            spec.damagesPerUp[1] = 15;
+        }
+        else if (curLevel <= 3)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 140;
+            spec.damagesPerUp[2] = 85;
+        }
+        else if (curLevel <= 4)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 350;
+            spec.damagesPerUp[3] = 1150;
+        }
+        else if (curLevel <= 5)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 835;
+            spec.damagesPerUp[4] = 1460;
+        }
+        else if (curLevel <= 6)
+        {
+            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+            spec.damage = 204800;
+        }
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mMotionAttack.EventStart = OnAttack;

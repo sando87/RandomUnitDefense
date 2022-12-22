@@ -708,7 +708,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 3
+    attackType: 2
     damage: 3
     damagesPerUp:
     - 1
@@ -744,19 +744,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _AttackSpeed: 0.5
   _AttackRange: 2
-  _SplshRange: 0.1
-  _SkillRange: 2
-  ProjSprites:
-  - {fileID: 21300000, guid: ae42ad08f542b9d46a1ea3de6a11a359, type: 3}
-  - {fileID: 21300000, guid: 50108e2f9f016c34495ba53d5d6aa9c5, type: 3}
-  - {fileID: 21300000, guid: 93d5ea05d2acaa741aafcc7b13715cc3, type: 3}
-  - {fileID: 21300000, guid: bb7af712b00accb4aa225e30ef325256, type: 3}
-  - {fileID: 21300000, guid: 99c058ba0d432834b9a2be3d283ea0c9, type: 3}
-  OutroSprites:
-  - {fileID: 21300000, guid: fe2d28e38bc8a6249a74b66d8209665b, type: 3}
-  - {fileID: 21300000, guid: af2f0fe9f0a389d4d86d3f8b365f88e7, type: 3}
-  - {fileID: 21300000, guid: 0834019eccae3814caa1659a4ca4e6f8, type: 3}
-  - {fileID: 21300000, guid: 6c5f6059911d4284fba1521d905dd7f5, type: 3}
+  _PassPercent: 10
+  _ProjectileCount: 1
   BuffEffect: {fileID: 6896945761792274100}
   _Projectaile: {fileID: 9085249495043047078, guid: 7b1ee5ba200e23540ad531240e0afb9d,
     type: 3}

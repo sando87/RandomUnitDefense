@@ -14,8 +14,8 @@ public class UnitPowerGirl : UnitPlayer
     [SerializeField] MotionActionSingle SkillAttack = null;
     [SerializeField] float _SkillSpeed = 0.3f;
     [SerializeField] float _SkillRange = 1;
+    [SerializeField] int _RandomShootCount = 3;
     [SerializeField] GameObject HitFloorPrefab = null;
-    [SerializeField][Range(0, 1)] float Accuracy = 0.1f;
     [SerializeField][Range(0, 1)] float DotDamageRate = 0.1f;
     [SerializeField] private GameObject BulletSparkPrefab = null;
 
@@ -23,6 +23,8 @@ public class UnitPowerGirl : UnitPlayer
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
     float SkillSpeed { get { return _SkillSpeed * mBaseObj.BuffProp.SkillSpeed; } }
     float SkillRange { get { return _SkillRange * mBaseObj.BuffProp.SkillRange; } }
+
+    int RandomShootCountTest { get { return mBaseObj.SpecProp.Level * 2; } }
 
     void Start()
     {
@@ -32,35 +34,35 @@ public class UnitPowerGirl : UnitPlayer
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 5;
             spec.damagesPerUp[0] = 1;
-            Accuracy = 0.1f;
+            _RandomShootCount = RandomShootCountTest;
         }
         else if (curLevel <= 2)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 15;
             spec.damagesPerUp[1] = 8;
-            Accuracy = 0.3f;
+            _RandomShootCount = RandomShootCountTest;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 85;
             spec.damagesPerUp[2] = 68;
-            Accuracy = 0.5f;
+            _RandomShootCount = RandomShootCountTest;
         }
         else if (curLevel <= 4)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 240;
             spec.damagesPerUp[3] = 870;
-            Accuracy = 0.7f;
+            _RandomShootCount = RandomShootCountTest;
         }
         else if (curLevel <= 5)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 615;
             spec.damagesPerUp[4] = 1210;
-            Accuracy = 0.9f;
+            _RandomShootCount = RandomShootCountTest;
         }
         else if (curLevel <= 6)
         {
@@ -106,23 +108,13 @@ public class UnitPowerGirl : UnitPlayer
     {
         GameObject hitFloorObject = Instantiate(HitFloorPrefab, mBaseObj.transform);
         
-        Collider[] targets = mBaseObj.DetectAround(SkillRange, 1 << LayerID.Enemies);
         while(true)
         {
             if(SkillAttack.NormalizedTime < 0.65f)
             {
-                foreach (Collider col in targets)
+                for(int i = 0; i < _RandomShootCount; ++i)
                 {
-                    int percent = (int)(Accuracy * 100.0f);
-                    if (MyUtils.IsPercentHit(percent))
-                    {
-                        float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
-                        col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
-
-                        Vector3 pos = MyUtils.Random(col.GetBaseObject().Body.Center, 0.1f);
-                        GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
-                        Destroy(obj, 1.0f);
-                    }
+                    DoRandomShootAround();
                 }
             }
             else
@@ -144,6 +136,28 @@ public class UnitPowerGirl : UnitPlayer
         {
             Destroy(hitFloorObject);
             hitFloorObject = null;
+        }
+    }
+
+    void DoRandomShootAround()
+    {
+        Vector3 startPos = mBaseObj.Body.Center;
+        Vector3 dest = MyUtils.Random(mBaseObj.Body.Center, SkillRange);
+        if((dest - startPos).magnitude < SkillRange * 0.5f)
+            dest = (dest.normalized * SkillRange * 0.5f);
+        
+        Vector3 dir = (dest - startPos).ZeroZ().normalized;
+        LaserAimming laserObj = LaserAimming.Play(startPos, dest, "SniperLaser");
+        this.ExDelayedCoroutine(1, () => Destroy(laserObj.gameObject));
+
+        if(Physics.Raycast(startPos, dir, out RaycastHit hit, dir.magnitude, 1 << LayerID.Enemies))
+        {
+            float damage = mBaseObj.SpecProp.Damage * DotDamageRate;
+            hit.collider.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
+
+            Vector3 pos = MyUtils.Random(hit.collider.GetBaseObject().Body.Center, 0.1f);
+            GameObject obj = Instantiate(BulletSparkPrefab, pos, Quaternion.identity);
+            Destroy(obj, 1.0f);
         }
     }
 }

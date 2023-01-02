@@ -46,6 +46,6 @@ MonoBehaviour:
   - ID: 638066365053007616
     name: Flamer
     image: {fileID: 21300000, guid: 0357d0a899f6cad4eb5fbfccf35ab3a2, type: 3}
-    prefab: {fileID: 6377826679273638812, guid: b24537ede5d823c489db3dbc61358ac5,
+    prefab: {fileID: 6377826679273638812, guid: bdd3c23c87e83c44bafbe8dcc6d66955,
       type: 3}
     skillDescription: ...

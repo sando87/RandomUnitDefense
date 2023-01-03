@@ -65,9 +65,10 @@ public class Health : MonoBehaviour
         CurrentHealth = hp;
     }
 
-    public void ShowHealthBar()
+    public void ShowHealthBar(float duration = 5)
     {
-        mHPBar.ShowHealthBar();
+        if(mHPBar != null)
+            mHPBar.ShowHealthBar(duration);
     }
 
 }

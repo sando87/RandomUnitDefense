@@ -112,7 +112,22 @@ public class InGameSystem : SingletonMono<InGameSystem>
             return false;
 
         KillPoint -= KillPointForNewUnit;
-        CreateRandomUnit();
+        BaseObject unit = CreateRandomUnit();
+        
+        int rem = (UnityEngine.Random.Range(0, 10000) % 1000);
+        int level = 1;
+        if(rem < 1)
+            level = 5;
+        else if(rem < 5)
+            level = 4;
+        else if(rem < 50)
+            level = 3;
+        else if(rem < 250)
+            level = 2;
+        else
+            level = 1;
+
+        unit.SpecProp.Level = level;
         return true;
     }
     public BaseObject CreateRandomUnit()

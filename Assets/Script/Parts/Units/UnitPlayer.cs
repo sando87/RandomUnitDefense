@@ -13,6 +13,30 @@ public class UnitPlayer : UnitBase
 {
     private LaserAimming mBuffEffectLine = null;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        StartCoroutine(CoReduceHealth());
+    }
+
+    protected IEnumerator CoReduceHealth()
+    {
+        yield return newWaitForSeconds.Cache(0.1f);
+        float time = 0;
+        float duration = 60 * (1 - (0.2f * (mBaseObj.SpecProp.Level - 1)));
+        int count = (int)(duration / 0.1f);
+        float hpStep = mBaseObj.SpecProp.TotalHP / count;
+        while(time < duration)
+        {
+            mBaseObj.Health.GetDamaged(hpStep, mBaseObj);
+            yield return newWaitForSeconds.Cache(0.1f);
+            time += 0.1f;
+        }
+
+        mBaseObj.MotionManager.SwitchMotion<MotionDisappear>();
+    }
+
     protected IEnumerator KeepBuff(BuffBase buffPrefab)
     {
         mBaseObj.GetComponentInChildren<UserInput>().EventSelected += () => ShowPassiveBuffEffect();

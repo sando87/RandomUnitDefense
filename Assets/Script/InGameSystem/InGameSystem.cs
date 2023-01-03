@@ -159,7 +159,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         // 강화된 적 유닛이 죽었을 경우 해당 위치에 아군 유닛이 보상으로 지급된다.
         if(deathMob.GetComponentInChildren<UnitEnemy>().IsEnforced)
-            CreateRandomUnitReward(pos);
+            CreateRandomUnitReward(pos, deathMob.GetComponentInChildren<UnitEnemy>().WaveNumber);
 
         GameObject deathPoint = Instantiate(DeathPointPrefab, pos, Quaternion.identity, transform);
         float ranPosX = UnityEngine.Random.Range(-0.5f, 0.5f);
@@ -180,9 +180,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
             mInGameUI.ShowMineralRasingEffect(minStep);
         });
     }
-    public void CreateRandomUnitReward(Vector3 pos)
+    public void CreateRandomUnitReward(Vector3 pos, int mobWaveNum)
     {
-        int level = WaveNumber < 15 ? 2 : (WaveNumber < 25 ? 3 : 4);
+        int level = mobWaveNum < 15 ? 2 : (mobWaveNum < 25 ? 3 : 4);
         BaseObject unit = CreateRandomUnit();
         unit.transform.position = pos;
         unit.SpecProp.Level = level;
@@ -238,8 +238,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WaveNumber++;
 
             // Wave가 10이상이면 두개Wave당 한번씩 강화 유닛을 출몰 시킨다(강화유닛 제거시 보상유닛 지급됨...)
-            if(WaveNumber > 10 & WaveNumber % 2 == 0)
-                IsEnforcedEnemy = true;
+            // if(WaveNumber > 10 & WaveNumber % 2 == 0)
+            //     IsEnforcedEnemy = true;
 
             if(NextWaveNumberForTest > 0)
             {

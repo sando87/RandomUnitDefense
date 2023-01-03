@@ -16,8 +16,8 @@ public class UnitEnemy : UnitBase
 
         if(IsEnforced)
         {
-            hp *= 10; //체력 10배 증가
-            mBaseObj.BuffProp.MoveSpeed = 200; // (이속버프 +200% : 이속 3배 증가)
+            hp *= 4; //체력 증가
+            mBaseObj.BuffProp.MoveSpeed = 200; // (이속버프+% : 이속 증가)
         }
             
         mBaseObj.Health.InitHP(hp);

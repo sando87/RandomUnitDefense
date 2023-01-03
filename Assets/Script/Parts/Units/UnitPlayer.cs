@@ -17,7 +17,7 @@ public class UnitPlayer : UnitBase
     {
         base.Awake();
 
-        StartCoroutine(CoReduceHealth());
+        // StartCoroutine(CoReduceHealth());
     }
 
     protected IEnumerator CoReduceHealth()

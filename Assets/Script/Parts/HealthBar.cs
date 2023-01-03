@@ -52,11 +52,11 @@ public class HealthBar : MonoBehaviour
         }
         else if(validDamage > 0)
         {
-            ShowHealthBar();
+            ShowHealthBar(5);
         }
     }
 
-    public void ShowHealthBar()
+    public void ShowHealthBar(float duration)
     {
         float rate = mHP.CurrentHealthRate;
         gameObject.SetActive(true);
@@ -64,7 +64,8 @@ public class HealthBar : MonoBehaviour
         ShowHPBarHitEffect(rateClamp);
         HealthInnerBar.GetComponent<Image>().fillAmount = rateClamp;
         CancelInvoke();
-        Invoke("HideBar", 5);
+        if(duration > 0)
+            Invoke("HideBar", duration);
     }
 
     public void HideBar()

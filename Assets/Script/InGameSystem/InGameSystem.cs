@@ -156,6 +156,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
         LineMobCount--;
 
         Vector3 pos = deathMob.transform.position;
+
+        // 강화된 적 유닛이 죽었을 경우 해당 위치에 아군 유닛이 보상으로 지급된다.
+        if(deathMob.GetComponentInChildren<UnitEnemy>().IsEnforced)
+            CreateRandomUnitReward(pos);
+
         GameObject deathPoint = Instantiate(DeathPointPrefab, pos, Quaternion.identity, transform);
         float ranPosX = UnityEngine.Random.Range(-0.5f, 0.5f);
         deathPoint.transform.DOMoveY(pos.y + 1, 0.15f).SetEase(Ease.OutQuad);
@@ -174,6 +179,13 @@ public class InGameSystem : SingletonMono<InGameSystem>
             mInGameUI.MineralSet.DOScale(new Vector3(1.1f, 1.1f, 1), 0.1f).From(1).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
             mInGameUI.ShowMineralRasingEffect(minStep);
         });
+    }
+    public void CreateRandomUnitReward(Vector3 pos)
+    {
+        int level = WaveNumber < 15 ? 2 : (WaveNumber < 25 ? 3 : 4);
+        BaseObject unit = CreateRandomUnit();
+        unit.transform.position = pos;
+        unit.SpecProp.Level = level;
     }
     public void AddMinerals(int mineral)
     {
@@ -200,6 +212,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     private IEnumerator LineMobGenerator()
     {
+        bool IsEnforcedEnemy = false;
         WaveEndTick = 0;
         yield return newWaitForSeconds.Cache(WaveIntervalSec);
         WaveNumber = 1;
@@ -210,7 +223,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WaveEndTick = System.DateTime.Now.Ticks + System.TimeSpan.FromSeconds(MobCountPerWave * LineMobBurstIntervalSec).Ticks;
             while (mobBurstCount < MobCountPerWave)
             {
-                CreateLineMob();
+                CreateLineMob(IsEnforcedEnemy);
+                IsEnforcedEnemy = false;
                 mobBurstCount++;
                 yield return newWaitForSeconds.Cache(LineMobBurstIntervalSec);
 
@@ -222,6 +236,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WaveEndTick = 0;
             yield return newWaitForSeconds.Cache(WaveIntervalSec);
             WaveNumber++;
+
+            // Wave가 10이상이면 두개Wave당 한번씩 강화 유닛을 출몰 시킨다(강화유닛 제거시 보상유닛 지급됨...)
+            if(WaveNumber > 10 & WaveNumber % 2 == 0)
+                IsEnforcedEnemy = true;
+
             if(NextWaveNumberForTest > 0)
             {
                 WaveNumber = NextWaveNumberForTest;
@@ -248,7 +267,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
             KillPoint++;
         }
     }
-    private bool CreateLineMob()
+    private bool CreateLineMob(bool IsEnforced)
     {
         LineMobCount++;
         long id = LineMobIDs[WaveNumber - 1];
@@ -256,6 +275,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         GameObject enemy = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
         enemy.GetComponentInChildren<UnitEnemy>().ResourceID = id;
         enemy.GetComponentInChildren<UnitEnemy>().WaveNumber = WaveNumber;
+        enemy.GetComponentInChildren<UnitEnemy>().IsEnforced = IsEnforced;
         return true;
     }
 

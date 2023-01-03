@@ -6,12 +6,20 @@ using UnityEngine;
 public class UnitEnemy : UnitBase
 {
     public int WaveNumber { get; set; } = 0;
+    public bool IsEnforced { get; set; } = false;
 
     void Start()
     {
         mBaseObj.Health.EventDamaged += OnDamaged;
 
         float hp = GetBalanceTable();
+
+        if(IsEnforced)
+        {
+            hp *= 10; //체력 10배 증가
+            mBaseObj.BuffProp.MoveSpeed = 200; // (이속버프 +200% : 이속 3배 증가)
+        }
+            
         mBaseObj.Health.InitHP(hp);
 
         StartCoroutine(MoveAround());

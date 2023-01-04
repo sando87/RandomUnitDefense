@@ -174,6 +174,10 @@ public class RUIFormInGame : RUiForm
     }
 
 
+    private void OnClickRaiseRarePercent()
+    {
+        GameMgr.TryRaiseRarePercent();
+    }
     private void OnClickCreateUnit()
     {
         GameMgr.TryCreateRandomUnit();

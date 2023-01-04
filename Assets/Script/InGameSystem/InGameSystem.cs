@@ -106,6 +106,52 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WayPoints[i] = Vector3.zero;
     }
 
+    public bool TryRaiseRarePercent()
+    {
+        // if (KillPoint < 10)
+        //     return false;
+        // else
+        //     KillPoint -= 10;
+        
+        int needMineral = 
+        (mCurrentRarePercentIndex == 0 ? 300 : 
+        (mCurrentRarePercentIndex == 1 ? 1000 : 
+        (mCurrentRarePercentIndex == 2 ? 3000 : 
+        (mCurrentRarePercentIndex == 3 ? 10000 : 
+        (mCurrentRarePercentIndex == 4 ? 50000 : 100000)))));
+
+        if (Mineral < needMineral)
+            return false;
+        else
+            Mineral -= needMineral;
+
+        mCurrentRarePercentIndex++;
+        mCurrentRarePercentIndex = Mathf.Min(mCurrentRarePercentIndex, mRarePercentTable.Count - 1);
+        return true;
+    }
+    
+    int mCurrentRarePercentIndex = 0;
+    List<float[]> mRarePercentTable = new List<float[]>()
+    {
+        new float[] {100.0f, 25.0f, 0.1f, 0, 0},
+        new float[] {100.0f, 25.0f, 0.5f, 0, 0},
+        new float[] {100.0f, 30.0f, 1.0f, 0.05f, 0.01f},
+        new float[] {100.0f, 35.0f, 1.5f, 0.1f, 0.01f},
+        new float[] {100.0f, 40.0f, 2.0f, 0.2f, 0.01f},
+        new float[] {100.0f, 50.0f, 5.0f, 0.5f, 0.05f},
+    };
+    public int GetRareRandomLevel()
+    {
+        float[] curRareTable = mRarePercentTable[mCurrentRarePercentIndex];
+        int rem = (UnityEngine.Random.Range(0, 100000) % 10000);
+        for(int lv = 5; lv > 1; lv--)
+        {
+            int hitPercent = (int)(curRareTable[lv - 1] * 100.0f);
+            if(rem < hitPercent)
+                return lv;
+        }
+        return 1;
+    }
     public bool TryCreateRandomUnit()
     {
         if (KillPoint < KillPointForNewUnit)
@@ -114,19 +160,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         KillPoint -= KillPointForNewUnit;
         BaseObject unit = CreateRandomUnit();
         
-        int rem = (UnityEngine.Random.Range(0, 10000) % 1000);
-        int level = 1;
-        if(rem < 1)
-            level = 5;
-        else if(rem < 5)
-            level = 4;
-        else if(rem < 50)
-            level = 3;
-        else if(rem < 250)
-            level = 2;
-        else
-            level = 1;
-
+        int level = GetRareRandomLevel();
         unit.SpecProp.Level = level;
         return true;
     }
@@ -366,8 +400,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
             if(charData.ID == unitA.Unit.ResourceID)
                 continue;
                 
-            if(unitA.SpecProp.Level > 1 && charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != unitA.SpecProp.DamageType)
-                continue;
+            // if(unitA.SpecProp.Level > 1 && charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != unitA.SpecProp.DamageType)
+            //     continue;
 
             list.Add(charData);
         }

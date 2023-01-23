@@ -133,12 +133,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
     int mCurrentRarePercentIndex = 0;
     List<float[]> mRarePercentTable = new List<float[]>()
     {
-        new float[] {100.0f, 15.0f, 0, 0, 0},
-        new float[] {100.0f, 25.0f, 1.0f, 0, 0},
-        new float[] {100.0f, 35.0f, 5.0f, 1.0f, 0},
-        new float[] {100.0f, 45.0f, 10.0f, 5.0f, 1.0f},
-        new float[] {100.0f, 55.0f, 15.0f, 10.0f, 5.0f},
-        new float[] {100.0f, 65.0f, 20.0f, 15.0f, 10.0f},
+        new float[] {100.0f, 0.5f, 0, 0, 0},
+        new float[] {100.0f, 5.0f, 0.5f, 0, 0},
+        new float[] {100.0f, 20.0f, 2.5f, 0.5f, 0},
+        new float[] {100.0f, 40.0f, 10.0f, 2.0f, 0.5f},
+        new float[] {100.0f, 60.0f, 20.0f, 5.0f, 1.0f},
+        new float[] {100.0f, 80.0f, 40.0f, 10.0f, 2.0f},
     };
     public int GetRareRandomLevel()
     {

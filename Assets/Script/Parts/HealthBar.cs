@@ -9,7 +9,8 @@ public enum HealthBarSize { Small, Medium, Big }
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] GameObject HealthInnerBar;
+    [SerializeField] Image HealthBackFrame;
+    [SerializeField] Image HealthInnerBar;
     [SerializeField] Transform HealthBarLeftPivot;
     [SerializeField] GameObject SplitBarSmallPrefab;
     [SerializeField] GameObject SplitBarBigPrefab;
@@ -22,21 +23,23 @@ public class HealthBar : MonoBehaviour
 
     private Health mHP = null;
     private RectTransform mHitEffectRoot = null;
+    private Canvas mCanvas = null;
 
     void Awake()
     {
+        mCanvas = GetComponent<Canvas>();
         mHP = this.GetBaseObject().Health;
         mHP.EventDamaged += OnDamaged;
     }
 
     void Start()
     {
-        InitHealthStep();
-        InitSplitBars();
+        // InitHealthStep();
+        // InitSplitBars();
         
         transform.forward = Vector3.forward;
         
-        //HideBar();
+        // HideBar();
     }
 
     void Update()
@@ -46,14 +49,11 @@ public class HealthBar : MonoBehaviour
 
     private void OnDamaged(float validDamage, BaseObject attacker)
     {
-        if(mHP.IsDead)
-        {
-            HideBar();
-        }
-        else if(validDamage > 0)
-        {
+        if(validDamage > 0)
             ShowHealthBar(5);
-        }
+
+        if(mHP.IsDead)
+            Disappear();
     }
 
     public void ShowHealthBar(float duration)
@@ -62,7 +62,7 @@ public class HealthBar : MonoBehaviour
         gameObject.SetActive(true);
         float rateClamp = Mathf.Clamp(rate, 0, 1);
         ShowHPBarHitEffect(rateClamp);
-        HealthInnerBar.GetComponent<Image>().fillAmount = rateClamp;
+        HealthInnerBar.fillAmount = rateClamp;
         CancelInvoke();
         if(duration > 0)
             Invoke("HideBar", duration);
@@ -71,6 +71,11 @@ public class HealthBar : MonoBehaviour
     public void HideBar()
     {
         gameObject.SetActive(false);
+    }
+    public void Disappear()
+    {
+        HealthBackFrame.DOFade(0, 1);
+        HealthInnerBar.DOFade(0, 1);
     }
 
     void InitHealthStep()
@@ -142,13 +147,16 @@ public class HealthBar : MonoBehaviour
     
     public void ShowHPBarHitEffect(float curRate)
     {
-        Image hpBar = HealthInnerBar.GetComponent<Image>();
+        Image hpBar = HealthInnerBar;
 
         float fromFillAmount = hpBar.fillAmount;
         float toFillAmount = curRate;
+        float deltaFillAmount = fromFillAmount - toFillAmount;
+        if(deltaFillAmount < 0.05f)
+            return;
 
         float posX = hpBar.rectTransform.sizeDelta.x * toFillAmount;
-        float hitWidth = hpBar.rectTransform.sizeDelta.x * (fromFillAmount - toFillAmount);
+        float hitWidth = hpBar.rectTransform.sizeDelta.x * deltaFillAmount;
 
         RectTransform hitEffect = Instantiate(HitEffectPrefab, hpBar.transform);
         Vector2 anchoredPos = hitEffect.anchoredPosition;
@@ -173,7 +181,12 @@ public class HealthBar : MonoBehaviour
 
         float duration = 1;
         float durationHalf = duration * 0.5f;
-        hitEffect.transform.DOScaleX(0, duration).SetEase(Ease.InQuad).OnComplete(() => Destroy(hitEffect.gameObject));
+        mCanvas.sortingOrder = 1;
+        hitEffect.transform.DOScaleX(0, duration).SetEase(Ease.InQuad).OnComplete(() => 
+        {
+            mCanvas.sortingOrder = 0;
+            Destroy(hitEffect.gameObject);
+        });
         
         Color color = Color.white;
         DOTween.To(
@@ -181,7 +194,8 @@ public class HealthBar : MonoBehaviour
             (_c) => 
             { 
                 color = _c;
-                renderer.color = _c;
+                color.a = HealthInnerBar.color.a;
+                renderer.color = color;
             },
             Color.red,
             durationHalf)

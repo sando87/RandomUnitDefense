@@ -50,6 +50,9 @@ public class RUIFormInGame : RUiForm
 
     [SerializeField] private Text KillPointCostForNewUnit = null;
     [SerializeField] private Text KillPointCostForMineralUp = null;
+    [SerializeField] private Text KillPointCostForPercentUp = null;
+
+    [SerializeField] private GameObject RarePercentPanel = null;
     
     private InGameSystem GameMgr = null;
     public Transform MineralSet { get { return Mineral.transform.parent; } }

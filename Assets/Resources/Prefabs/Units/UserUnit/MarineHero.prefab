@@ -386,7 +386,7 @@ MonoBehaviour:
     type: 3}
   MagicGunMissile: {fileID: 1699971238308573188, guid: 33f7d66ce50ccbb44aae54e531ac6306,
     type: 3}
-  _SFXName: electricity_00
+  _SFXName: 
   _VFXName: hitSimple
   _TextHitVFX: {fileID: 1510947756211685659, guid: 1dbaae643b4e18640825f2fdf43cf0fa,
     type: 3}

@@ -171,7 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fa914e58b2df74e8396a0502ea411c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitEffect: []
 --- !u!1 &9202556232064597003
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,6 +431,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -473,7 +482,7 @@ PrefabInstance:
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
@@ -494,6 +503,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HPBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689292733121983516, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5443bf9d03fbc3441a9f927bc0c8ee21, type: 3}

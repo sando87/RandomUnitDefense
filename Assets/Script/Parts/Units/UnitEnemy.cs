@@ -87,12 +87,10 @@ public class UnitEnemy : UnitBase
 
     private void OnDamaged(float valideDamage, BaseObject attacker)
     {
-        // if(!mBaseObj.Health.IsDead && valideDamage > 0)
-        // {
-        //     Vector3 pos = MyUtils.Random(mBaseObj.Body.Center, 0.1f);
-        //     SpritesAnimator effect = SpritesAnimator.Play(pos, HitEffect);
-        //     effect.transform.SetParent(mBaseObj.transform);
-        // }
+        if(!mBaseObj.Health.IsDead && valideDamage > 0)
+        {
+            mBaseObj.Renderer.StartTwinkle();
+        }
     }
 
     IEnumerator MoveAround()

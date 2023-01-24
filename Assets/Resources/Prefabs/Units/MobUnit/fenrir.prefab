@@ -547,7 +547,7 @@ PrefabInstance:
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
@@ -568,6 +568,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HPBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689292733121983516, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5443bf9d03fbc3441a9f927bc0c8ee21, type: 3}

@@ -217,7 +217,7 @@ RectTransform:
   m_GameObject: {fileID: 7362604674254302629}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2851852674478276914}
@@ -228,7 +228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.7000122}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5413862832652671115
@@ -304,7 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e60067335f5874bbc18c4c9a3624c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthInnerBar: {fileID: 6372012065201628307}
+  HealthBackFrame: {fileID: 8934846718873952924}
+  HealthInnerBar: {fileID: 1137535524992998641}
   HealthBarLeftPivot: {fileID: 8257156167334720079}
   SplitBarSmallPrefab: {fileID: 5137410674432913665, guid: a6b35924cc688794f89ed9606d93a664,
     type: 3}

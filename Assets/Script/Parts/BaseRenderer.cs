@@ -58,7 +58,7 @@ public class BaseRenderer : MonoBehaviour
     public void StartTwinkle()
     {
         SetBrightness(1);
-        DOVirtual.DelayedCall(0.1f, () =>
+        DOVirtual.DelayedCall(0.15f, () =>
         {
             SetBrightness(0);
         });

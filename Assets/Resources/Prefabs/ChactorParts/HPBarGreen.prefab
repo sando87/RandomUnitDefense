@@ -274,7 +274,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1109010840955148700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e60067335f5874bbc18c4c9a3624c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthBackFrame: {fileID: 0}
   HealthInnerBar: {fileID: 6372012065201628307}
   HealthBarLeftPivot: {fileID: 8257156167334720079}
   SplitBarSmallPrefab: {fileID: 5137410674432913665, guid: a6b35924cc688794f89ed9606d93a664,

@@ -53,6 +53,8 @@ public class RUIFormInGame : RUiForm
     [SerializeField] private Text KillPointCostForPercentUp = null;
 
     [SerializeField] private GameObject RarePercentPanel = null;
+    [SerializeField] private Button UpgradePercentBtn = null;
+    [SerializeField] private Text RarePercentDisplay = null;
     
     private InGameSystem GameMgr = null;
     public Transform MineralSet { get { return Mineral.transform.parent; } }
@@ -68,6 +70,7 @@ public class RUIFormInGame : RUiForm
     void Start()
     {
         GameMgr.EventSelectUnit += OnSelectUnit;
+        GameMgr.EventDeSelectUnit += OnDeSelectUnit;
     }
 
     public override void BindEvent()
@@ -75,8 +78,9 @@ public class RUIFormInGame : RUiForm
         base.BindEvent();
         CreateUnit.onClick.AddListener(OnClickCreateUnit);
         RaiseMineral.onClick.AddListener(OnClickRaiseMineral);
-        OpenUpgradePanel.onClick.AddListener(OnClickToggleUpgradePanel);
-        CloseUpgradePanel.onClick.AddListener(OnClickCloseUpgradePanel);
+        OpenUpgradePanel.onClick.AddListener(OnClickTogglePercentPanel);
+        CloseUpgradePanel.onClick.AddListener(OnClickHidePercentPanel);
+        UpgradePercentBtn.onClick.AddListener(OnClickRaiseRarePercent);
 
         UpgradeWeaponA.onClick.AddListener(OnClickUpgradeWeapon);
         UpgradeWeaponB.onClick.AddListener(OnClickUpgradeWeapon);
@@ -164,6 +168,11 @@ public class RUIFormInGame : RUiForm
         UpgradePanel.gameObject.SetActive(false);
         UnitDetailPanel.gameObject.SetActive(true);
     }
+    private void OnDeSelectUnit()
+    {
+        UpgradePanel.gameObject.SetActive(true);
+        UnitDetailPanel.gameObject.SetActive(false);
+    }
 
     public void ShowSelectArea(Rect worldArea)
     {
@@ -180,6 +189,35 @@ public class RUIFormInGame : RUiForm
     private void OnClickRaiseRarePercent()
     {
         GameMgr.TryRaiseRarePercent();
+        KillPointCostForPercentUp.text = GameMgr.GetMineralForRarePercentUpgrade().ToString();
+        UpdateRarePercentDisplayInfo();
+    }
+    private void UpdateRarePercentDisplayInfo()
+    {
+        float[] curPercentTable = GameMgr.GetCurrnetRarePercentTable();
+        float[] nextPercentTable = GameMgr.GetCurrnetRarePercentTable();
+        if(nextPercentTable != null)
+        {
+            string displayInfo = "레벨별 소환 확률\n(현재 -> 다음)";
+            for(int i = 0; i < curPercentTable.Length; ++i)
+            {
+                int level = i + 2;
+                displayInfo += ("\n" + level + "Lv : " + curPercentTable[i] + "% -> " + nextPercentTable[i] + "%");
+
+            }
+            RarePercentDisplay.text = displayInfo;
+        }
+        else
+        {
+            string displayInfo = "레벨별 소환 확률\n(현재 -> Max)";
+            for(int i = 0; i < curPercentTable.Length; ++i)
+            {
+                int level = i + 2;
+                displayInfo += ("\n" + level + "Lv : " + curPercentTable[i] + "%");
+
+            }
+            RarePercentDisplay.text = displayInfo;
+        }
     }
     private void OnClickCreateUnit()
     {
@@ -193,16 +231,14 @@ public class RUIFormInGame : RUiForm
         // if (!GameMgr.RaiseMineralStep())
         //     RUiMessageBox.PopUp("Need " + InGameSystem.KillPointForMineralUp + " kill point.", null);
     }
-    private void OnClickToggleUpgradePanel()
+    private void OnClickTogglePercentPanel()
     {
-        bool toState = !UpgradePanel.gameObject.activeSelf;
-        UpgradePanel.gameObject.SetActive(toState);
-        UnitDetailPanel.gameObject.SetActive(!toState && GameMgr.SelectedUnit != null);
+        bool toState = !RarePercentPanel.gameObject.activeSelf;
+        RarePercentPanel.gameObject.SetActive(toState);
     }
-    private void OnClickCloseUpgradePanel()
+    private void OnClickHidePercentPanel()
     {
-        UpgradePanel.gameObject.SetActive(false);
-        UnitDetailPanel.gameObject.SetActive(GameMgr.SelectedUnit != null);
+        RarePercentPanel.gameObject.SetActive(false);
     }
     private void OnClickUpgradeWeapon()
     {

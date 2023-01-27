@@ -217,7 +217,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 2
+    attackType: 5
     damage: 5
     damagesPerUp:
     - 1
@@ -259,9 +259,9 @@ MonoBehaviour:
   SkillAttack: {fileID: 1913461482294829942}
   _SkillSpeed: 0.1
   _SkillRange: 2
+  _RandomShootCount: 3
   HitFloorPrefab: {fileID: 9086029617494144678, guid: 7e675bb887289864695d0501cf9331df,
     type: 3}
-  Accuracy: 0.1
   DotDamageRate: 0.5
   BulletSparkPrefab: {fileID: 62738107790456518, guid: c70a6eac1163a78439c9bb2d177b7b50,
     type: 3}

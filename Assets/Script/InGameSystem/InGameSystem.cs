@@ -38,6 +38,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public bool UserInputLocked { get; set; }
     public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits.First().Key : null; } }
     public event System.Action EventSelectUnit = null;
+    public event System.Action EventDeSelectUnit = null;
 
     private GameObject StageRoot = null;
     private Vector3[] WayPoints = new Vector3[4];
@@ -106,20 +107,30 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WayPoints[i] = Vector3.zero;
     }
 
-    public bool TryRaiseRarePercent()
+    public int GetMineralForRarePercentUpgrade()
     {
-        // if (KillPoint < 10)
-        //     return false;
-        // else
-        //     KillPoint -= 10;
-        
         int needMineral = 
         (mCurrentRarePercentIndex == 0 ? 200 : 
         (mCurrentRarePercentIndex == 1 ? 600 : 
         (mCurrentRarePercentIndex == 2 ? 2000 : 
         (mCurrentRarePercentIndex == 3 ? 6000 : 
         (mCurrentRarePercentIndex == 4 ? 20000 : 60000)))));
+        return needMineral;
+    }
+    public float[] GetCurrnetRarePercentTable()
+    {
+        return mRarePercentTable[mCurrentRarePercentIndex];
+    }
+    public float[] GetNextRarePercentTable()
+    {
+        if(mCurrentRarePercentIndex + 1 < mRarePercentTable.Count)
+            return mRarePercentTable[mCurrentRarePercentIndex + 1];
+        return null;
+    }
 
+    public bool TryRaiseRarePercent()
+    {
+        int needMineral = GetMineralForRarePercentUpgrade();
         if (Mineral < needMineral)
             return false;
         else
@@ -574,6 +585,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void DeSelectAll()
     {
+        EventDeSelectUnit?.Invoke();
         BaseObject[] units = SelectedUnits.Keys.ToArray();
         foreach (BaseObject unit in units)
         {

@@ -17,7 +17,7 @@ public class MotionAppear : MotionBase
         this.ExDelayedCoroutine(0.5f, () => 
         {
             mBaseObject.MotionManager.Lock = false;
-            SwitchMotionToIdle();
+            SwitchMotion<MotionMove>();
         });
     }
     public override void OnLeave()

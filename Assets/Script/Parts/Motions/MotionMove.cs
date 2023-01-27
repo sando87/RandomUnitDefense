@@ -28,8 +28,6 @@ public class MotionMove : MotionBase
     public override void OnEnter()
     {
         base.OnEnter();
-
-        mBaseObject.Body.TurnHeadTo(Destination);
     }
     public override void OnUpdate()
     {

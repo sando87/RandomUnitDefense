@@ -46,7 +46,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private Dictionary<BaseObject, bool> SelectedUnits = new Dictionary<BaseObject, bool>();
     private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
     private List<BaseObject> mUnitsForLevelup = new List<BaseObject>();
-
+    private Vector3 mFirstCreateDir = Vector3.right;
     private RUIFormInGame mInGameUI = null;
 
     protected override void Awake()
@@ -184,12 +184,13 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public BaseObject CreateUnit(long unitResourceID)
     {
         Vector3 pos = StageRoot.transform.position;
-        pos.x += UnityEngine.Random.Range(-1.0f, 1.0f);
-        pos.y += UnityEngine.Random.Range(-1.0f, 1.0f);
+        Vector3 dest = pos + (mFirstCreateDir * 0.5f);
+        mFirstCreateDir = MyUtils.RotateVector(mFirstCreateDir, Vector3.forward, 45);
         UserCharactor data = UserCharactors.Inst.GetDataOfId(unitResourceID);
         GameObject obj = Instantiate(data.prefab, pos, Quaternion.identity, StageRoot.transform);
         BaseObject baseObj = obj.GetBaseObject();
         baseObj.Unit.ResourceID = unitResourceID;
+        baseObj.MotionManager.FindMotion<MotionMove>().Destination = dest;
         return baseObj;
     }
     public bool RaiseMineralStep()

@@ -113,11 +113,14 @@ public class UnitShellstorm : UnitPlayer
             });
         }
 
-        // this.ExDelayedCoroutine(0.7f, () => 
-        // {
-        //     foreach(MissileTracing mis in missiles)
-        //         mis.IsAttackable = true;
-        // });
+        this.ExDelayedCoroutine(1, () => 
+        {
+            foreach(MissileTracing mis in missiles)
+            {
+                mis.StartTracing = true;
+                mis.TimeToDest = UnityEngine.Random.Range(0.3f, 0.7f);
+            }
+        });
     }
 
 

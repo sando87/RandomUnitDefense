@@ -11,7 +11,8 @@ public class MissileTracing : MonoBehaviour
 
     public BaseObject Target { get; set; } = null;
     public Action<Vector3> EventHit { get; set; } = null;
-    public bool IsAttackable = false;
+    public bool StartTracing = false;
+    public float TimeToDest = 1;
 
     float mMoveSpeed = 5;
 
@@ -30,25 +31,22 @@ public class MissileTracing : MonoBehaviour
     {
         SpritesAnimator.Play(transform.position, IntroSprites);
 
-        yield return new WaitForSeconds(UnityEngine.Random.Range(0.6f, 0.8f));
-        //yield return new WaitUntil(() => IsAttackable);
+        // yield return new WaitForSeconds(UnityEngine.Random.Range(0.6f, 0.8f));
+        yield return new WaitUntil(() => StartTracing);
 
         Vector3 offset = MyUtils.Random(Vector3.zero, 0.3f);
-        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, Target.Body.transform, 3.14f * 2, offset));
+        Vector3 dest = Target.transform.position + offset;
+        StartCoroutine(MyUtils.CoRotateTowards2DLerp(transform, dest, 3.14f * 2));
+
+        yield return new WaitUntil(() => Vector2.Dot((dest - transform.position), transform.right) < 0.1f);
         
-        Vector3 lastDest = Target.Body.Center + offset;
+        float distanceToDest = (dest - transform.position).magnitude;
+        mMoveSpeed = distanceToDest / TimeToDest;
 
-        while(transform.position.y > lastDest.y)
-        {
-            if(Target != null)
-                lastDest = Target.Body.Center + offset;
-
-            yield return null;
-            mMoveSpeed += (10 * Time.deltaTime);
-        }
+        yield return new WaitUntil(() => transform.position.y <= dest.y);
 
         SpritesAnimator.Play(transform.position, OutroSprites);
-        EventHit?.Invoke(lastDest); // 위치 주변 적을 타격입히는방식으로 변경 필요...
+        EventHit?.Invoke(transform.position); // 위치 주변 적을 타격입히는방식으로 변경 필요...
 
         GetComponent<SpriteRenderer>().enabled = false;
         StopAllCoroutines();

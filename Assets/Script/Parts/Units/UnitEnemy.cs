@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class UnitEnemy : UnitBase
 {
+    public UnitEnemy SubMobPrefab = null;
+
     public int WaveNumber { get; set; } = 0;
     public bool IsEnforced { get; set; } = false;
 

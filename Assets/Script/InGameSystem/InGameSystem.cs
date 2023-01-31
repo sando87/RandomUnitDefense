@@ -284,13 +284,19 @@ public class InGameSystem : SingletonMono<InGameSystem>
             WaveEndTick = System.DateTime.Now.Ticks + System.TimeSpan.FromSeconds(MobCountPerWave * LineMobBurstIntervalSec).Ticks;
             while (mobBurstCount < MobCountPerWave)
             {
-                CreateLineMob(IsEnforcedEnemy);
-                IsEnforcedEnemy = false;
-                mobBurstCount++;
-                yield return newWaitForSeconds.Cache(LineMobBurstIntervalSec);
-
-                // if (LineMobCount >= LineMobLimit)
-                //     FinishGame(false);
+                UnitEnemy enemy = CreateLineMob(IsEnforcedEnemy);
+                if(enemy.SubMobPrefab != null)
+                {
+                    // Boss같은 유닛일 경우 Boss위치에서 하위몹이 지속 생성되도록 수행시키고 바로 다음 웨이브로 넘어간다
+                    StartSubMobGenerator(enemy);
+                    break;
+                }
+                else
+                {
+                    IsEnforcedEnemy = false;
+                    mobBurstCount++;
+                    yield return newWaitForSeconds.Cache(LineMobBurstIntervalSec);
+                }
             }
 
             //한 웨이브 끝나고 대기시간 후 다음 웨이브 시작
@@ -328,16 +334,31 @@ public class InGameSystem : SingletonMono<InGameSystem>
             KillPoint++;
         }
     }
-    private bool CreateLineMob(bool IsEnforced)
+    private UnitEnemy CreateLineMob(bool IsEnforced)
     {
         LineMobCount++;
         long id = LineMobIDs[WaveNumber - 1];
         EnemyCharactor mobData = EnemyCharactors.Inst.GetDataOfId(id);
-        GameObject enemy = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
-        enemy.GetComponentInChildren<UnitEnemy>().ResourceID = id;
-        enemy.GetComponentInChildren<UnitEnemy>().WaveNumber = WaveNumber;
-        enemy.GetComponentInChildren<UnitEnemy>().IsEnforced = IsEnforced;
-        return true;
+        GameObject enemyObj = Instantiate(mobData.prefab, WayPoints[3], Quaternion.identity, StageRoot.transform);
+        UnitEnemy enemy = enemyObj.GetComponentInChildren<UnitEnemy>();
+        enemy.ResourceID = id;
+        enemy.WaveNumber = WaveNumber;
+        enemy.IsEnforced = IsEnforced;
+        return enemy;
+    }
+    private void StartSubMobGenerator(UnitEnemy parentMob)
+    {
+        this.ExRepeatCoroutine(LineMobBurstIntervalSec, () =>
+        {
+            if(parentMob != null && !parentMob.GetBaseObject().Health.IsDead)
+            {
+                UnitEnemy enemy = Instantiate(parentMob.SubMobPrefab, parentMob.transform.position, Quaternion.identity, StageRoot.transform);
+                enemy.ResourceID = parentMob.ResourceID;
+                enemy.WaveNumber = WaveNumber;
+
+                LineMobCount++;
+            }
+        });
     }
 
     public Vector3[] GetWayPoints() 

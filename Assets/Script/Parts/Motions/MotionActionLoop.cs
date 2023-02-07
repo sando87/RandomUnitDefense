@@ -10,11 +10,15 @@ public class MotionActionLoop : MotionBase
     [SerializeField] Transform[] _FirePositions = null;
     [SerializeField] bool _IsAutoAiming = true;
 
+    public float Duration = -1;
+
     private int VertAnimCount { get { return _FirePositions == null ? 0 : _FirePositions.Length; } }
 
     public Action<BaseObject> EventStart { get; set; }
     public Action<BaseObject> EventUpdate { get; set; }
     public Action EventEnd { get; set; }
+
+    private float mTime = 0;
     
     public override void OnEnter()
     {
@@ -22,6 +26,7 @@ public class MotionActionLoop : MotionBase
         int vertIdx = InGameUtils.GetVerticalIndex(mBaseObject.transform.position, Target.transform.position, VertAnimCount);
         SetAnimParamVerticalIndexFloat(vertIdx);
         mBaseObject.FirePosition.MovePosition(GetFirePositionTranform(vertIdx));
+        mTime = 0;
 
         base.OnEnter();
 
@@ -29,10 +34,22 @@ public class MotionActionLoop : MotionBase
     }
     public override void OnUpdate()
     {
-        if (Target == null || Target.Health.IsDead)
+        if(Duration > 0)
         {
-            SwitchMotionToIdle();
-            return;
+            mTime += Time.deltaTime;
+            if(mTime > Duration)
+            {
+                SwitchMotionToIdle();
+                return;
+            }
+        }
+        else
+        {
+            if (Target == null || Target.Health.IsDead)
+            {
+                SwitchMotionToIdle();
+                return;
+            }
         }
 
         base.OnUpdate();
@@ -50,6 +67,7 @@ public class MotionActionLoop : MotionBase
     public override void OnLeave()
     {
         base.OnLeave();
+        mTime = 0;
 
         EventEnd?.Invoke();
     }

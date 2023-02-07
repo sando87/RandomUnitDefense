@@ -9,8 +9,6 @@ AnimatorOverrideController:
   m_Name: PowerGirl
   m_Controller: {fileID: 9100000, guid: a03174bff5416af40946cf3994d0fd44, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 2117edde702db9d49a6f1e97a6455a30, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: a986a9db4a9f7fd46b6b76712361dec8, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 4130e996f54b46d43911cb0eb3d432ab, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 58c0784a130055748934e60429feb296, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: df187b80176a42b40bd2add2461289c5, type: 2}
@@ -21,3 +19,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: 5ead615efef064a4d8bc1f34cd45a70f, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 70eb8e18d8cda7243bb0d0fb70690acd, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 74afded0cd456dc4785969f16b83b474, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 13708a5b38977f8408ba29b5ab11364c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a986a9db4a9f7fd46b6b76712361dec8, type: 2}

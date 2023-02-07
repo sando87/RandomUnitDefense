@@ -256,10 +256,10 @@ MonoBehaviour:
   _AttackRange: 3
   SimpleMissile: {fileID: 1240864785425162540, guid: 603ae2d72cefe3941accf2f971083a9d,
     type: 3}
-  SkillAttack: {fileID: 1913461482294829942}
+  SkillAttack: {fileID: 4904256638733088060}
   _SkillSpeed: 0.1
-  _SkillRange: 2
-  _RandomShootCount: 3
+  _SkillRange: 3
+  _RandomShootInterval: 0.5
   HitFloorPrefab: {fileID: 9086029617494144678, guid: 7e675bb887289864695d0501cf9331df,
     type: 3}
   DotDamageRate: 0.5
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 2281534965459192854}
   - component: {fileID: 6270932393809559595}
   - component: {fileID: 6766364039367161640}
-  - component: {fileID: 1913461482294829942}
+  - component: {fileID: 4904256638733088060}
   m_Layer: 10
   m_Name: Motions
   m_TagString: Untagged
@@ -479,7 +479,7 @@ MonoBehaviour:
   _FireTimePoints:
   - 0.2
   - 0.45
---- !u!114 &1913461482294829942
+--- !u!114 &4904256638733088060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -488,19 +488,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4083014079514239262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a93d6e88bccb147f1b9c8cc4dd4acb05, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bae108743bb94bd1aef34ab93e6069f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimState:
-    StateName: actionB1
-    AnimatorParamActionType: 4
-    AnimationClipName: actionB1
-    MotionName: MotionActionSingle
+    StateName: ActionLoop
+    AnimatorParamActionType: 5
+    AnimationClipName: Blend Tree
+    MotionName: MotionActionLoop
     LayerIndex: 0
     ClipLength: 1.3333334
   _FirePositions: []
-  _FireTimePoints:
-  - 0.3
+  _IsAutoAiming: 0
+  Duration: 3
 --- !u!1 &4146828793985291386
 GameObject:
   m_ObjectHideFlags: 0

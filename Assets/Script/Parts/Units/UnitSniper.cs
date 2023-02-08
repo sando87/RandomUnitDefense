@@ -15,6 +15,7 @@ public class UnitSniper : UnitPlayer
     [SerializeField] private Sprite[] OutroSprites = null;
     [SerializeField] private Sprite[] AimingSprites = null;
     [SerializeField] LineRenderer AimmingLine = null;
+    [SerializeField] BuffBase BuffEffectPrefab = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -78,6 +79,8 @@ public class UnitSniper : UnitPlayer
         AimmingLine.positionCount = 2;
         AimmingLine.SetPositions(new Vector3[] { Vector3.zero, Vector3.zero });
         AimmingLine.gameObject.SetActive(false);
+
+        StartCoroutine(KeepBuff(BuffEffectPrefab));
     }
 
     private void OnAttackBeamStart(BaseObject target)

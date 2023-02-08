@@ -11,8 +11,8 @@ public class UnitMarineBasic : UnitPlayer
     [SerializeField] float _BuffRange = 3.0f;
     [SerializeField] float _SkillDuration = 3.0f;
     [SerializeField] float _ForcePower = 10.0f;
-    [SerializeField] private BuffBase PassiveBuff = null;
-    [SerializeField] private BuffBase AttackDeBuff = null;
+    [SerializeField] BuffBase BuffEffectPrefab = null;
+    [SerializeField] BuffBase AttackDeBuff = null;
 
     float AttackSpeed { get { return _AttackSpeed * mBaseObj.BuffProp.AttackSpeed; } }
     float AttackRange { get { return _AttackRange * mBaseObj.BuffProp.AttackRange; } }
@@ -27,7 +27,8 @@ public class UnitMarineBasic : UnitPlayer
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcher(mMotionAttack, () => AttackSpeed, () => AttackRange));
-        // StartCoroutine(KeepBuff(PassiveBuff));
+    
+        StartCoroutine(KeepBuff(BuffEffectPrefab));
     }
 
     private void OnAttack(int idx)

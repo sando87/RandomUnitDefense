@@ -37,8 +37,16 @@ public class UnitPlayer : UnitBase
         mBaseObj.MotionManager.SwitchMotion<MotionDisappear>();
     }
 
-    protected IEnumerator KeepBuff(BuffBase buffPrefab)
+    protected IEnumerator KeepBuff(BuffBase buffObj)
     {
+        // Test용 코드...레벨이 높아짐에 따른 더 강한 버프 생성...
+        BuffProperty buffProp = buffObj.GetComponent<BuffProperty>();
+        buffProp.MultiplyBuffProp(mBaseObj.SpecProp.Level);
+        long newBuffID = buffObj.GetPrivateFieldValue<long>("_BuffID") + mBaseObj.SpecProp.Level;
+        buffObj.SetPrivateFieldValue<long>("_BuffID", newBuffID);
+
+        
+
         mBaseObj.GetComponentInChildren<UserInput>().EventSelected += () => ShowPassiveBuffEffect();
         mBaseObj.GetComponentInChildren<UserInput>().EventDeSelected += () => HidePassiveBuffEffect();
 
@@ -48,7 +56,7 @@ public class UnitPlayer : UnitBase
             Collider col = mBaseObj.DetectMostCloseAround(1, 1 << mBaseObj.gameObject.layer);
             if(col != null)
             {
-                col.GetBaseObject().BuffCtrl.ApplyBuff(buffPrefab, 1.1f);
+                col.GetBaseObject().BuffCtrl.ApplyBuff(buffObj, 1.1f);
             }
 
             if(mBuffEffectLine != null)
@@ -58,9 +66,9 @@ public class UnitPlayer : UnitBase
 
     void ShowPassiveBuffEffect()
     {
-        Vector3 startPosition = mBaseObj.Body.Center;
-        mBuffEffectLine = LaserAimming.Play(startPosition, null, "ChannellerLaser");
-        mBuffEffectLine.transform.SetParent(mBaseObj.Body.transform);
+        Vector3 startPosition = mBaseObj.transform.position;
+        mBuffEffectLine = LaserAimming.Play(startPosition, null, "BuffConnection");
+        mBuffEffectLine.transform.SetParent(mBaseObj.transform);
 
     }
     void HidePassiveBuffEffect()

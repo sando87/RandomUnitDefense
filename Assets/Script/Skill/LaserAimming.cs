@@ -41,7 +41,7 @@ public class LaserAimming : MonoBehaviour
         dir.z = 0;
         transform.localScale = Vector3.one;
         transform.right = dir.normalized;
-        Laser.transform.localScale = new Vector3(dir.magnitude, 1, 1);
+        Laser.transform.localScale = new Vector3(Target == null ? 0 : dir.magnitude, 1, 1);
         Outro.transform.position = CurrentDestPoint;
     }
 

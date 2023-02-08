@@ -12,6 +12,7 @@ public class UnitBrawler : UnitPlayer
     [SerializeField] BoxCollider DetectArea = null;
     [SerializeField] BoxCollider AttackArea = null;
     [SerializeField] Sprite[] HitSprites = null;
+    [SerializeField] BuffBase BuffEffectPrefab = null;
 
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _StunDuration = 1;
@@ -31,6 +32,8 @@ public class UnitBrawler : UnitPlayer
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;
         StartCoroutine(CoMotionSwitcherMelee(mMotionAttack));
+    
+        StartCoroutine(KeepBuff(BuffEffectPrefab));
     }
 
     protected IEnumerator CoMotionSwitcherMelee(MotionBase motion)

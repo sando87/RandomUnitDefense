@@ -496,7 +496,7 @@ MonoBehaviour:
   AttackDamage:
     value: 0
   AttackSpeed:
-    value: 50
+    value: 0
   AttackRange:
     value: 0
   SkillSpeed:
@@ -506,7 +506,7 @@ MonoBehaviour:
   SkillRange:
     value: 0
   SkillDuration:
-    value: 0
+    value: 50
   SplshRange:
     value: 0
   Percentage:
@@ -916,7 +916,7 @@ MonoBehaviour:
   _BuffRange: 1
   _SkillDuration: 3
   _ForcePower: 10
-  PassiveBuff: {fileID: 7610135905271046776}
+  BuffEffectPrefab: {fileID: 7610135905271046776}
   AttackDeBuff: {fileID: 4413279295320478944}
 --- !u!114 &6377826679273638800
 MonoBehaviour:

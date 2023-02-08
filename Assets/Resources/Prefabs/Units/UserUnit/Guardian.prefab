@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1577594148007240602}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6377826679273638807}
@@ -186,7 +186,7 @@ MonoBehaviour:
   AttackDamage:
     value: 0
   AttackSpeed:
-    value: 0
+    value: 50
   AttackRange:
     value: 0
   SkillSpeed:
@@ -196,7 +196,7 @@ MonoBehaviour:
   SkillRange:
     value: 0
   SkillDuration:
-    value: 50
+    value: 0
   SplshRange:
     value: 0
   Percentage:

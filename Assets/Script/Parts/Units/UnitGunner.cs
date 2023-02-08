@@ -11,6 +11,7 @@ public class UnitGunner : UnitPlayer
     [SerializeField] float _AttackSpeed = 0.5f;
     [SerializeField] float _AttackRange = 2;
     [SerializeField] float _LaserPercent = 0.3f;
+    [SerializeField] BuffBase BuffEffectPrefab = null;
 
     [SerializeField] private Sprite[] IntroSprites = null;
     [SerializeField] private Sprite[] ProjSprites = null;
@@ -73,6 +74,8 @@ public class UnitGunner : UnitPlayer
         mAttackMotion.EventFired = OnAttack;
 
         StartCoroutine(CoMotionSwitcher(mAttackMotion, () => AttackSpeed, () => AttackRange));
+    
+        StartCoroutine(KeepBuff(BuffEffectPrefab));
     }
 
     private void OnAttack(int idx)

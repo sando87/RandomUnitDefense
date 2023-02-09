@@ -20,7 +20,7 @@ public class UnitShellstorm : UnitPlayer
     [SerializeField][Range(0, 10)] float _BarrelDamageRate = 5.0f;
     [SerializeField][Range(0, 10)] float _PosionDamageRate = 0.2f;
 
-    [SerializeField] MissileTracing MissilePrefab = null;
+    [SerializeField] ThrowingOver MissilePrefab = null;
     [SerializeField] ThrowingOver BarrelPrefab = null;
     [SerializeField] GameObject GasBarrelDecalPrefab = null;
     [SerializeField] BuffDamagable PoisonDeBuff = null;
@@ -90,37 +90,22 @@ public class UnitShellstorm : UnitPlayer
     {
         Vector3 firePosition = mBaseObj.FirePosition.transform.parent.Find("@_" + idx).position;
         BaseObject target = _MotionMissileAttack.Target;
-        MissileTracing missile = null;
 
         List<MissileTracing> missiles = new List<MissileTracing>();
         float damage = mBaseObj.SpecProp.Damage;
         for(int i = 0; i < _MissileCount; ++i)
         {
-            this.ExDelayedCoroutine(0.05f * i, () => 
+            firePosition = MyUtils.Random(firePosition, 0.2f);
+            Vector3 dest = MyUtils.Random(target.transform.position, 0.4f);
+            ThrowingOver missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
+            missile.LaunchAiming(dest, UnityEngine.Random.Range(1, 1.3f));
+            missile.EventHit = (pos) => 
             {
-                firePosition = MyUtils.Random(firePosition, 0.2f);
-                missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
-                missiles.Add(missile);
-                missile.transform.right = new Vector3(mBaseObj.transform.right.x, UnityEngine.Random.Range(0.5f, 1.2f), 0);
-                missile.Target = target;
-                missile.EventHit = (pos) => 
-                {
-                    Collider[] cols = InGameUtils.DetectAround(pos, 0.1f, 1 << LayerID.Enemies);
-                    foreach(Collider col in cols)
-                        col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
-                };
-
-            });
+                Collider[] cols = InGameUtils.DetectAround(pos, 0.1f, 1 << LayerID.Enemies);
+                foreach(Collider col in cols)
+                    col.GetBaseObject().Health.GetDamaged(damage, mBaseObj);
+            };
         }
-
-        this.ExDelayedCoroutine(1, () => 
-        {
-            foreach(MissileTracing mis in missiles)
-            {
-                mis.StartTracing = true;
-                mis.TimeToDest = UnityEngine.Random.Range(0.3f, 0.7f);
-            }
-        });
     }
 
 

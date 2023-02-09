@@ -733,7 +733,7 @@ MonoBehaviour:
   _SkillDuration: 3
   _BarrelDamageRate: 5
   _PosionDamageRate: 0.5
-  MissilePrefab: {fileID: 2382948227277557631, guid: 128845c5bb61bb3438dee537d1c087aa,
+  MissilePrefab: {fileID: 1945621386255130330, guid: 816ca196440669b46adacae7a981db72,
     type: 3}
   BarrelPrefab: {fileID: 1945621386255130330, guid: 9746c4278000e6c4e84ba2d385f0d8aa,
     type: 3}

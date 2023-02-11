@@ -228,6 +228,7 @@ MonoBehaviour:
   _FirePositions:
   - {fileID: 4166278259221241757}
   _IsAutoAiming: 0
+  Duration: -1
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +465,7 @@ MonoBehaviour:
     totalHP: 100
     armor: 0
     moveSpeed: 1
-    attackType: 5
+    attackType: 3
     damage: 10
     damagesPerUp:
     - 2

@@ -95,10 +95,10 @@ public class UnitShellstorm : UnitPlayer
         float damage = mBaseObj.SpecProp.Damage;
         for(int i = 0; i < _MissileCount; ++i)
         {
-            firePosition = MyUtils.Random(firePosition, 0.2f);
-            Vector3 dest = MyUtils.Random(target.transform.position, 0.4f);
+            firePosition = MyUtils.Random(firePosition, 0.01f);
+            Vector3 dest = MyUtils.Random(target.Body.Center, 0.5f);
             ThrowingOver missile = Instantiate(MissilePrefab, firePosition, Quaternion.identity);
-            missile.LaunchAiming(dest, UnityEngine.Random.Range(1, 1.3f));
+            missile.LaunchAiming(dest, UnityEngine.Random.Range(1.5f, 2.0f));
             missile.EventHit = (pos) => 
             {
                 Collider[] cols = InGameUtils.DetectAround(pos, 0.1f, 1 << LayerID.Enemies);

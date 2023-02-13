@@ -44,25 +44,25 @@ public class UnitFlamer : UnitPlayer
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 35;
-            spec.damagesPerUp[1] = 15;
+            spec.damagesPerUp[1] = 12;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 140;
-            spec.damagesPerUp[2] = 85;
+            spec.damagesPerUp[2] = 70;
         }
         else if (curLevel <= 4)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 350;
-            spec.damagesPerUp[3] = 1150;
+            spec.damagesPerUp[3] = 450;
         }
         else if (curLevel <= 5)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 835;
-            spec.damagesPerUp[4] = 1460;
+            spec.damagesPerUp[4] = 1060;
         }
         else if (curLevel <= 6)
         {

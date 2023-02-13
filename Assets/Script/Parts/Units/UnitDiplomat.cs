@@ -24,7 +24,7 @@ public class UnitDiplomat : UnitPlayer
 
     private MotionActionSingle mMotionAttack = null;
 
-    int PassPercentTest { get { return 10 + mBaseObj.SpecProp.Level * 5; } }
+    int PassPercentTest { get { return 10 + mBaseObj.SpecProp.Level * 10; } }
     
     void Start()
     {

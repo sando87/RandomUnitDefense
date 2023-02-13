@@ -418,6 +418,7 @@ MonoBehaviour:
   _FirePositions:
   - {fileID: 342232234857561014}
   _IsAutoAiming: 1
+  Duration: -1
 --- !u!1 &6377826677845741546
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _AttackSpeed: 0.5
-  _AttackRange: 2
+  _AttackRange: 3
 --- !u!114 &-1995408449328477273
 MonoBehaviour:
   m_ObjectHideFlags: 0

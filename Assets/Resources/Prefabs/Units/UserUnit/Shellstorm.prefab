@@ -729,9 +729,9 @@ MonoBehaviour:
   _SkillAttack: {fileID: 6577991469760676028}
   _SkillSpeed: 0.15
   _SkillRange: 5
-  _SplshRange: 1
+  _SplshRange: 0.5
   _SkillDuration: 3
-  _BarrelDamageRate: 5
+  _BarrelDamageRate: 3
   _PosionDamageRate: 0.5
   MissilePrefab: {fileID: 1945621386255130330, guid: 816ca196440669b46adacae7a981db72,
     type: 3}

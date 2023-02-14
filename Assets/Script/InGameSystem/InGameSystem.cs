@@ -79,6 +79,13 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         StartCoroutine(LineMobGenerator());
         StartCoroutine(KillPointMining());
+
+        // 1초마다 한번씩 확인해서 현재 Mob개수가 최대 개수를 초과하면 게임 실패...
+        this.ExRepeatCoroutine(1, () =>
+        {
+            if(LineMobCount > LineMobLimit)
+                FinishGame(false);
+        });
     }
     public void CleanUpGame()
     {
@@ -346,15 +353,16 @@ public class InGameSystem : SingletonMono<InGameSystem>
         enemy.IsEnforced = IsEnforced;
         return enemy;
     }
-    private void StartSubMobGenerator(UnitEnemy parentMob)
+    private void StartSubMobGenerator(UnitEnemy bossMob)
     {
+        int subEnemyWaveNumber = WaveNumber;
         this.ExRepeatCoroutine(LineMobBurstIntervalSec, () =>
         {
-            if(parentMob != null && !parentMob.GetBaseObject().Health.IsDead)
+            if(bossMob != null && !bossMob.GetBaseObject().Health.IsDead)
             {
-                UnitEnemy enemy = Instantiate(parentMob.SubMobPrefab, parentMob.transform.position, Quaternion.identity, StageRoot.transform);
-                enemy.ResourceID = parentMob.ResourceID;
-                enemy.WaveNumber = WaveNumber;
+                UnitEnemy subEnemy = Instantiate(bossMob.SubMobPrefab, bossMob.transform.position, Quaternion.identity, StageRoot.transform);
+                subEnemy.ResourceID = bossMob.SubMobPrefab.ResourceID;
+                subEnemy.WaveNumber = subEnemyWaveNumber;
 
                 LineMobCount++;
             }

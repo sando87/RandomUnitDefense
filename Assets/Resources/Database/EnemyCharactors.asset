@@ -89,9 +89,9 @@ MonoBehaviour:
     prefab: {fileID: 3393111536044945593, guid: 9440eb0a2910cb64a85c48cebcc2b806,
       type: 3}
   - ID: 637954174385754763
-    name: spitterbug
-    image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
+    name: fellswarm
+    image: {fileID: 21300000, guid: a7ca6df39ad5e8c45a69ccf5226bf4ba, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 44c64b5657ef5b04db5e7d14df6fc49b,
       type: 3}
   - ID: 637953951469483940
     name: vilerunner
@@ -178,11 +178,6 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
       type: 3}
-  - ID: 637853951469483940
-    name: vilerunner
-    image: {fileID: 21300000, guid: 0f4a1e6715384144ab85cde0d45ffe87, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: 6f12893c35e456949ac6b3ac9d026ced,
-      type: 3}
   - ID: 637753952532181738
     name: AlphaFenrir
     image: {fileID: 21300000, guid: 351c629cc09e08f41aad3e71f71063cc, type: 3}
@@ -213,4 +208,3 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
     prefab: {fileID: 3393111536044945593, guid: acae638d680bd5c409c8679ca2d3f4da,
       type: 3}
-

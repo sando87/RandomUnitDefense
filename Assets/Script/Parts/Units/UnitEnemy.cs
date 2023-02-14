@@ -9,6 +9,7 @@ public class UnitEnemy : UnitBase
 
     public int WaveNumber { get; set; } = 0;
     public bool IsEnforced { get; set; } = false;
+    public bool IsBoss { get { return SubMobPrefab != null; } }
 
     void Start()
     {
@@ -21,6 +22,9 @@ public class UnitEnemy : UnitBase
             hp *= 4; //체력 증가
             mBaseObj.BuffProp.MoveSpeed = 200; // (이속버프+% : 이속 증가)
         }
+        
+        if(IsBoss)
+            hp *= 100;
             
         mBaseObj.Health.InitHP(hp);
 

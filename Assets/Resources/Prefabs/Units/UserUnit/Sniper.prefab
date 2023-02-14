@@ -1198,7 +1198,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 045089f148e09a642b60128797a2d811, type: 3}
   - {fileID: 21300000, guid: cf2103440a1b76c4884fbd46e1661a66, type: 3}
   AimmingLine: {fileID: 8785059027648432812}
-  BuffEffectPrefab: {fileID: 8511868426741916444}
+  BuffEffectPrefab: {fileID: 0}
 --- !u!114 &2231503842873842677
 MonoBehaviour:
   m_ObjectHideFlags: 0

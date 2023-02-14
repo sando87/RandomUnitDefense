@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 586131261775677230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3393111536044945586}
@@ -223,7 +223,7 @@ MonoBehaviour:
   _Spec:
     totalHP: 5000
     armor: 0
-    moveSpeed: 0.8
+    moveSpeed: 0.5
     attackType: 1
     damage: 10
     damagesPerUp:
@@ -244,7 +244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fa914e58b2df74e8396a0502ea411c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitEffect: []
+  SubMobPrefab: {fileID: 4642133873994698210, guid: 6f12893c35e456949ac6b3ac9d026ced,
+    type: 3}
 --- !u!1 &3393111536333397374
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3393111536333397374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.337, z: 0}
+  m_LocalPosition: {x: 0, y: 0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,7 +302,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.45934817, y: 0.65135145, z: 1.4375863}
+  m_Size: {x: 1, y: 1.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1535662348799756769
 PrefabInstance:
@@ -432,6 +433,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -473,7 +484,7 @@ PrefabInstance:
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 415090514942798934, guid: 5443bf9d03fbc3441a9f927bc0c8ee21,
         type: 3}

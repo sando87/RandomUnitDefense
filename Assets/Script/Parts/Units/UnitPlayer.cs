@@ -39,6 +39,9 @@ public class UnitPlayer : UnitBase
 
     protected IEnumerator KeepBuff(BuffBase buffObj)
     {
+        if(buffObj == null)
+            yield break;
+            
         // Test용 코드...레벨이 높아짐에 따른 더 강한 버프 생성...
         BuffProperty buffProp = buffObj.GetComponent<BuffProperty>();
         buffProp.MultiplyBuffProp(mBaseObj.SpecProp.Level);

@@ -109,6 +109,7 @@ public class RUIFormInGame : RUiForm
         RemainTimer.text = (GameMgr.WaveEndTick < DateTime.Now.Ticks) ? "" : TimeSpan.FromTicks(DateTime.Now.Ticks - GameMgr.WaveEndTick).ToString(@"mm\:ss");
         LineMobCount.text = GameMgr.LineMobCount.ToString() + "/" + InGameSystem.LineMobLimit;
         RemainGauge.sizeDelta = new Vector2(350.0f * (float)GameMgr.LineMobCount / InGameSystem.LineMobLimit, 50);
+        KillPointCostForPercentUp.text = GameMgr.GetMineralForRarePercentUpgrade().ToString();
 
         WeaponA.text = GameMgr.GetUpgradeCount(UpgradeType.Melee).ToString();
         WeaponB.text = GameMgr.GetUpgradeCount(UpgradeType.Gun).ToString();

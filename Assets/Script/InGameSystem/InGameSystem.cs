@@ -500,6 +500,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
                     SelectUnit(playerUnit.GetBaseObject());
                 }
             }
+
+            if(SelectedUnits.Count > 0)
+                EventSelectUnit?.Invoke();
         }
         
     }

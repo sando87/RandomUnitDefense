@@ -393,6 +393,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
     {
+        int nextLevel = unitA.SpecProp.Level + 1;
+
         unitA.MotionManager.SwitchMotion<MotionDisappear>();
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
         unitC.MotionManager.SwitchMotion<MotionDisappear>();
@@ -410,7 +412,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         //BaseObject newUnit = CreateUnit(list[randomIndex].ID);
         BaseObject newUnit = CreateUnit(unitA.Unit.ResourceID);
-        newUnit.SpecProp.Level = SelectedUnit.SpecProp.Level + 1;
+        newUnit.SpecProp.Level = nextLevel;
         // newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
     }
     public void OnMergeForReunit()

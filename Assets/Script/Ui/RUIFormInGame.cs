@@ -27,8 +27,7 @@ public class RUIFormInGame : RUiForm
 
     [SerializeField] private Button CreateUnit = null;
     [SerializeField] private Button RaiseMineral = null;
-    [SerializeField] private Button OpenUpgradePanel = null;
-    [SerializeField] private Button CloseUpgradePanel = null;
+    [SerializeField] private Button ToggleRarePercentPanel = null;
 
     [SerializeField] private Button UpgradeWeaponA = null;
     [SerializeField] private Button UpgradeWeaponB = null;
@@ -78,8 +77,7 @@ public class RUIFormInGame : RUiForm
         base.BindEvent();
         CreateUnit.onClick.AddListener(OnClickCreateUnit);
         RaiseMineral.onClick.AddListener(OnClickRaiseMineral);
-        OpenUpgradePanel.onClick.AddListener(OnClickTogglePercentPanel);
-        CloseUpgradePanel.onClick.AddListener(OnClickHidePercentPanel);
+        ToggleRarePercentPanel.onClick.AddListener(OnClickTogglePercentPanel);
         UpgradePercentBtn.onClick.AddListener(OnClickRaiseRarePercent);
 
         UpgradeWeaponA.onClick.AddListener(OnClickUpgradeWeapon);
@@ -196,7 +194,7 @@ public class RUIFormInGame : RUiForm
     private void UpdateRarePercentDisplayInfo()
     {
         float[] curPercentTable = GameMgr.GetCurrnetRarePercentTable();
-        float[] nextPercentTable = GameMgr.GetCurrnetRarePercentTable();
+        float[] nextPercentTable = GameMgr.GetNextRarePercentTable();
         if(nextPercentTable != null)
         {
             string displayInfo = "레벨별 소환 확률\n(현재 -> 다음)";
@@ -234,12 +232,10 @@ public class RUIFormInGame : RUiForm
     }
     private void OnClickTogglePercentPanel()
     {
+        UpdateRarePercentDisplayInfo();
+        
         bool toState = !RarePercentPanel.gameObject.activeSelf;
         RarePercentPanel.gameObject.SetActive(toState);
-    }
-    private void OnClickHidePercentPanel()
-    {
-        RarePercentPanel.gameObject.SetActive(false);
     }
     private void OnClickUpgradeWeapon()
     {

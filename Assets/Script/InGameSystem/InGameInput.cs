@@ -52,7 +52,7 @@ public class InGameInput : SingletonMono<InGameInput>
 
     private void OnDownTriggered(InputType obj)
     {
-        if(Lock || IsOverUI())
+        if(Lock || InputWrapper.Instance.IsPointerOverUIObject())
             return;
 
         mIsDownNow = true;
@@ -165,9 +165,5 @@ public class InGameInput : SingletonMono<InGameInput>
             return true;
         }
         return false;
-    }
-    private bool IsOverUI()
-    {
-        return EventSystem.current.IsPointerOverGameObject();
     }
 }

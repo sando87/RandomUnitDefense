@@ -71,6 +71,7 @@ public class UnitFlamer : UnitPlayer
         }
 
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
+        mMotionAttack.Duration = SkillDuration;
         mMotionAttack.EventStart = OnAttack;
         mMotionAttack.EventEnd = () => StopFireBlasting();
         StartCoroutine(CoMotionSwitcherFlamer(mMotionAttack));

@@ -106,6 +106,10 @@ public class UnitDiplomat : UnitPlayer
         projectile.EventHit += (target) => 
         {
             // ObjectPooling.Instance.InstantiateVFX(_HitVFX, projectile.transform.position, Quaternion.identity).ReturnAfter(1);
+            
+            Vector3 force = projectile.transform.right * 7;
+            target.Health.GetForced(force, mBaseObj);
+
             target.Health.GetDamaged(damage, mBaseObj);
         };
     }

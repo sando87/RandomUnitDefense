@@ -10,6 +10,7 @@ public class UnitEnemy : UnitBase
     public int WaveNumber { get; set; } = 0;
     public bool IsEnforced { get; set; } = false;
     public bool IsBoss { get { return SubMobPrefab != null; } }
+    public int WayPointIndex { get; set; } = 0;
 
     void Start()
     {
@@ -104,16 +105,15 @@ public class UnitEnemy : UnitBase
         yield return null;
 
         Vector3[] wayPoints = InGameSystem.Instance.GetWayPoints();
-        int wayPointIndex = 0;
         MotionMove motionMove = mBaseObj.MotionManager.FindMotion<MotionMove>();
 
         while (true)
         {
-            Vector3 dest = wayPoints[wayPointIndex];
+            Vector3 dest = wayPoints[WayPointIndex];
             motionMove.Destination = dest;
             motionMove.EventArrived = () => 
             {
-                wayPointIndex = (wayPointIndex + 1) % wayPoints.Length;
+                WayPointIndex = (WayPointIndex + 1) % wayPoints.Length;
             };
             mBaseObj.MotionManager.SwitchMotion(motionMove);
 

@@ -44,20 +44,20 @@ public class UnitSniper : UnitPlayer
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 140;
-            spec.damagesPerUp[2] = 85;
+            spec.damage = 125;
+            spec.damagesPerUp[2] = 92;
         }
         else if (curLevel <= 4)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 350;
-            spec.damagesPerUp[3] = 1150;
+            spec.damagesPerUp[3] = 1320;
         }
         else if (curLevel <= 5)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 835;
-            spec.damagesPerUp[4] = 1460;
+            spec.damagesPerUp[4] = 1960;
         }
         else if (curLevel <= 6)
         {

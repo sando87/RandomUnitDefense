@@ -117,11 +117,11 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int GetMineralForRarePercentUpgrade()
     {
         int needMineral = 
-        (mCurrentRarePercentIndex == 0 ? 200 : 
-        (mCurrentRarePercentIndex == 1 ? 600 : 
-        (mCurrentRarePercentIndex == 2 ? 2000 : 
-        (mCurrentRarePercentIndex == 3 ? 6000 : 
-        (mCurrentRarePercentIndex == 4 ? 20000 : 60000)))));
+        (mCurrentRarePercentIndex == 0 ? 500 : 
+        (mCurrentRarePercentIndex == 1 ? 1300 : 
+        (mCurrentRarePercentIndex == 2 ? 3400 : 
+        (mCurrentRarePercentIndex == 3 ? 7200 : 
+        (mCurrentRarePercentIndex == 4 ? 11000 : 45000)))));
         return needMineral;
     }
     public float[] GetCurrnetRarePercentTable()
@@ -153,10 +153,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         new float[] {100.0f, 0.5f, 0, 0, 0},
         new float[] {100.0f, 5.0f, 0.5f, 0, 0},
-        new float[] {100.0f, 20.0f, 2.5f, 0.5f, 0},
-        new float[] {100.0f, 40.0f, 10.0f, 2.0f, 0.5f},
-        new float[] {100.0f, 60.0f, 20.0f, 5.0f, 1.0f},
-        new float[] {100.0f, 80.0f, 40.0f, 10.0f, 2.0f},
+        new float[] {100.0f, 30.0f, 5.0f, 0.5f, 0},
+        new float[] {100.0f, 60.0f, 25.0f, 3.0f, 0.5f},
+        new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f},
+        new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f},
     };
     public int GetRareRandomLevel()
     {

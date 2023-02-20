@@ -30,30 +30,30 @@ public class UnitMarineHero : UnitPlayer
         if (curLevel <= 1)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 8;
+            spec.damage = 16;
             spec.damagesPerUp[0] = 1;
             _AttackSPD = 2.0f;
         }
         else if (curLevel <= 2)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 25;
-            spec.damagesPerUp[1] = 14;
+            spec.damage = 55;
+            spec.damagesPerUp[1] = 16;
             _AttackSPD = 4.0f;
         }
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 120;
-            spec.damagesPerUp[2] = 85;
+            spec.damage = 150;
+            spec.damagesPerUp[2] = 92;
             _AttackSPD = 8.0f;
         }
         else if (curLevel <= 4)
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 250;
-            spec.damagesPerUp[3] = 555;
+            spec.damage = 350;
+            spec.damagesPerUp[3] = 625;
             _AttackSPD = 10.0f;
         }
         else if (curLevel <= 5)

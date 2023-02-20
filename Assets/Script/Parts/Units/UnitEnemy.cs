@@ -72,10 +72,11 @@ public class UnitEnemy : UnitBase
         else if (WaveNumber >= 8) hp = 700 * WaveNumber;
         else if (WaveNumber >= 7) hp = 350 * WaveNumber;
 
-        else if (WaveNumber >= 4) hp = 220 * WaveNumber;
-        else if (WaveNumber >= 3) hp = 130 * WaveNumber;
-        else if (WaveNumber >= 2) hp = 55 * WaveNumber;
-        else hp = 35 * WaveNumber;
+        else if (WaveNumber >= 5) hp = 285 * WaveNumber;
+        else if (WaveNumber >= 4) hp = 180 * WaveNumber;
+        else if (WaveNumber >= 3) hp = 105 * WaveNumber;
+        else if (WaveNumber >= 2) hp = 45 * WaveNumber;
+        else hp = 25 * WaveNumber;
 
         // 전반적으로 좀 잘 나온편...
         // 4w +4 20up

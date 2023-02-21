@@ -39,7 +39,7 @@ public class MotionForced : MotionBase
         mBaseObject.transform.position += (mVelocity * Time.deltaTime);
         mVelocity -= (mForceDir * _RegVel * Time.deltaTime);
         
-        if(mVelocity.magnitude < 0.1f)
+        if(Vector3.Dot(mVelocity, mForceDir) < 0)
         {
             this.ExDelayedCoroutine(_DelayHold, () => SwitchMotionToIdle());   
         }

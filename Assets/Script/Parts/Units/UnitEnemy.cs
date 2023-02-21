@@ -25,7 +25,7 @@ public class UnitEnemy : UnitBase
         }
         
         if(IsBoss)
-            hp *= 100;
+            hp *= 300;
             
         mBaseObj.Health.InitHP(hp);
 

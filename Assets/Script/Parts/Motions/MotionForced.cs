@@ -7,7 +7,7 @@ using UnityEngine;
 public class MotionForced : MotionBase
 {
     [SerializeField] float _Mass = 1;
-    [SerializeField] float _RegistVel = 0.2f;
+    [SerializeField] float _RegVel = 15;
     [SerializeField] float _DelayHold = 0.01f;
 
     public Vector3 ExtForce { get; set; } = Vector3.zero;
@@ -30,16 +30,16 @@ public class MotionForced : MotionBase
     }
     public override void OnUpdate()
     {
-        if(mVelocity.magnitude < _RegistVel)
+        if(mVelocity.magnitude < 0.1f)
             return;
 
         base.OnUpdate();
 
         Vector3 diff = (Destination - mBaseObject.transform.position).ZeroZ();
         mBaseObject.transform.position += (mVelocity * Time.deltaTime);
-        mVelocity -= (mForceDir * _RegistVel);
+        mVelocity -= (mForceDir * _RegVel * Time.deltaTime);
         
-        if(mVelocity.magnitude < _RegistVel)
+        if(mVelocity.magnitude < 0.1f)
         {
             this.ExDelayedCoroutine(_DelayHold, () => SwitchMotionToIdle());   
         }

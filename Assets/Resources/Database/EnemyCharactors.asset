@@ -148,35 +148,35 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 262b0f524d5c5e64080ad4e86ddcf4eb, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 2d4128e81c65aaf49b1d3b61ac5ef8ab,
       type: 3}
-  - ID: 637854152082570215
-    name: floater2
-    image: {fileID: 21300000, guid: 5f1ad7a5229b14547a745089aa0fd7cd, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: b4ba0c534112a7740be94eca5bd58d0d,
-      type: 3}
-  - ID: 637854174385501806
-    name: grimcrusher
-    image: {fileID: 21300000, guid: 4528bb08e6516d54cae0f3c1cb58cfaf, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: f5652c830cbf1fb4486281be9063b015,
-      type: 3}
-  - ID: 637854174385695657
-    name: hammergrub
-    image: {fileID: 21300000, guid: 68ed62c9505a14f4d85a9f2026b2c4e0, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: ea544fa019e40ab4d852c1c0448cea8c,
-      type: 3}
-  - ID: 637854174385599838
-    name: harvester
-    image: {fileID: 21300000, guid: ae03860798c6ff84f802e9205e291b08, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: e61a1d66a2e91be42ad0eb11554bf35a,
-      type: 3}
-  - ID: 637854174385750076
-    name: mindbane
-    image: {fileID: 21300000, guid: 9f7a391bb04f6e04b9978127c254b411, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: 9440eb0a2910cb64a85c48cebcc2b806,
-      type: 3}
   - ID: 637854174385754763
     name: spitterbug
     image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
+      type: 3}
+  - ID: 638126131647025706
+    name: floater2
+    image: {fileID: 21300000, guid: 5f1ad7a5229b14547a745089aa0fd7cd, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: b4ba0c534112a7740be94eca5bd58d0d,
+      type: 3}
+  - ID: 638126131647096276
+    name: grimcrusher
+    image: {fileID: 21300000, guid: 4528bb08e6516d54cae0f3c1cb58cfaf, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: f5652c830cbf1fb4486281be9063b015,
+      type: 3}
+  - ID: 638126131647176373
+    name: hammergrub
+    image: {fileID: 21300000, guid: 68ed62c9505a14f4d85a9f2026b2c4e0, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: ea544fa019e40ab4d852c1c0448cea8c,
+      type: 3}
+  - ID: 638126131648523968
+    name: harvester
+    image: {fileID: 21300000, guid: ae03860798c6ff84f802e9205e291b08, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: e61a1d66a2e91be42ad0eb11554bf35a,
+      type: 3}
+  - ID: 638126131648634292
+    name: mindbane
+    image: {fileID: 21300000, guid: 9f7a391bb04f6e04b9978127c254b411, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 9440eb0a2910cb64a85c48cebcc2b806,
       type: 3}
   - ID: 637753952532181738
     name: AlphaFenrir
@@ -193,12 +193,12 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 93a3679bae012724b9418c3a3f147b52, type: 3}
     prefab: {fileID: 6377826679273638812, guid: bcee05487452de943a6d070c4dc8611a,
       type: 3}
-  - ID: 637754152081571230
+  - ID: 638126131253930920
     name: direbomber
     image: {fileID: 21300000, guid: fe73d65e62288b942ae95599a5c761a1, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 916a8c3dd2ce52a47accafed30caab31,
       type: 3}
-  - ID: 637754152081872610
+  - ID: 638126131253975952
     name: etherleech
     image: {fileID: 21300000, guid: 251e42d109f345f4cabab318e4bf1b2d, type: 3}
     prefab: {fileID: 3393111536044945593, guid: a26756be28af48f47bc1fe820232ed60,

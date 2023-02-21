@@ -153,8 +153,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     {
         new float[] {100.0f, 0.5f, 0, 0, 0},
         new float[] {100.0f, 5.0f, 0.5f, 0, 0},
-        new float[] {100.0f, 30.0f, 5.0f, 0.5f, 0},
-        new float[] {100.0f, 60.0f, 25.0f, 3.0f, 0.5f},
+        new float[] {100.0f, 30.0f, 2.0f, 0.5f, 0},
+        new float[] {100.0f, 60.0f, 20.0f, 2.0f, 0.5f},
         new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f},
         new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f},
     };
@@ -296,7 +296,9 @@ public class InGameSystem : SingletonMono<InGameSystem>
                 {
                     // Boss같은 유닛일 경우 Boss위치에서 하위몹이 지속 생성되도록 수행시키고 바로 다음 웨이브로 넘어간다
                     StartSubMobGenerator(enemy);
-                    break;
+                    mobBurstCount = MobCountPerWave;
+                    float waitTime = LineMobBurstIntervalSec * MobCountPerWave;
+                    yield return newWaitForSeconds.Cache(waitTime);
                 }
                 else
                 {

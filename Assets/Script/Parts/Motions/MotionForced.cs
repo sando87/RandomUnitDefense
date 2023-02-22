@@ -30,16 +30,13 @@ public class MotionForced : MotionBase
     }
     public override void OnUpdate()
     {
-        if(mVelocity.magnitude < 0.1f)
-            return;
-
         base.OnUpdate();
 
         Vector3 diff = (Destination - mBaseObject.transform.position).ZeroZ();
         mBaseObject.transform.position += (mVelocity * Time.deltaTime);
         mVelocity -= (mForceDir * _RegVel * Time.deltaTime);
         
-        if(Vector3.Dot(mVelocity, mForceDir) < 0)
+        if(mVelocity.magnitude < 0.1f || Vector3.Dot(mVelocity, mForceDir) < 0)
         {
             this.ExDelayedCoroutine(_DelayHold, () => SwitchMotionToIdle());   
         }

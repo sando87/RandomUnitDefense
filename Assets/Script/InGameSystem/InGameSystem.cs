@@ -151,10 +151,10 @@ public class InGameSystem : SingletonMono<InGameSystem>
     int mCurrentRarePercentIndex = 0;
     List<float[]> mRarePercentTable = new List<float[]>()
     {
-        new float[] {100.0f, 0.5f, 0, 0, 0},
-        new float[] {100.0f, 5.0f, 0.5f, 0, 0},
-        new float[] {100.0f, 30.0f, 2.0f, 0.5f, 0},
-        new float[] {100.0f, 60.0f, 20.0f, 2.0f, 0.5f},
+        new float[] {100.0f, 0, 0, 0, 0},
+        new float[] {100.0f, 10.0f, 0, 0, 0},
+        new float[] {100.0f, 40.0f, 5.0f, 0, 0},
+        new float[] {100.0f, 70.0f, 30.0f, 2.0f, 0},
         new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f},
         new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f},
     };

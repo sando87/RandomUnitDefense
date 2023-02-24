@@ -52,7 +52,7 @@ public class UnitGunner : UnitPlayer
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
             spec.damage = 510;
-            spec.damagesPerUp[3] = 550;
+            spec.damagesPerUp[3] = 375;
             _AttackSpeed = 2.2f;
         }
         else if (curLevel <= 5)
@@ -102,7 +102,7 @@ public class UnitGunner : UnitPlayer
 
             if(isHit)
             {
-                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage * 2.0f, laserChainCount);
+                AttackLaserBeam(target, mBaseObj.FirePosition.transform, damage * 1.7f, laserChainCount);
             }
             else
             {

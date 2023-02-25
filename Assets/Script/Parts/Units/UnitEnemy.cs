@@ -36,24 +36,25 @@ public class UnitEnemy : UnitBase
     {
         float hp = 0;
         if(WaveNumber >= 50) hp = 100000 * WaveNumber;
-        else if (WaveNumber >= 40) hp = 70030 * WaveNumber;
-        else if (WaveNumber >= 39) hp = 62020 * WaveNumber;
-        else if (WaveNumber >= 38) hp = 54020 * WaveNumber;
-        else if (WaveNumber >= 37) hp = 46150 * WaveNumber;
-        else if (WaveNumber >= 36) hp = 33030 * WaveNumber;
-        else if (WaveNumber >= 35) hp = 25720 * WaveNumber;
+        else if (WaveNumber >= 40) hp = 90030 * WaveNumber;
+        else if (WaveNumber >= 39) hp = 82020 * WaveNumber;
+        else if (WaveNumber >= 38) hp = 72020 * WaveNumber;
+        else if (WaveNumber >= 37) hp = 64020 * WaveNumber;
+        else if (WaveNumber >= 36) hp = 56150 * WaveNumber;
+        else if (WaveNumber >= 35) hp = 43030 * WaveNumber;
+        else if (WaveNumber >= 34) hp = 35720 * WaveNumber;
         
-        else if (WaveNumber >= 27) hp = 21500 * WaveNumber;
-        else if (WaveNumber >= 26) hp = 18000 * WaveNumber;
-        else if (WaveNumber >= 25) hp = 15500 * WaveNumber;
-        else if (WaveNumber >= 24) hp = 12550 * WaveNumber;
-        else if (WaveNumber >= 23) hp = 8500 * WaveNumber;
+        else if (WaveNumber >= 27) hp = 31500 * WaveNumber;
+        else if (WaveNumber >= 26) hp = 28000 * WaveNumber;
+        else if (WaveNumber >= 25) hp = 25500 * WaveNumber;
+        else if (WaveNumber >= 24) hp = 23550 * WaveNumber;
+        else if (WaveNumber >= 23) hp = 20000 * WaveNumber;
 
-        else if (WaveNumber >= 18) hp = 6050 * WaveNumber;
-        else if (WaveNumber >= 17) hp = 5000 * WaveNumber;
-        else if (WaveNumber >= 16) hp = 3950 * WaveNumber;
-        else if (WaveNumber >= 15) hp = 2900 * WaveNumber;
-        else if (WaveNumber >= 14) hp = 1900 * WaveNumber;
+        else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        else if (WaveNumber >= 17) hp = 8500 * WaveNumber;
+        else if (WaveNumber >= 16) hp = 6500 * WaveNumber;
+        else if (WaveNumber >= 15) hp = 4500 * WaveNumber;
+        else if (WaveNumber >= 14) hp = 2500 * WaveNumber;
 
         else if (WaveNumber >= 11) hp = 1650 * WaveNumber;
         else if (WaveNumber >= 10) hp = 1300 * WaveNumber;

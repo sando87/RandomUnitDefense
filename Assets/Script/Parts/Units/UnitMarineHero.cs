@@ -44,8 +44,8 @@ public class UnitMarineHero : UnitPlayer
         else if (curLevel <= 3)
         {
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 150;
-            spec.damagesPerUp[2] = 92;
+            spec.damage = 450;
+            spec.damagesPerUp[2] = 90;
             _AttackSPD = 8.0f;
         }
         else if (curLevel <= 4)

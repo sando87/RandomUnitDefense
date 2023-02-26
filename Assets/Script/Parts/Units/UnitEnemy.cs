@@ -10,6 +10,7 @@ public class UnitEnemy : UnitBase
     public int WaveNumber { get; set; } = 0;
     public bool IsEnforced { get; set; } = false;
     public bool IsBoss { get { return SubMobPrefab != null; } }
+    public bool IsSubMob { get; set; } = false;
     public int WayPointIndex { get; set; } = 0;
 
     void Start()
@@ -26,6 +27,8 @@ public class UnitEnemy : UnitBase
         
         if(IsBoss)
             hp *= 300;
+        else if(IsSubMob)
+            hp *= 0.5f;
             
         mBaseObj.Health.InitHP(hp);
 
@@ -35,20 +38,13 @@ public class UnitEnemy : UnitBase
     float GetBalanceTable()
     {
         float hp = 0;
-        if(WaveNumber >= 50) hp = 100000 * WaveNumber;
-        else if (WaveNumber >= 40) hp = 90030 * WaveNumber;
-        else if (WaveNumber >= 39) hp = 82020 * WaveNumber;
-        else if (WaveNumber >= 38) hp = 72020 * WaveNumber;
-        else if (WaveNumber >= 37) hp = 64020 * WaveNumber;
-        else if (WaveNumber >= 36) hp = 56150 * WaveNumber;
-        else if (WaveNumber >= 35) hp = 43030 * WaveNumber;
-        else if (WaveNumber >= 34) hp = 35720 * WaveNumber;
+        if(WaveNumber >= 34) hp = 100000 * WaveNumber;
         
-        else if (WaveNumber >= 27) hp = 31500 * WaveNumber;
-        else if (WaveNumber >= 26) hp = 28000 * WaveNumber;
-        else if (WaveNumber >= 25) hp = 25500 * WaveNumber;
-        else if (WaveNumber >= 24) hp = 23550 * WaveNumber;
-        else if (WaveNumber >= 23) hp = 20000 * WaveNumber;
+        else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        else if (WaveNumber >= 26) hp = 58000 * WaveNumber;
+        else if (WaveNumber >= 25) hp = 45500 * WaveNumber;
+        else if (WaveNumber >= 24) hp = 31550 * WaveNumber;
+        else if (WaveNumber >= 23) hp = 18000 * WaveNumber;
 
         else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
         else if (WaveNumber >= 17) hp = 8500 * WaveNumber;

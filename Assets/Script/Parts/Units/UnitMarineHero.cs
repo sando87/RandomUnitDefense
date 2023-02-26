@@ -52,16 +52,16 @@ public class UnitMarineHero : UnitPlayer
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 350;
-            spec.damagesPerUp[3] = 335;
+            spec.damage = 1850;
+            spec.damagesPerUp[3] = 375;
             _AttackSPD = 10.0f;
         }
         else if (curLevel <= 5)
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
             BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 600;
-            spec.damagesPerUp[4] = 1020;
+            spec.damage = 3600;
+            spec.damagesPerUp[4] = 2520;
             _AttackSPD = 20.0f;
         }
         else if (curLevel <= 6)

@@ -366,6 +366,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
                 subEnemy.ResourceID = bossMob.SubMobPrefab.ResourceID;
                 subEnemy.WaveNumber = subEnemyWaveNumber;
                 subEnemy.WayPointIndex = bossMob.WayPointIndex;
+                subEnemy.IsSubMob = true;
 
                 LineMobCount++;
             }

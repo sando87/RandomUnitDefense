@@ -37,32 +37,42 @@ public class UnitEnemy : UnitBase
 
     float GetBalanceTable()
     {
-        float hp = 0;
-        if(WaveNumber >= 34) hp = 100000 * WaveNumber;
-        
-        else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
-        else if (WaveNumber >= 26) hp = 58000 * WaveNumber;
-        else if (WaveNumber >= 25) hp = 45500 * WaveNumber;
-        else if (WaveNumber >= 24) hp = 31550 * WaveNumber;
-        else if (WaveNumber >= 23) hp = 18000 * WaveNumber;
+        float hp = InGameSystem.Instance.SaveTestInfo.enemyHPTable[WaveNumber - 1] * WaveNumber;
 
-        else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
-        else if (WaveNumber >= 17) hp = 8500 * WaveNumber;
-        else if (WaveNumber >= 16) hp = 6500 * WaveNumber;
-        else if (WaveNumber >= 15) hp = 4500 * WaveNumber;
-        else if (WaveNumber >= 14) hp = 2500 * WaveNumber;
-
-        else if (WaveNumber >= 11) hp = 1650 * WaveNumber;
-        else if (WaveNumber >= 10) hp = 1300 * WaveNumber;
-        else if (WaveNumber >= 9) hp = 1050 * WaveNumber;
-        else if (WaveNumber >= 8) hp = 700 * WaveNumber;
-        else if (WaveNumber >= 7) hp = 350 * WaveNumber;
-
-        else if (WaveNumber >= 5) hp = 285 * WaveNumber;
-        else if (WaveNumber >= 4) hp = 180 * WaveNumber;
-        else if (WaveNumber >= 3) hp = 105 * WaveNumber;
-        else if (WaveNumber >= 2) hp = 45 * WaveNumber;
-        else hp = 25 * WaveNumber;
+        // if(WaveNumber >= 34) hp = 100000 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 27) hp = 61500 * WaveNumber;
+        // else if (WaveNumber >= 26) hp = 58000 * WaveNumber;
+        // else if (WaveNumber >= 25) hp = 45500 * WaveNumber;
+        // else if (WaveNumber >= 24) hp = 31550 * WaveNumber;
+        // else if (WaveNumber >= 23) hp = 18000 * WaveNumber;
+        // else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        // else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        // else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        // else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        // else if (WaveNumber >= 18) hp = 10500 * WaveNumber;
+        // else if (WaveNumber >= 17) hp = 8500 * WaveNumber;
+        // else if (WaveNumber >= 16) hp = 6500 * WaveNumber;
+        // else if (WaveNumber >= 15) hp = 4500 * WaveNumber;
+        // else if (WaveNumber >= 14) hp = 2500 * WaveNumber;
+        // else if (WaveNumber >= 11) hp = 1650 * WaveNumber;
+        // else if (WaveNumber >= 11) hp = 1650 * WaveNumber;
+        // else if (WaveNumber >= 11) hp = 1650 * WaveNumber;
+        // else if (WaveNumber >= 10) hp = 1300 * WaveNumber;
+        // else if (WaveNumber >= 9) hp = 1050 * WaveNumber;
+        // else if (WaveNumber >= 8) hp = 700 * WaveNumber;
+        // else if (WaveNumber >= 7) hp = 350 * WaveNumber;
+        // else if (WaveNumber >= 5) hp = 285 * WaveNumber;
+        // else if (WaveNumber >= 5) hp = 285 * WaveNumber;
+        // else if (WaveNumber >= 4) hp = 180 * WaveNumber;
+        // else if (WaveNumber >= 3) hp = 105 * WaveNumber;
+        // else if (WaveNumber >= 2) hp = 45 * WaveNumber;
+        // else hp = 25 * WaveNumber;
 
         // 전반적으로 좀 잘 나온편...
         // 4w +4 20up

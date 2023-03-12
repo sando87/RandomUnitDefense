@@ -27,45 +27,32 @@ public class UnitGunner : UnitPlayer
     void Start()
     {
         int curLevel = mBaseObj.SpecProp.Level;
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[2].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[2].damagesPerUp[curLevel - 1];
+
         if (curLevel <= 1)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 8;
-            spec.damagesPerUp[0] = 1;
             _AttackSpeed = 1.0f;
         }
         else if (curLevel <= 2)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 66;
-            spec.damagesPerUp[1] = 12;
             _AttackSpeed = 1.4f;
         }
         else if (curLevel <= 3)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 280;
-            spec.damagesPerUp[2] = 75;
             _AttackSpeed = 1.8f;
         }
         else if (curLevel <= 4)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 1810;
-            spec.damagesPerUp[3] = 475;
             _AttackSpeed = 2.2f;
         }
         else if (curLevel <= 5)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 11080;
-            spec.damagesPerUp[4] = 3180;
             _AttackSpeed = 2.5f;
         }
         else if (curLevel <= 6)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 64800;
         }
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();

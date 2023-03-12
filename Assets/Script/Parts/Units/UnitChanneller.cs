@@ -21,41 +21,45 @@ public class UnitChanneller : UnitPlayer
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         int curLevel = mBaseObj.SpecProp.Level;
-        if (curLevel <= 1)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 7;
-            spec.damagesPerUp[0] = 1;
-        }
-        else if (curLevel <= 2)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 35;
-            spec.damagesPerUp[1] = 20;
-        }
-        else if (curLevel <= 3)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 140;
-            spec.damagesPerUp[2] = 125;
-        }
-        else if (curLevel <= 4)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 350;
-            spec.damagesPerUp[3] = 920;
-        }
-        else if (curLevel <= 5)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 835;
-            spec.damagesPerUp[4] = 2360;
-        }
-        else if (curLevel <= 6)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 204800;
-        }
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[4].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[4].damagesPerUp[curLevel - 1];
+
+        // if (curLevel <= 1)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 7;
+        //     spec.damagesPerUp[0] = 1;
+        // }
+        // else if (curLevel <= 2)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 35;
+        //     spec.damagesPerUp[1] = 20;
+        // }
+        // else if (curLevel <= 3)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 140;
+        //     spec.damagesPerUp[2] = 125;
+        // }
+        // else if (curLevel <= 4)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 350;
+        //     spec.damagesPerUp[3] = 920;
+        // }
+        // else if (curLevel <= 5)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 835;
+        //     spec.damagesPerUp[4] = 2360;
+        // }
+        // else if (curLevel <= 6)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 204800;
+        // }
 
         mLaserMotion = mBaseObj.MotionManager.FindMotion<MotionActionLoop>();
         mLaserMotion.EventStart = OnAttackBeamStart;

@@ -29,41 +29,9 @@ public class UnitSniper : UnitPlayer
     void Start()
     {
         int curLevel = mBaseObj.SpecProp.Level;
-        if (curLevel <= 1)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 7;
-            spec.damagesPerUp[0] = 1;
-        }
-        else if (curLevel <= 2)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 35;
-            spec.damagesPerUp[1] = 16;
-        }
-        else if (curLevel <= 3)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 1125;
-            spec.damagesPerUp[2] = 132;
-        }
-        else if (curLevel <= 4)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 3500;
-            spec.damagesPerUp[3] = 720;
-        }
-        else if (curLevel <= 5)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 8350;
-            spec.damagesPerUp[4] = 3860;
-        }
-        else if (curLevel <= 6)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 204800;
-        }
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[2].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[1].damagesPerUp[curLevel - 1];
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 

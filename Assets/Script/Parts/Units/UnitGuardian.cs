@@ -25,6 +25,11 @@ public class UnitGuardian : UnitPlayer
 
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[7].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[7].damagesPerUp[curLevel - 1];
+        
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
 
         MotionAttackA.EventFired = OnAttack;

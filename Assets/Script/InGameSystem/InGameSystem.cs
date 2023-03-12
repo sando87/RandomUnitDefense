@@ -31,11 +31,12 @@ public class InGameSystem : SingletonMono<InGameSystem>
     public int WaveNumber { get; private set; }
     public int NextWaveNumberForTest { get; set; }
     public int Mineral { get; set; }
-    public int MineralStep { get; private set; }
+    public int MineralStep { get; set; }
     public int KillPoint { get; set; }
     public int LineMobCount { get; private set; }
     public long WaveEndTick { get; private set; }
     public bool UserInputLocked { get; set; }
+    public int CurrentRarePercentIndex { get; set; }
     public BaseObject SelectedUnit { get { return SelectedUnits.Count > 0 ? SelectedUnits.First().Key : null; } }
     public event System.Action EventSelectUnit = null;
     public event System.Action EventDeSelectUnit = null;
@@ -44,10 +45,28 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private Vector3[] WayPoints = new Vector3[4];
     private List<long> LineMobIDs = new List<long>();
     private Dictionary<BaseObject, bool> SelectedUnits = new Dictionary<BaseObject, bool>();
-    private Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
+    public Dictionary<UpgradeType, int> UpgradePower = new Dictionary<UpgradeType, int>();
     private List<BaseObject> mUnitsForLevelup = new List<BaseObject>();
     private Vector3 mFirstCreateDir = Vector3.right;
     private RUIFormInGame mInGameUI = null;
+
+    public TestInfo SaveTestInfo = null;
+    private List<UserCharactor> mActiveUnits = new List<UserCharactor>();
+
+    public UpgradeType GetHighestUpgradePower()
+    {
+        int maxVal = 0;
+        UpgradeType type = UpgradeType.Gun;
+        foreach(var item in UpgradePower)
+        {
+            if(item.Value > maxVal)
+            {
+                maxVal = item.Value;
+                type = item.Key;
+            }
+        }
+        return type;
+    }
 
     protected override void Awake()
     {
@@ -56,6 +75,24 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     void Start()
     {
+        SaveTestInfo = GameFileManager<TestInfo>.Load();
+        mRarePercentTable.Clear();
+        mRarePercentTable.Add(SaveTestInfo.RarePercentA);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentB);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentC);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentD);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentE);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentF);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentG);
+        mRarePercentTable.Add(SaveTestInfo.RarePercentH);
+        foreach(UnitSpecInfo unit in SaveTestInfo.units)
+        {
+            if(unit.isActive)
+            {
+                mActiveUnits.Add(GetUserCharactor(unit.prefabName));
+            }
+        }
+
         InGameInput.Instance.EventClick += OnClickUnit;
         InGameInput.Instance.EventDoubleClick += OnDoubleClickUnit;
         InGameInput.Instance.EventDragStart += OnDragStart;
@@ -98,6 +135,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         LineMobCount = 0;
         WaveEndTick = 0;
         UserInputLocked = false;
+        CurrentRarePercentIndex = 0;
 
         UpgradePower.Clear();
         foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
@@ -116,22 +154,17 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
     public int GetMineralForRarePercentUpgrade()
     {
-        int needMineral = 
-        (mCurrentRarePercentIndex == 0 ? 500 : 
-        (mCurrentRarePercentIndex == 1 ? 1300 : 
-        (mCurrentRarePercentIndex == 2 ? 3400 : 
-        (mCurrentRarePercentIndex == 3 ? 7200 : 
-        (mCurrentRarePercentIndex == 4 ? 11000 : 45000)))));
+        int needMineral = (int)SaveTestInfo.MineralsForRarePercent[CurrentRarePercentIndex];
         return needMineral;
     }
     public float[] GetCurrnetRarePercentTable()
     {
-        return mRarePercentTable[mCurrentRarePercentIndex];
+        return mRarePercentTable[CurrentRarePercentIndex];
     }
     public float[] GetNextRarePercentTable()
     {
-        if(mCurrentRarePercentIndex + 1 < mRarePercentTable.Count)
-            return mRarePercentTable[mCurrentRarePercentIndex + 1];
+        if(CurrentRarePercentIndex + 1 < mRarePercentTable.Count)
+            return mRarePercentTable[CurrentRarePercentIndex + 1];
         return null;
     }
 
@@ -143,24 +176,23 @@ public class InGameSystem : SingletonMono<InGameSystem>
         else
             Mineral -= needMineral;
 
-        mCurrentRarePercentIndex++;
-        mCurrentRarePercentIndex = Mathf.Min(mCurrentRarePercentIndex, mRarePercentTable.Count - 1);
+        CurrentRarePercentIndex++;
+        CurrentRarePercentIndex = Mathf.Min(CurrentRarePercentIndex, mRarePercentTable.Count - 1);
         return true;
     }
     
-    int mCurrentRarePercentIndex = 0;
     List<float[]> mRarePercentTable = new List<float[]>()
     {
-        new float[] {100.0f, 0, 0, 0, 0},
-        new float[] {100.0f, 10.0f, 0, 0, 0},
-        new float[] {100.0f, 40.0f, 5.0f, 0, 0},
-        new float[] {100.0f, 70.0f, 30.0f, 2.0f, 0},
-        new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f},
-        new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f},
+        // new float[] {100.0f, 0, 0, 0, 0},
+        // new float[] {100.0f, 10.0f, 0, 0, 0},
+        // new float[] {100.0f, 40.0f, 5.0f, 0, 0},
+        // new float[] {100.0f, 70.0f, 30.0f, 2.0f, 0},
+        // new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f},
+        // new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f},
     };
     public int GetRareRandomLevel()
     {
-        float[] curRareTable = mRarePercentTable[mCurrentRarePercentIndex];
+        float[] curRareTable = mRarePercentTable[CurrentRarePercentIndex];
         int rem = (UnityEngine.Random.Range(0, 100000) % 10000);
         for(int lv = 5; lv > 1; lv--)
         {
@@ -184,9 +216,18 @@ public class InGameSystem : SingletonMono<InGameSystem>
     }
     public BaseObject CreateRandomUnit()
     {
-        int randomIndex = UnityEngine.Random.Range(0, UserCharactors.Inst.Count);
-        UserCharactor data = UserCharactors.Inst.GetDataOfIndex(randomIndex);
+        int randomIndex = UnityEngine.Random.Range(0, mActiveUnits.Count);
+        UserCharactor data = mActiveUnits[randomIndex];
         return CreateUnit(data.ID);
+    }
+    public UserCharactor GetUserCharactor(string name)
+    {
+        foreach(UserCharactor unit in UserCharactors.Inst.Enums())
+        {
+            if(unit.prefab.name.Equals(name))
+                return unit;
+        }
+        return null;
     }
     public BaseObject CreateUnit(long unitResourceID)
     {
@@ -395,6 +436,23 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         DeSelectAll();
     }
+    public void CreateRandomNewUnit(UpgradeType type, int level)
+    {
+        List<UserCharactor> list = new List<UserCharactor>();
+        foreach (UserCharactor charData in mActiveUnits)
+        {
+            if (charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != type)
+                continue;
+
+            list.Add(charData);
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, list.Count);
+
+        BaseObject newUnit = CreateUnit(list[randomIndex].ID);
+        newUnit.SpecProp.Level = level;
+        // newUnit.SynSpec.MergeSynergySpecs(unitA.SynSpec, unitB.SynSpec, unitC.SynSpec);
+    }
     private void MergeForLevelup(BaseObject unitA, BaseObject unitB, BaseObject unitC)
     {
         int nextLevel = unitA.SpecProp.Level + 1;
@@ -404,7 +462,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         unitC.MotionManager.SwitchMotion<MotionDisappear>();
         
         List<UserCharactor> list = new List<UserCharactor>();
-        foreach(UserCharactor charData in UserCharactors.Inst.Enums())
+        foreach(UserCharactor charData in mActiveUnits)
         {
             if(charData.prefab.GetComponent<BaseObject>().SpecProp.DamageType != unitA.SpecProp.DamageType)
                 continue;
@@ -442,7 +500,7 @@ public class InGameSystem : SingletonMono<InGameSystem>
         unitB.MotionManager.SwitchMotion<MotionDisappear>();
         
         List<UserCharactor> list = new List<UserCharactor>();
-        foreach(UserCharactor charData in UserCharactors.Inst.Enums())
+        foreach(UserCharactor charData in mActiveUnits)
         {
             if(charData.ID == unitA.Unit.ResourceID)
                 continue;
@@ -739,4 +797,104 @@ public class InGameSystem : SingletonMono<InGameSystem>
 
         return ret;
     }
+}
+
+
+[System.Serializable]
+public class TestInfo : SaveableBase
+{
+    public float[] MineralsForRarePercent = new float[] {500, 1300, 3400, 7200, 11000, 45000, 45000, 45000};
+    public float[] RarePercentA = new float[] {100.0f, 0, 0, 0, 0};
+    public float[] RarePercentB = new float[] {100.0f, 10.0f, 0, 0, 0};
+    public float[] RarePercentC = new float[] {100.0f, 40.0f, 5.0f, 0, 0};
+    public float[] RarePercentD = new float[] {100.0f, 70.0f, 30.0f, 2.0f, 0};
+    public float[] RarePercentE = new float[] {100.0f, 90.0f, 50.0f, 5.0f, 1.0f};
+    public float[] RarePercentF = new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f};
+    public float[] RarePercentG = new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f};
+    public float[] RarePercentH = new float[] {100.0f, 90.0f, 70.0f, 10.0f, 2.0f};
+
+    public int[] enemyHPTable = new int[] {25,45,105,180,285,285,350,700,1050,1300,1650,1650,1650,2500,4500,6500,8500,10500,10500,10500,10500,10500,18000,31550,45500,58000,61500,61500,61500,61500,61500,61500,61500,100000,100000,100000,100000,100000,100000,100000};
+
+    public UnitSpecInfo[] units = new UnitSpecInfo[11];
+
+    public TestInfo()
+    {
+        units[0] = new UnitSpecInfo();
+        units[0].prefabName = "MarineHero";
+        units[0].isActive = true;
+        units[0].damages = new int[] {16, 55, 450, 1850, 3600, 30000, 0}; 
+        units[0].damagesPerUp = new int[] {1, 16, 90, 375, 2520, 3000, 0};
+        
+        units[1] = new UnitSpecInfo();
+        units[1].prefabName = "Sniper";
+        units[1].isActive = true;
+        units[1].damages = new int[] {7, 35, 1125, 3500, 8350, 30000, 0}; 
+        units[1].damagesPerUp = new int[] {1, 16, 132, 720, 3860, 3000, 0};
+        
+        units[2] = new UnitSpecInfo();
+        units[2].prefabName = "Gunner";
+        units[2].isActive = true;
+        units[2].damages = new int[] {8, 66, 280, 1810, 11080, 30000, 0}; 
+        units[2].damagesPerUp = new int[] {1, 12, 75, 475, 3180, 3000, 0};
+
+        units[3] = new UnitSpecInfo();
+        units[3].prefabName = "Brawler";
+        units[3].isActive = false;
+        units[3].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[3].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[4] = new UnitSpecInfo();
+        units[4].prefabName = "Channeller";
+        units[4].isActive = true;
+        units[4].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[4].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[5] = new UnitSpecInfo();
+        units[5].prefabName = "Diplomat";
+        units[5].isActive = true;
+        units[5].damages = new int[] { 8, 25, 120, 1810, 11080, 30000, 0 };
+        units[5].damagesPerUp = new int[] { 1, 14, 85, 475, 3180, 3000, 0 };
+
+        units[6] = new UnitSpecInfo();
+        units[6].prefabName = "Flamer";
+        units[6].isActive = false;
+        units[6].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[6].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[7] = new UnitSpecInfo();
+        units[7].prefabName = "Guardian";
+        units[7].isActive = true;
+        units[7].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[7].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[8] = new UnitSpecInfo();
+        units[8].prefabName = "MarineBasic";
+        units[8].isActive = false;
+        units[8].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[8].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[9] = new UnitSpecInfo();
+        units[9].prefabName = "PowerGirl";
+        units[9].isActive = false;
+        units[9].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[9].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        units[10] = new UnitSpecInfo();
+        units[10].prefabName = "Shellstorm";
+        units[10].isActive = false;
+        units[10].damages = new int[] { 8, 66, 280, 1810, 11080, 30000, 0 };
+        units[10].damagesPerUp = new int[] { 1, 12, 75, 475, 3180, 3000, 0 };
+
+        // 중간 점프 기능 추가 필요...
+    }
+}
+
+
+[System.Serializable]
+public class UnitSpecInfo
+{
+    public string prefabName = "";
+    public bool isActive = false;
+    public int[] damages = null;
+    public int[] damagesPerUp = null;
 }

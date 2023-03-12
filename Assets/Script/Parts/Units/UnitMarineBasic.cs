@@ -23,6 +23,11 @@ public class UnitMarineBasic : UnitPlayer
 
     void Start()
     {
+        int curLevel = mBaseObj.SpecProp.Level;
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[8].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[8].damagesPerUp[curLevel - 1];
+
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();
         mMotionAttack = mBaseObj.MotionManager.FindMotion<MotionActionSingle>();
         mMotionAttack.EventFired = OnAttack;

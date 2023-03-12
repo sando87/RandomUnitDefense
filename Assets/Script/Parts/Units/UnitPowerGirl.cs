@@ -32,52 +32,58 @@ public class UnitPowerGirl : UnitPlayer
     void Start()
     {
         int curLevel = mBaseObj.SpecProp.Level;
-        if (curLevel <= 1)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 5;
-            spec.damagesPerUp[0] = 1;
-            _RandomShootInterval = RandomShootIntervalTest;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
-        else if (curLevel <= 2)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 15;
-            spec.damagesPerUp[1] = 8;
-            _RandomShootInterval = RandomShootIntervalTest;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
-        else if (curLevel <= 3)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 85;
-            spec.damagesPerUp[2] = 68;
-            _RandomShootInterval = RandomShootIntervalTest;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
-        else if (curLevel <= 4)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 240;
-            spec.damagesPerUp[3] = 870;
-            _RandomShootInterval = RandomShootIntervalTest;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
-        else if (curLevel <= 5)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 615;
-            spec.damagesPerUp[4] = 1210;
-            _RandomShootInterval = RandomShootIntervalTest;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
-        else if (curLevel <= 6)
-        {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 204800;
-            SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
-        }
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[9].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[9].damagesPerUp[curLevel - 1];
+        _RandomShootInterval = RandomShootIntervalTest;
+        SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+
+        // if (curLevel <= 1)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 5;
+        //     spec.damagesPerUp[0] = 1;
+        //     _RandomShootInterval = RandomShootIntervalTest;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
+        // else if (curLevel <= 2)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 15;
+        //     spec.damagesPerUp[1] = 8;
+        //     _RandomShootInterval = RandomShootIntervalTest;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
+        // else if (curLevel <= 3)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 85;
+        //     spec.damagesPerUp[2] = 68;
+        //     _RandomShootInterval = RandomShootIntervalTest;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
+        // else if (curLevel <= 4)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 240;
+        //     spec.damagesPerUp[3] = 870;
+        //     _RandomShootInterval = RandomShootIntervalTest;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
+        // else if (curLevel <= 5)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 615;
+        //     spec.damagesPerUp[4] = 1210;
+        //     _RandomShootInterval = RandomShootIntervalTest;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
+        // else if (curLevel <= 6)
+        // {
+        //     BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        //     spec.damage = 204800;
+        //     SkillAttack.SetActionLoopSpeed(LoopMotionSpeed);
+        // }
 
 
         mBaseObj.MotionManager.SwitchMotion<MotionAppear>();

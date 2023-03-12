@@ -49,3 +49,33 @@ MonoBehaviour:
     prefab: {fileID: 6377826679273638812, guid: bdd3c23c87e83c44bafbe8dcc6d66955,
       type: 3}
     skillDescription: ...
+  - ID: 638138373943184591
+    name: Brawler
+    image: {fileID: 21300000, guid: 72ba8a34499a0af47a80cb6dc6e658f6, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: eb72b86852efc88439d1e620170f4f4e,
+      type: 3}
+    skillDescription: ...
+  - ID: 638138374036571046
+    name: Flamer
+    image: {fileID: 21300000, guid: 0357d0a899f6cad4eb5fbfccf35ab3a2, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: b24537ede5d823c489db3dbc61358ac5,
+      type: 3}
+    skillDescription: ...
+  - ID: 638138374136983152
+    name: MarineBasic
+    image: {fileID: 21300000, guid: cfb356aca3d98da4884f60b69ee4fb35, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 54b90e8f8b1f07b4695f670fa1c04603,
+      type: 3}
+    skillDescription: ...
+  - ID: 638138374197069122
+    name: PowerGirl
+    image: {fileID: 21300000, guid: 8b027592d7db7aa4fa0b9f6483c8d985, type: 3}
+    prefab: {fileID: 1367240741272029638, guid: 9b12042992a632743b379bf31d80011e,
+      type: 3}
+    skillDescription: ...
+  - ID: 638138374282031093
+    name: Shellstorm
+    image: {fileID: 21300000, guid: a9992683d3bf74d4d86237c47428b79e, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: b578ab0c66f0e6e45be9f59d8b2aa69b,
+      type: 3}
+    skillDescription: ...

@@ -26,49 +26,37 @@ public class UnitMarineHero : UnitPlayer
 
     void Start()
     {
+        
         int curLevel = mBaseObj.SpecProp.Level;
+        BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
+        spec.damage = InGameSystem.Instance.SaveTestInfo.units[0].damages[curLevel - 1];
+        spec.damagesPerUp[curLevel - 1] = InGameSystem.Instance.SaveTestInfo.units[0].damagesPerUp[curLevel - 1];
+
         if (curLevel <= 1)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 16;
-            spec.damagesPerUp[0] = 1;
             _AttackSPD = 2.0f;
         }
         else if (curLevel <= 2)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 55;
-            spec.damagesPerUp[1] = 16;
             _AttackSPD = 4.0f;
         }
         else if (curLevel <= 3)
         {
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 450;
-            spec.damagesPerUp[2] = 90;
             _AttackSPD = 8.0f;
         }
         else if (curLevel <= 4)
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 1850;
-            spec.damagesPerUp[3] = 375;
             _AttackSPD = 10.0f;
         }
         else if (curLevel <= 5)
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 3600;
-            spec.damagesPerUp[4] = 2520;
             _AttackSPD = 20.0f;
         }
         else if (curLevel <= 6)
         {
             mBaseObj.Animator.runtimeAnimatorController = _ACForFast;
-            BasicSpec spec = mBaseObj.SpecProp.GetPrivateFieldValue<BasicSpec>("_Spec");
-            spec.damage = 30000;
             _AttackSPD = 100.0f;
         }
         

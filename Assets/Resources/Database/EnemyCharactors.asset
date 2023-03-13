@@ -138,6 +138,11 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 64831387258b4b04e9246c4815dc3f7a, type: 3}
     prefab: {fileID: 3393111536044945593, guid: e8a3bdc661f86704a8de6efba3272d65,
       type: 3}
+  - ID: 637854174385754763
+    name: spitterbug
+    image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
+      type: 3}
   - ID: 637853951469432276
     name: fenrir
     image: {fileID: 21300000, guid: 54cffca366e46b84fbde12c0c6123ab8, type: 3}
@@ -147,11 +152,6 @@ MonoBehaviour:
     name: floater1
     image: {fileID: 21300000, guid: 262b0f524d5c5e64080ad4e86ddcf4eb, type: 3}
     prefab: {fileID: 3393111536044945593, guid: 2d4128e81c65aaf49b1d3b61ac5ef8ab,
-      type: 3}
-  - ID: 637854174385754763
-    name: spitterbug
-    image: {fileID: 21300000, guid: 33f0ea9e319b73441ad357061672ffdd, type: 3}
-    prefab: {fileID: 3393111536044945593, guid: 78c7f641a2eebb84b9e3f733be973780,
       type: 3}
   - ID: 638126131647025706
     name: floater2

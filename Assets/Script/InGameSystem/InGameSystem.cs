@@ -399,7 +399,8 @@ public class InGameSystem : SingletonMono<InGameSystem>
     private void StartSubMobGenerator(UnitEnemy bossMob)
     {
         int subEnemyWaveNumber = WaveNumber;
-        this.ExRepeatCoroutine(LineMobBurstIntervalSec, () =>
+        float interval = LineMobBurstIntervalSec * 3;
+        this.ExRepeatCoroutine(interval, () =>
         {
             if(bossMob != null && !bossMob.GetBaseObject().Health.IsDead)
             {

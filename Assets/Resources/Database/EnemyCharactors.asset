@@ -208,3 +208,28 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
     prefab: {fileID: 3393111536044945593, guid: acae638d680bd5c409c8679ca2d3f4da,
       type: 3}
+  - ID: 638145095505126510
+    name: fellswarm
+    image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: 44c64b5657ef5b04db5e7d14df6fc49b,
+      type: 3}
+  - ID: 638145095528412931
+    name: fellwing
+    image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: e8a3bdc661f86704a8de6efba3272d65,
+      type: 3}
+  - ID: 638145095608864276
+    name: fenrir
+    image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
+    prefab: {fileID: 6377826679273638812, guid: 579e8e0269415c34f88d1bd49d06f19a,
+      type: 3}
+  - ID: 638145104499738904
+    name: grimcrusher
+    image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: f5652c830cbf1fb4486281be9063b015,
+      type: 3}
+  - ID: 638145104520013908
+    name: hammergrub
+    image: {fileID: 21300000, guid: 805cac0c48f107a46baaa9863c069495, type: 3}
+    prefab: {fileID: 3393111536044945593, guid: ea544fa019e40ab4d852c1c0448cea8c,
+      type: 3}

@@ -26,7 +26,7 @@ public class UnitEnemy : UnitBase
         }
         
         if(IsBoss)
-            hp *= 250;
+            hp *= 300;
         else if(IsSubMob)
             hp *= 0.5f;
             
